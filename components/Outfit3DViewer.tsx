@@ -13,38 +13,39 @@ import Script from "next/script";
 // global` augmentation this environment can't build-test locally).
 //
 // The model itself (public/models/outfit-completo.glb) is a merge of three
-// independently-generated garment models, welded, decimated (~1.9M tris each
-// down to a few thousand) and baked to vertex colors instead of textures —
-// their raw combined export was 87-144MB, unusable for the web. Positions
-// were derived from real-world garment measurements (pants ~98cm, shirt
-// ~74cm, shoe ~16cm) since the source files carried no shared scale, then
-// verified by actually rendering and inspecting the result from the front,
-// side, 45°, and back before shipping it.
+// independently-generated garment models: welded (fixes the source meshes
+// being tens of thousands of disconnected islands), decimated (~1.9M tris
+// each down to a few thousand), with real per-vertex colors transferred from
+// the original high-res mesh via nearest-neighbor lookup (decimation drops
+// color data outright, so this has to happen as a separate pass after), and
+// a matte double-sided material (glTF's default is metallic + single-sided,
+// which would look wrong on non-watertight garment shells). Positions were
+// derived from real-world garment measurements (pants ~98cm, shirt ~74cm,
+// shoe ~16cm) since the source files carried no shared scale, then verified
+// by actually rendering and inspecting the result from the front, side, 45°,
+// and back before shipping it.
+//
+// Sits inside Hero.tsx's side-by-side layout — this component only renders
+// the interactive stage itself, no heading (the hero's own title covers that).
 export function Outfit3DViewer() {
   return (
-    <section className="viewer3d">
-      <h2 className="viewer3d-title">Míralo en 3D</h2>
-      <p className="viewer3d-sub">Arrastra con el dedo o el ratón para girarlo, como si lo tuvieras en la mano</p>
-
-      <div className="viewer3d-stage">
-        {createElement("model-viewer", {
-          src: "/models/outfit-completo.glb",
-          alt: "Outfit completo en 3D: camiseta, pantalón cargo y zapatillas",
-          "camera-controls": true,
-          "auto-rotate": true,
-          "rotation-per-second": "14deg",
-          "interaction-prompt": "none",
-          "shadow-intensity": "1",
-          exposure: "1",
-          style: { width: "100%", height: "100%", display: "block" },
-        })}
-      </div>
-
+    <div className="hero-3d">
+      {createElement("model-viewer", {
+        src: "/models/outfit-completo.glb",
+        alt: "Outfit completo en 3D: camiseta, pantalón cargo y zapatillas",
+        "camera-controls": true,
+        "auto-rotate": true,
+        "rotation-per-second": "14deg",
+        "interaction-prompt": "none",
+        "shadow-intensity": "1",
+        exposure: "1",
+        style: { width: "100%", height: "100%", display: "block" },
+      })}
       <Script
         type="module"
         src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"
         strategy="afterInteractive"
       />
-    </section>
+    </div>
   );
 }

@@ -40,19 +40,12 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 @media(prefers-reduced-motion:reduce){.hero .cue .dot{animation:none}}
 .hero-season{margin-top:18px;display:inline-block;font-family:"Archivo",sans-serif;font-weight:700;font-size:12.5px;color:var(--grey-2);background:var(--card);border:1px solid var(--line);border-radius:100px;padding:7px 13px}
 
-/* visor 3D: fluido, se adapta solo al ancho del contenedor (móvil/tablet/escritorio) */
-.viewer3d{max-width:920px;margin:18px auto 0;padding:0 20px}
-.viewer3d-title{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:clamp(22px,6vw,30px);letter-spacing:-.01em;text-transform:uppercase}
-.viewer3d-sub{margin-top:6px;font-size:13.5px;color:var(--grey-2);max-width:46ch}
-.viewer3d-tabs{display:flex;gap:8px;margin-top:14px}
-.viewer3d-tab{flex:1;font-family:"Archivo",sans-serif;font-weight:700;font-size:12.5px;padding:10px 6px;border:1.5px solid var(--ink);border-radius:100px;background:var(--card);color:var(--ink);cursor:pointer;transition:background .15s,color .15s}
-.viewer3d-tab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
-.viewer3d-stage{position:relative;width:100%;aspect-ratio:4/3;margin-top:12px;background:#eeece7;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-@media(min-width:640px){.viewer3d-stage{aspect-ratio:16/9}}
-.viewer3d-stage model-viewer{--poster-color:transparent}
-.viewer3d-skeleton{animation:viewer3dpulse 1.6s ease-in-out infinite}
-@keyframes viewer3dpulse{0%,100%{opacity:1}50%{opacity:.6}}
-@media(prefers-reduced-motion:reduce){.viewer3d-skeleton{animation:none}}
+/* hero: título a la izquierda, visor 3D a la derecha (se apila en móvil estrecho) */
+.hero-grid{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.hero-copy{flex:1 1 260px;min-width:0}
+.hero-3d{position:relative;flex:1 1 220px;min-width:200px;max-width:320px;aspect-ratio:1/1;
+  background:#eeece7;border:1px solid var(--line);border-radius:18px;overflow:hidden;margin:0 auto}
+.hero-3d model-viewer{--poster-color:transparent}
 
 /* barra de confianza */
 .trustbar-wrap{max-width:920px;margin:20px auto 0;padding:0 20px}
