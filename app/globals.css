@@ -50,7 +50,9 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .outfit3d-square{position:relative;flex:0 0 auto;width:220px;max-width:46vw;aspect-ratio:1/1;
   margin:0 auto;background:#eeece7;border:1px solid var(--line);border-radius:16px;overflow:hidden;
   animation:outfit3dIn .7s cubic-bezier(.34,1.56,.64,1) both}
-.outfit3d-square canvas{display:block;touch-action:none}
+.outfit3d-canvas-wrap{width:100%;height:100%}
+.outfit3d-canvas-wrap canvas{display:block;touch-action:none}
+.outfit3d-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px}
 @keyframes outfit3dIn{
   0%{transform:scale(.35) translateY(26px);opacity:0}
   55%{transform:scale(1.08) translateY(-6px);opacity:1}

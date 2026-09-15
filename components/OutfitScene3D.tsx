@@ -1,23 +1,26 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Real three.js scene (not <model-viewer>) — this is the one thing model-viewer
 // genuinely can't do: multiple pieces, each spinning at its own independent
 // speed, sharing one camera/frame. Loaded via CDN ES module imports (jsdelivr)
 // instead of an npm package, same reasoning as the rest of this project's 3D
 // work — nothing for Next's bundler to process, nothing to break the build.
-// The dynamic import() targets are built from a template string specifically
-// so bundlers can't statically analyze/bundle them; they stay genuine runtime
-// fetches handled by the browser's own module loader.
+//
+// Imports use the bare "three" / "three/addons/" specifiers, matching the
+// <script type="importmap"> in app/layout.tsx — three.js's own addon files
+// (OrbitControls, GLTFLoader, DRACOLoader) import the core library that way
+// internally, and without a matching import map on the page those internal
+// imports fail to resolve at all (this was the actual bug behind the first
+// version rendering as an empty box: it threw during module resolution and
+// the failure was only ever logged to the console, never shown on screen).
 //
 // Layout (shirt top, pants middle, shoe pair bottom) uses the same real-world
 // scale numbers verified earlier by actually rendering this composition in
 // Python (trimesh) — pants ~98cm, shirt ~74cm, shoe ~16cm — but positions the
 // ORIGINAL untouched high-quality files live via transforms, no decimation or
 // mesh-merging involved at all.
-const THREE_VERSION = "0.160.0";
-const BASE = `https://cdn.jsdelivr.net/npm/three@${THREE_VERSION}`;
 const DRACO_DECODER_PATH = "https://www.gstatic.com/draco/versioned/decoders/1.5.6/";
 
 const SHOE_CM = 16;
@@ -28,6 +31,7 @@ const SHIRT_Y = 94;
 
 export function OutfitScene3D() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -42,10 +46,10 @@ export function OutfitScene3D() {
     async function init() {
       try {
         const [THREE, { OrbitControls }, { GLTFLoader }, { DRACOLoader }] = await Promise.all([
-          import(/* webpackIgnore: true */ `${BASE}/build/three.module.js`),
-          import(/* webpackIgnore: true */ `${BASE}/examples/jsm/controls/OrbitControls.js`),
-          import(/* webpackIgnore: true */ `${BASE}/examples/jsm/loaders/GLTFLoader.js`),
-          import(/* webpackIgnore: true */ `${BASE}/examples/jsm/loaders/DRACOLoader.js`),
+          import(/* webpackIgnore: true */ "three"),
+          import(/* webpackIgnore: true */ "three/addons/controls/OrbitControls.js"),
+          import(/* webpackIgnore: true */ "three/addons/loaders/GLTFLoader.js"),
+          import(/* webpackIgnore: true */ "three/addons/loaders/DRACOLoader.js"),
         ]);
 
         if (disposed || !container) return;
@@ -177,6 +181,7 @@ export function OutfitScene3D() {
         animate();
       } catch (err) {
         console.error("OutfitScene3D failed to load:", err);
+        if (!disposed) setFailed(true);
       }
     }
 
@@ -194,5 +199,10 @@ export function OutfitScene3D() {
     };
   }, []);
 
-  return <div ref={containerRef} className="outfit3d-square" />;
+  return (
+    <div className="outfit3d-square">
+      <div ref={containerRef} className="outfit3d-canvas-wrap" />
+      {failed && <span className="outfit3d-fallback">👕👖👟</span>}
+    </div>
+  );
 }
