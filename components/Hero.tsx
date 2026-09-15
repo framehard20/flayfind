@@ -1,4 +1,4 @@
-import { PiecesShowcase } from "./PiecesShowcase";
+import { OutfitScene3D } from "./OutfitScene3D";
 
 export function Hero() {
   return (
@@ -22,7 +22,7 @@ export function Hero() {
           </div>
           <p className="hero-season">📦 Pide ya para tenerlo antes de las fiestas</p>
         </div>
-        <PiecesShowcase />
+        <OutfitScene3D />
       </div>
     </section>
   );

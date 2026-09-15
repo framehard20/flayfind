@@ -44,30 +44,20 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .hero-grid{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .hero-copy{flex:1 1 260px;min-width:0}
 
-/* piezas en 3D: un bloque compacto de 4 visores. Cada uno es independiente
-   (gira a su propio ritmo, "boing" de entrada escalonado, balanceo continuo
-   con duración/retraso distintos) aunque estén juntos en el mismo cluster */
-.pieces3d{flex:0 0 auto;width:220px;max-width:46vw;margin:0 auto}
-.pieces3d-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.pieces3d-tile{animation:piecesBoing .7s cubic-bezier(.34,1.56,.64,1) both}
-.pieces3d-stage{position:relative;width:100%;aspect-ratio:1/1;background:#eeece7;
-  border:1px solid var(--line);border-radius:14px;overflow:hidden;
-  animation:piecesBob var(--bob-dur,3.4s) ease-in-out var(--bob-delay,.7s) infinite}
-.pieces3d-stage model-viewer{--poster-color:transparent}
-@keyframes piecesBoing{
+/* visor 3D: una sola escena three.js con la camiseta arriba, el pantalón en
+   medio y las dos zapatillas abajo -- cada pieza gira de forma independiente
+   dentro del mismo encuadre (ver OutfitScene3D.tsx) */
+.outfit3d-square{position:relative;flex:0 0 auto;width:220px;max-width:46vw;aspect-ratio:1/1;
+  margin:0 auto;background:#eeece7;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  animation:outfit3dIn .7s cubic-bezier(.34,1.56,.64,1) both}
+.outfit3d-square canvas{display:block;touch-action:none}
+@keyframes outfit3dIn{
   0%{transform:scale(.35) translateY(26px);opacity:0}
   55%{transform:scale(1.08) translateY(-6px);opacity:1}
   75%{transform:scale(.96) translateY(2px)}
   100%{transform:scale(1) translateY(0)}
 }
-@keyframes piecesBob{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
-}
-@media(prefers-reduced-motion:reduce){
-  .pieces3d-tile{animation:none}
-  .pieces3d-stage{animation:none}
-}
+@media(prefers-reduced-motion:reduce){.outfit3d-square{animation:none}}
 
 /* barra de confianza */
 .trustbar-wrap{max-width:920px;margin:20px auto 0;padding:0 20px}

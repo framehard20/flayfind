@@ -5,9 +5,9 @@ const isDev = process.env.NODE_ENV !== "production";
 // The page has no server code, so 'unsafe-inline' for scripts (needed by
 // Next's hydration payload on a statically rendered page) is an acceptable
 // trade-off; everything else is locked to this origin + Umami + jsdelivr
-// (the model-viewer script — loaded from a CDN tag instead of npm on
-// purpose, see PiecesShowcase.tsx) + gstatic (the Draco mesh decoder the
-// original .glb models require at runtime).
+// (three.js + its addons, loaded via CDN ES module imports instead of an npm
+// package on purpose — see OutfitScene3D.tsx) + gstatic (the Draco mesh
+// decoder the original .glb models require at runtime).
 // NOTE: if you wire up an external contest-form endpoint (Formspree, Getform,
 // a Vercel API route on another domain, etc.), add that origin to connect-src
 // below or the browser will silently block the submit request.
