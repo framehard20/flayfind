@@ -5,18 +5,19 @@ const isDev = process.env.NODE_ENV !== "production";
 // The page has no server code, so 'unsafe-inline' for scripts (needed by
 // Next's hydration payload on a statically rendered page) is an acceptable
 // trade-off; everything else is locked to this origin + Umami + jsdelivr
-// (the 3D viewer's model-viewer script — loaded from a CDN tag instead of
-// npm on purpose, see Outfit3DViewer.tsx).
+// (the model-viewer script — loaded from a CDN tag instead of npm on
+// purpose, see PiecesShowcase.tsx) + gstatic (the Draco mesh decoder the
+// original .glb models require at runtime).
 // NOTE: if you wire up an external contest-form endpoint (Formspree, Getform,
 // a Vercel API route on another domain, etc.), add that origin to connect-src
 // below or the browser will silently block the submit request.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cdn.jsdelivr.net${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cloud.umami.is https://cdn.jsdelivr.net https://www.gstatic.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob:",
   "font-src 'self' https://fonts.gstatic.com",
-  `connect-src 'self' https://cloud.umami.is https://gateway.umami.is${isDev ? " ws:" : ""}`,
+  `connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://www.gstatic.com${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
