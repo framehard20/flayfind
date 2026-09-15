@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Hero } from "./Hero";
-import { PiecesShowcase } from "./PiecesShowcase";
 import { TrustBar } from "./TrustBar";
 import { SegIntro } from "./SegIntro";
 import { ViewNav, type View } from "./ViewNav";
@@ -57,7 +56,6 @@ export function Catalog() {
     <>
       <div hidden={view !== "outfits"}>
         <Hero />
-        <PiecesShowcase />
         <TrustBar />
       </div>
       <div hidden={view !== "seg"}>
