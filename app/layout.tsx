@@ -1,27 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Archivo, Archivo_Expanded, Inter } from "next/font/google";
 import { UMAMI } from "@/lib/site";
 import "./globals.css";
-
-const archivo = Archivo({
-  subsets: ["latin"],
-  weight: ["400", "600", "800", "900"],
-  variable: "--font-archivo",
-  display: "swap",
-});
-const archivoExpanded = Archivo_Expanded({
-  subsets: ["latin"],
-  weight: ["800", "900"],
-  variable: "--font-archivo-expanded",
-  display: "swap",
-});
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 const title = "Flayfind · Encuentra tu outfit ya montado";
 const description =
@@ -41,7 +21,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${archivo.variable} ${archivoExpanded.variable} ${inter.variable}`}>
+    <html lang="es">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Archivo+Expanded:wght@800;900&family=Inter:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         {children}
         {process.env.NODE_ENV === "production" && UMAMI.websiteId && (
