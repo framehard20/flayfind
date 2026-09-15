@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Hero } from "./Hero";
+import { Outfit3DViewer } from "./Outfit3DViewer";
 import { TrustBar } from "./TrustBar";
 import { SegIntro } from "./SegIntro";
 import { ViewNav, type View } from "./ViewNav";
@@ -56,6 +57,7 @@ export function Catalog() {
     <>
       <div hidden={view !== "outfits"}>
         <Hero />
+        <Outfit3DViewer />
         <TrustBar />
       </div>
       <div hidden={view !== "seg"}>

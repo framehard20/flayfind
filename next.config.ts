@@ -4,13 +4,15 @@ const isDev = process.env.NODE_ENV !== "production";
 
 // The page has no server code, so 'unsafe-inline' for scripts (needed by
 // Next's hydration payload on a statically rendered page) is an acceptable
-// trade-off; everything else is locked to this origin + Umami.
+// trade-off; everything else is locked to this origin + Umami + jsdelivr
+// (the 3D viewer's model-viewer script — loaded from a CDN tag instead of
+// npm on purpose, see Outfit3DViewer.tsx).
 // NOTE: if you wire up an external contest-form endpoint (Formspree, Getform,
 // a Vercel API route on another domain, etc.), add that origin to connect-src
 // below or the browser will silently block the submit request.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://cloud.umami.is${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://cloud.umami.is https://cdn.jsdelivr.net${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob:",
   "font-src 'self' https://fonts.gstatic.com",
