@@ -6,7 +6,6 @@ import { TrustBar } from "./TrustBar";
 import { SegIntro } from "./SegIntro";
 import { ViewNav, type View } from "./ViewNav";
 import { FilterZone, type Filtro } from "./FilterZone";
-import { Aviso } from "./Aviso";
 import { OutfitGrid } from "./OutfitGrid";
 import { RepeatCta } from "./RepeatCta";
 import { DiscordPerks } from "./DiscordPerks";
@@ -67,7 +66,7 @@ export function Catalog() {
 
       <div hidden={view !== "outfits"}>
         <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
-        <Aviso />
+        <DiscordPerks />
         <OutfitGrid filtro={filtro} onBuyClick={handleBuyClick} />
         <RepeatCta />
       </div>
@@ -77,7 +76,6 @@ export function Catalog() {
       </div>
 
       <div hidden={view !== "outfits"}>
-        <DiscordPerks />
         <Faq />
       </div>
 
