@@ -53,6 +53,7 @@ export function OutfitCard({ outfit: o, onBuyClick }: Props) {
         <div className="total">
           <span className="lbl">{totalLbl}</span>
           <span className="nums">
+            {o.precioMarca > 0 && <span className="marca">{eur(o.precioMarca)}</span>}
             <span className="real">{eur(total)}</span>
           </span>
         </div>

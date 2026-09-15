@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { Hero } from "./Hero";
+import { TrustBar } from "./TrustBar";
 import { SegIntro } from "./SegIntro";
 import { ViewNav, type View } from "./ViewNav";
 import { FilterZone, type Filtro } from "./FilterZone";
 import { Aviso } from "./Aviso";
 import { OutfitGrid } from "./OutfitGrid";
-import { Reqs } from "./Reqs";
-import { ContestForm } from "./ContestForm";
-import { RankingGrid } from "./RankingGrid";
+import { RepeatCta } from "./RepeatCta";
+import { SeguidoresComingSoon } from "./SeguidoresComingSoon";
 import { Faq } from "./Faq";
 import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
+
+// Reqs / ContestForm / RankingGrid power the weekly followers' contest — fully
+// built, just not launched yet (see SeguidoresComingSoon). Swap the "seg" view
+// below back to those three once the contest actually opens.
 
 const REG_KEY = "flayfind_reg";
 
@@ -52,6 +56,7 @@ export function Catalog() {
     <>
       <div hidden={view !== "outfits"}>
         <Hero />
+        <TrustBar />
       </div>
       <div hidden={view !== "seg"}>
         <SegIntro />
@@ -63,12 +68,11 @@ export function Catalog() {
         <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
         <Aviso />
         <OutfitGrid filtro={filtro} onBuyClick={handleBuyClick} />
+        <RepeatCta />
       </div>
 
       <div hidden={view !== "seg"}>
-        <Reqs />
-        <ContestForm />
-        <RankingGrid onBuyClick={handleBuyClick} />
+        <SeguidoresComingSoon />
       </div>
 
       <div hidden={view !== "outfits"}>

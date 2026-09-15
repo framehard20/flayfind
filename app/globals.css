@@ -38,6 +38,25 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .hero .cue .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @media(prefers-reduced-motion:reduce){.hero .cue .dot{animation:none}}
+.hero-grid{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.hero-copy{flex:1 1 260px;min-width:0}
+.hero-shot{position:relative;flex:0 0 auto;width:200px;max-width:70vw;aspect-ratio:3/4;border-radius:18px;overflow:hidden;margin:0 auto;box-shadow:0 18px 40px -20px rgba(10,10,10,.35)}
+.hero-season{margin-top:18px;display:inline-block;font-family:"Archivo",sans-serif;font-weight:700;font-size:12.5px;color:var(--grey-2);background:var(--card);border:1px solid var(--line);border-radius:100px;padding:7px 13px}
+
+/* barra de confianza */
+.trustbar{max-width:920px;margin:20px auto 0;padding:0 20px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;list-style:none}
+@media(min-width:640px){.trustbar{grid-template-columns:repeat(4,1fr)}}
+.trustbar li{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-family:"Archivo",sans-serif;font-weight:600;font-size:11.5px;color:var(--grey-2);line-height:1.25}
+.tb-ico{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center}
+.tb-ico svg{width:13px;height:13px}
+
+/* CTA de refuerzo tras el catálogo */
+.repeat-cta{display:flex;align-items:center;gap:14px;max-width:920px;margin:4px auto 22px;padding:18px 20px;background:var(--ink);color:#fff;border-radius:16px;text-decoration:none;transition:background .15s}
+.repeat-cta:active{background:#1c1c1c}
+.repeat-cta-txt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.repeat-cta-txt .t{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:16px;letter-spacing:-.01em}
+.repeat-cta-txt .s{font-family:"Archivo",sans-serif;font-weight:600;font-size:12.5px;color:#c7c7d0}
+.repeat-cta-arrow{font-family:"Archivo",sans-serif;font-weight:900;font-size:20px;color:var(--accent);flex:0 0 auto}
 
 /* filtros */
 .filter-zone{max-width:920px;margin:0 auto;padding:8px 20px 4px}
@@ -145,6 +164,14 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .discord-cta .dc-tx span{font-size:12px;color:#dfe2fb;line-height:1.35}
 .discord-cta .dc-ar{font-size:18px;color:#fff}
 .discord-cta:active{opacity:.9}
+
+/* panel "muy pronto" del concurso de seguidores */
+.soon-badge{display:inline-block;font-family:"Archivo",sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;background:#fff4e5;color:#a15c00;border:1px solid #ffe0ad;border-radius:100px;padding:6px 12px}
+.soon-title{margin-top:14px;font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:clamp(26px,8vw,38px);text-transform:uppercase;letter-spacing:-.02em}
+.soon-lead{margin-top:12px;max-width:54ch;font-size:15px;color:var(--grey-2);line-height:1.55}
+.soon-links{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px}
+.soon-link{font-family:"Archivo",sans-serif;font-weight:700;font-size:13px;color:var(--accent-ink);background:var(--card);border:1px solid var(--line);border-radius:100px;padding:8px 14px}
+
 .seg .eyebrow{font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:7px;margin-bottom:12px}
 .seg .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .seg h2{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:clamp(30px,10vw,52px);line-height:.94;letter-spacing:-.02em;text-transform:uppercase}
