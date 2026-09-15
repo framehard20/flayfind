@@ -9,6 +9,7 @@ import { FilterZone, type Filtro } from "./FilterZone";
 import { Aviso } from "./Aviso";
 import { OutfitGrid } from "./OutfitGrid";
 import { RepeatCta } from "./RepeatCta";
+import { DiscordPerks } from "./DiscordPerks";
 import { SeguidoresComingSoon } from "./SeguidoresComingSoon";
 import { Faq } from "./Faq";
 import { Footer } from "./Footer";
@@ -76,6 +77,7 @@ export function Catalog() {
       </div>
 
       <div hidden={view !== "outfits"}>
+        <DiscordPerks />
         <Faq />
       </div>
 
