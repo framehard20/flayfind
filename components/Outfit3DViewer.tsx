@@ -1,11 +1,16 @@
 "use client";
 
+import { createElement } from "react";
 import Script from "next/script";
 
 // model-viewer loads from a CDN script (same pattern as the Umami analytics
 // tag in layout.tsx) instead of the npm package — nothing new for Next's
 // bundler to process, which is deliberate after the npm-based integration
 // broke the Vercel build with no diagnosable error.
+//
+// Rendered via createElement instead of JSX <model-viewer> so this needs no
+// custom JSX.IntrinsicElements typing at all (that required a `declare
+// global` augmentation this environment can't build-test locally).
 //
 // The model itself (public/models/outfit-completo.glb) is a merge of three
 // independently-generated garment models, welded, decimated (~1.9M tris each
@@ -22,17 +27,17 @@ export function Outfit3DViewer() {
       <p className="viewer3d-sub">Arrastra con el dedo o el ratón para girarlo, como si lo tuvieras en la mano</p>
 
       <div className="viewer3d-stage">
-        <model-viewer
-          src="/models/outfit-completo.glb"
-          alt="Outfit completo en 3D: camiseta, pantalón cargo y zapatillas"
-          camera-controls
-          auto-rotate
-          rotation-per-second="14deg"
-          interaction-prompt="none"
-          shadow-intensity="1"
-          exposure="1"
-          style={{ width: "100%", height: "100%", display: "block" }}
-        />
+        {createElement("model-viewer", {
+          src: "/models/outfit-completo.glb",
+          alt: "Outfit completo en 3D: camiseta, pantalón cargo y zapatillas",
+          "camera-controls": true,
+          "auto-rotate": true,
+          "rotation-per-second": "14deg",
+          "interaction-prompt": "none",
+          "shadow-intensity": "1",
+          exposure: "1",
+          style: { width: "100%", height: "100%", display: "block" },
+        })}
       </div>
 
       <Script
