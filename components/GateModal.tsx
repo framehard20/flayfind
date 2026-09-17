@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
 
 type Props = {
@@ -31,15 +32,14 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
     if (!open) return;
     setStep("gate");
     setTip(false);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const unlock = lockScroll();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", onKey);
     requestAnimationFrame(() => ctaRef.current?.focus({ preventScroll: true }));
     return () => {
-      document.body.style.overflow = prev;
+      unlock();
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);

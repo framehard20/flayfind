@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
 
 // Registration popup (Hipobuy account with the -25% shipping invite code).
@@ -141,13 +142,12 @@ export function PopupModal({ registered, onRegister }: Props) {
       if (e.key === "Escape") dismiss();
     };
     window.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [open, step]);
+
+  useEffect(() => {
+    if (open) return lockScroll();
+  }, [open]);
 
   function close() {
     setOpen(false);

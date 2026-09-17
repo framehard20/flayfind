@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
+import { lockScroll } from "@/lib/scrollLock";
 import { CAT_LABEL, eur, slug, totalDe } from "@/lib/utils";
 
 type Props = {
@@ -132,13 +133,7 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
-  useEffect(() => {
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, []);
+  useEffect(() => lockScroll(), []);
 
   // pointer tilt + glare on the photo
   function onTilt(e: React.PointerEvent<HTMLDivElement>) {
