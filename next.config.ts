@@ -45,6 +45,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // pin the workspace root: a stray package-lock.json in a parent folder
+  // otherwise makes Turbopack guess the wrong root
+  turbopack: { root: process.cwd() },
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {

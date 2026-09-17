@@ -7,18 +7,20 @@ import { INVITE_CODE, LINKS } from "@/lib/site";
 // Registration popup (Hipobuy account with the -25% shipping invite code).
 //
 // When it opens — once per visit, whichever comes first:
-//  - the visitor scrolls past the hero (they're browsing outfits: intent),
 //  - 5 s on the page,
+//  - the visitor scrolls past the hero (they're browsing outfits: intent),
 //  - desktop only: the mouse heads for the tab bar to leave (exit intent).
-// Never while another dialog is open, never for someone who already clicked
-// through to register, and after "ahora no" it stays quiet for 3 days.
-// Dismissing leaves a small "-25%" pill in the corner so the offer is still
+// Never for someone who already clicked through to register. If another
+// dialog (an outfit, the buy gate) is open at that moment it waits for it to
+// close instead of giving up. Closing it keeps it quiet for the rest of the
+// visit and leaves a small "-25%" pill in the corner, so the offer is still
 // one tap away without interrupting again.
 
-const DISMISS_KEY = "flayfind_pop_dismissed"; // localStorage: timestamp
+const DISMISS_KEY = "flayfind_pop_dismissed"; // sessionStorage: closed this visit
 const SEEN_KEY = "flayfind_pop"; // sessionStorage: already shown this visit
-const SNOOZE_MS = 3 * 24 * 60 * 60 * 1000;
 const TIMER_MS = 5_000;
+
+const dialogOpen = () => !!document.querySelector(".backdrop.show, .om");
 
 const PHOTOS = [
   { src: "/img/rosa-street.jpg", alt: "Outfit rosa street" },
@@ -61,8 +63,6 @@ export function PopupModal({ registered, onRegister }: Props) {
 
   const show = useCallback((reason: string) => {
     if (registeredRef.current) return;
-    // don't stack on top of the buy gate, an open outfit or any other dialog
-    if (document.querySelector(".backdrop.show, .om")) return;
     try {
       sessionStorage.setItem(SEEN_KEY, "1");
     } catch {}
@@ -75,23 +75,30 @@ export function PopupModal({ registered, onRegister }: Props) {
 
   // triggers
   useEffect(() => {
-    let snoozed = false;
+    let dismissed = false;
     let seen = false;
     try {
-      snoozed = Date.now() - Number(localStorage.getItem(DISMISS_KEY) || 0) < SNOOZE_MS;
+      dismissed = sessionStorage.getItem(DISMISS_KEY) === "1";
       seen = sessionStorage.getItem(SEEN_KEY) === "1";
     } catch {}
-    if (snoozed || seen) {
-      if (snoozed && !registeredRef.current) setPill(true);
+    if (dismissed || seen) {
+      if (dismissed && !registeredRef.current) setPill(true);
       return;
     }
 
     let fired = false;
+    let scrollTimer = 0;
+    let retryTimer = 0;
     const fire = (reason: string) => {
       if (fired) return;
       fired = true;
-      cleanup();
-      show(reason);
+      removeTriggers();
+      // don't stack on top of the buy gate or an open outfit: wait until it closes
+      const attempt = () => {
+        if (dialogOpen()) retryTimer = window.setTimeout(attempt, 800);
+        else show(reason);
+      };
+      attempt();
     };
 
     const timer = window.setTimeout(() => fire("tiempo"), TIMER_MS);
@@ -99,7 +106,7 @@ export function PopupModal({ registered, onRegister }: Props) {
     const hero = document.querySelector(".hero");
     const onScroll = () => {
       const bottom = hero ? hero.getBoundingClientRect().bottom : 400;
-      if (bottom < 0) window.setTimeout(() => fire("scroll"), 900);
+      if (bottom < 0 && !scrollTimer) scrollTimer = window.setTimeout(() => fire("scroll"), 900);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -109,12 +116,16 @@ export function PopupModal({ registered, onRegister }: Props) {
     };
     document.addEventListener("mouseout", onLeave);
 
-    function cleanup() {
+    function removeTriggers() {
       clearTimeout(timer);
+      clearTimeout(scrollTimer);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseout", onLeave);
     }
-    return cleanup;
+    return () => {
+      removeTriggers();
+      clearTimeout(retryTimer);
+    };
   }, [show]);
 
   // registered elsewhere (buy gate): drop the reminder too
@@ -146,7 +157,7 @@ export function PopupModal({ registered, onRegister }: Props) {
   function dismiss() {
     if (step === "offer") {
       try {
-        localStorage.setItem(DISMISS_KEY, String(Date.now()));
+        sessionStorage.setItem(DISMISS_KEY, "1");
       } catch {}
       track("popup_cerrado");
       if (!registeredRef.current) setPill(true);
