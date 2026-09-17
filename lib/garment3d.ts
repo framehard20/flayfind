@@ -19,13 +19,17 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 
 // Loaded dynamically from Outfit3DViewer so three.js stays out of the main
 // bundle. One transparent WebGL canvas per garment, placed around the hero
-// title. Pieces rest still; hovering one makes it turn a little towards the
-// pointer and lift, then it eases back (a tap does the same on touch).
+// title. Pieces float and sway gently on their own (each out of phase) and
+// lean a little towards the mouse anywhere on the page; hovering one turns it
+// further towards the pointer and lifts it with a springy bounce (a tap does
+// the same on touch).
 //
 // Canvases are pointer-events:none so the title/copy underneath stay
 // selectable; hover is decided by a pixel hit test (alpha of the rendered
-// frame under the pointer) from shared window listeners below. Frames are
-// only rendered while something is moving.
+// frame under the pointer) from shared window listeners below. The idle
+// motion renders at ~30fps and only while the canvas is on screen; with
+// prefers-reduced-motion there is no idle motion and frames are only rendered
+// while something is moving.
 //
 // The .glb files are Tripo exports run through gltf-transform (meshopt +
 // webp textures), so the loader needs MeshoptDecoder (inline wasm — CSP
@@ -43,6 +47,8 @@ type Options = {
   tilt?: number;
   /** Mirror on X (a left shoe from a right one). */
   mirror?: boolean;
+  /** Offset (radians) for the idle float so pieces don't bob in unison. */
+  phase?: number;
   onLoad?: () => void;
   onError?: (err: unknown) => void;
 };
@@ -63,6 +69,8 @@ let hovered: Garment | null = null;
 let queued = false;
 let px = 0;
 let py = 0;
+/** Mouse position over the whole window, -1..1 (0 = centre); drives the idle lean. */
+const follow = { x: 0, y: 0 };
 
 function updateHover() {
   queued = false;
@@ -87,6 +95,8 @@ function onPointerMove(e: PointerEvent) {
   if (e.pointerType === "touch") return;
   px = e.clientX;
   py = e.clientY;
+  follow.x = MathUtils.clamp((px / window.innerWidth) * 2 - 1, -1, 1);
+  follow.y = MathUtils.clamp((py / window.innerHeight) * 2 - 1, -1, 1);
   if (!queued) {
     queued = true;
     requestAnimationFrame(updateHover);
@@ -96,6 +106,8 @@ function onPointerMove(e: PointerEvent) {
 function onPointerLeaveWindow() {
   hovered?.leave();
   hovered = null;
+  follow.x = 0;
+  follow.y = 0;
 }
 
 // touch has no hover: a tap on a piece plays the same little move
@@ -138,6 +150,23 @@ function unregister(g: Garment) {
 
 const damp = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
 
+/** Slightly underdamped spring: eases to the target with a small overshoot. */
+type Spring = { x: number; v: number };
+function stepSpring(s: Spring, target: number, dt: number, stiffness: number, damping: number) {
+  s.v += (target - s.x) * stiffness * dt;
+  s.v *= Math.exp(-damping * dt);
+  s.x += s.v * dt;
+}
+const settled = (s: Spring, target: number, eps: number) => Math.abs(target - s.x) < eps && Math.abs(s.v) < eps;
+
+// idle motion amounts
+const FLOAT_PX = 0.03; // bob height, as a fraction of the canvas height
+const SWAY_YAW = 0.12; // radians
+const SWAY_PITCH = 0.035;
+const FOLLOW_YAW = 0.2; // lean towards the mouse
+const FOLLOW_PITCH = 0.07;
+const IDLE_FRAME_MS = 1000 / 30 - 4; // a little slack so 60Hz rAF lands every other frame
+
 export function mountGarment(canvas: HTMLCanvasElement, opts: Options): GarmentHandle {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -177,14 +206,18 @@ export function mountGarment(canvas: HTMLCanvasElement, opts: Options): GarmentH
   const baseYaw = opts.yaw ?? 0;
   const basePitch = opts.pitch ?? 0;
   const tiltRad = MathUtils.degToRad(opts.tilt ?? 0);
-  // hover motion: target and current offsets
+  const phase = opts.phase ?? 0;
+  const idle = !reduceMotion;
+  // hover motion: targets, and springs that chase them
+  let hovering = false;
   let tYaw = 0;
   let tPitch = 0;
   let tLift = 0;
-  let yaw = 0;
-  let pitch = 0;
-  let lift = 0;
+  const yaw: Spring = { x: 0, v: 0 };
+  const pitch: Spring = { x: 0, v: 0 };
+  const lift: Spring = { x: 0, v: 0 };
   let appear = 0;
+  let lastRender = 0;
   let loaded = false;
   let visible = true;
   let raf = 0;
@@ -198,7 +231,7 @@ export function mountGarment(canvas: HTMLCanvasElement, opts: Options): GarmentH
     camera.aspect = w / h;
     const vFov = MathUtils.degToRad(camera.fov);
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
-    const pad = 1.06; // room for the hover lift
+    const pad = 1.09; // room for the hover lift and the idle sway
     const distV = (halfHeight * pad) / Math.tan(vFov / 2) + radius * 0.35;
     const distH = (radius * pad) / Math.tan(hFov / 2) + radius * 0.35;
     camera.position.set(0, 0, Math.max(distV, distH));
@@ -272,12 +305,14 @@ export function mountGarment(canvas: HTMLCanvasElement, opts: Options): GarmentH
     },
     hover(u, v) {
       const k = reduceMotion ? 0.4 : 1;
-      tYaw = (u - 0.5) * 0.7 * k; // turns towards the pointer
-      tPitch = (v - 0.5) * 0.3 * k;
+      hovering = true;
+      tYaw = (u - 0.5) * 1.1 * k; // turns towards the pointer
+      tPitch = (v - 0.5) * 0.32 * k;
       tLift = 1;
       wake();
     },
     leave() {
+      hovering = false;
       tYaw = 0;
       tPitch = 0;
       tLift = 0;
@@ -308,25 +343,42 @@ export function mountGarment(canvas: HTMLCanvasElement, opts: Options): GarmentH
     prev = now;
 
     let moving = !loaded;
+    let transitioning = !loaded;
     if (loaded) {
-      yaw += (tYaw - yaw) * damp(5, dt);
-      pitch += (tPitch - pitch) * damp(5, dt);
-      lift += (tLift - lift) * damp(7, dt);
+      // not hovered: lean a little towards the mouse wherever it is
+      const yawTarget = hovering || !idle ? tYaw : follow.x * FOLLOW_YAW;
+      const pitchTarget = hovering || !idle ? tPitch : follow.y * FOLLOW_PITCH;
+      // reduced motion: critically damped (no overshoot)
+      stepSpring(yaw, yawTarget, dt, 60, idle ? 9 : 15.5);
+      stepSpring(pitch, pitchTarget, dt, 60, idle ? 9 : 15.5);
+      stepSpring(lift, tLift, dt, 110, idle ? 11 : 21);
       appear += (1 - appear) * damp(4.5, dt);
-      pivot.rotation.set(basePitch + pitch, baseYaw + yaw, 0);
-      canvas.style.transform = `translateY(${((1 - appear) * 12 - lift * 4).toFixed(2)}px) scale(${(0.94 + 0.06 * appear + lift * 0.04).toFixed(4)})`;
-      canvas.style.opacity = appear.toFixed(3);
-      moving =
-        Math.abs(tYaw - yaw) > 1e-4 ||
-        Math.abs(tPitch - pitch) > 1e-4 ||
-        Math.abs(tLift - lift) > 1e-3 ||
+
+      const t = now / 1000;
+      const bob = idle ? Math.sin(t * 1.25 + phase) : 0;
+      const swayYaw = idle ? Math.sin(t * 0.6 + phase * 1.7) * SWAY_YAW : 0;
+      const swayPitch = idle ? Math.sin(t * 0.85 + phase * 0.6) * SWAY_PITCH : 0;
+      const floatPx = bob * FLOAT_PX * (canvas.clientHeight || 0);
+
+      pivot.rotation.set(basePitch + pitch.x + swayPitch, baseYaw + yaw.x + swayYaw, 0);
+      canvas.style.transform = `translateY(${((1 - appear) * 12 - lift.x * 8 - floatPx).toFixed(2)}px) scale(${(0.94 + 0.06 * appear + lift.x * 0.07).toFixed(4)})`;
+      canvas.style.opacity = Math.min(1, appear).toFixed(3);
+      transitioning =
+        !settled(yaw, yawTarget, 1e-4) ||
+        !settled(pitch, pitchTarget, 1e-4) ||
+        !settled(lift, tLift, 1e-3) ||
         1 - appear > 1e-3;
-      if (!moving) canvas.style.opacity = "1";
+      if (!transitioning) canvas.style.opacity = "1";
+      moving = transitioning || idle;
     }
 
-    renderer.render(scene, camera);
-    // keep going only while something is still moving
-    if (moving) raf = requestAnimationFrame(tick);
+    // the idle float alone doesn't need 60fps
+    if (transitioning || now - lastRender >= IDLE_FRAME_MS) {
+      renderer.render(scene, camera);
+      lastRender = now;
+    }
+    // keep going only while something is moving and the canvas is on screen
+    if (moving && visible) raf = requestAnimationFrame(tick);
   }
   wake();
 

@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react";
 // The outfit scattered around the hero title: shirt left of "EL LOOK", cargo
 // pants leaning on "COMPLETO,", and a sneaker sitting on "YA PENSADO.".
 // Rendered inside the title so every position is in em and scales with the
-// heading (see .fit3d-* in globals.css). Pieces rest still and move a little
-// on hover. three.js is imported lazily (see lib/garment3d.ts).
+// heading (see .fit3d-* in globals.css). Pieces float gently, lean towards the
+// mouse and bounce on hover/tap. three.js is imported lazily (see lib/garment3d.ts).
 type Piece = {
   key: string;
   url: string;
@@ -16,12 +16,14 @@ type Piece = {
   /** must match the slot's CSS rotate, for the hover hit test */
   tilt: number;
   mirror?: boolean;
+  /** idle float offset (radians) so the pieces don't bob in unison */
+  phase: number;
 };
 
 const PIECES: Piece[] = [
-  { key: "shirt", url: "/models/shirt.glb", yaw: -0.35, tilt: -11 },
-  { key: "pants", url: "/models/pants.glb", yaw: 0.3, tilt: 13 },
-  { key: "sneaker", url: "/models/sneaker.glb", yaw: -0.35, pitch: 0.12, tilt: -8 },
+  { key: "shirt", url: "/models/shirt.glb", yaw: -0.35, tilt: -11, phase: 0 },
+  { key: "pants", url: "/models/pants.glb", yaw: 0.3, tilt: 13, phase: 2.1 },
+  { key: "sneaker", url: "/models/sneaker.glb", yaw: -0.35, pitch: 0.12, tilt: -8, phase: 4.2 },
 ];
 
 function Garment({ piece }: { piece: Piece }) {
@@ -43,6 +45,7 @@ function Garment({ piece }: { piece: Piece }) {
           pitch: piece.pitch,
           tilt: piece.tilt,
           mirror: piece.mirror,
+          phase: piece.phase,
           onLoad: () => !cancelled && setReady(true),
         }).dispose;
       })
