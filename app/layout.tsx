@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { UMAMI } from "@/lib/site";
 import "./globals.css";
@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description,
   openGraph: { title, description, type: "website", locale: "es_ES" },
   twitter: { card: "summary", title, description },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
