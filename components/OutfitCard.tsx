@@ -1,24 +1,26 @@
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
-import { LINKS } from "@/lib/site";
 import { CAT_LABEL, eur, slug, totalDe } from "@/lib/utils";
 
 type Props = {
   outfit: Outfit;
-  onBuyClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
+  onOpen: () => void;
 };
 
-export function OutfitCard({ outfit: o, onBuyClick }: Props) {
+// Whole card opens the outfit modal (OutfitModal), where each piece's
+// "Comprar" link lives. The stretched <button> keeps it one accessible
+// control; nothing else in the card is interactive. data-outfit is how the
+// modal finds this card's photo for its zoom in/out animation.
+export function OutfitCard({ outfit: o, onOpen }: Props) {
   const total = totalDe(o.prendas);
-  const ev = slug(o.nombre);
   const totalLbl = o.genero === "tech" ? "Precio" : "Total del look";
 
   return (
-    <article className="outfit">
-      <div className="shot">
-        <span className="tag">{CAT_LABEL[o.categoria] || o.categoria}</span>
+    <article className="look" data-outfit={slug(o.nombre)}>
+      <div className="look-shot shot">
+        <span className="look-tag">{CAT_LABEL[o.categoria] || o.categoria}</span>
         {o.foto ? (
-          <Image src={o.foto} alt={o.nombre} fill sizes="(min-width: 720px) 33vw, 50vw" style={{ objectFit: "cover" }} />
+          <Image src={o.foto} alt={o.nombre} fill sizes="(min-width: 720px) 290px, 50vw" style={{ objectFit: "cover" }} />
         ) : (
           <span className="placeholder">
             Pon tu foto 9:16
@@ -26,48 +28,39 @@ export function OutfitCard({ outfit: o, onBuyClick }: Props) {
             {o.genero === "tech" ? "del producto aquí" : "del look aquí"}
           </span>
         )}
+        <span className="look-peek" aria-hidden="true">
+          Ver outfit
+          <svg viewBox="0 0 24 24" width="14" height="14">
+            <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
       </div>
-      <div className="body">
-        <h2 className="name">{o.nombre}</h2>
-        <ul className="pieces">
+
+      <div className="look-body">
+        <h2 className="look-name">{o.nombre}</h2>
+        <ul className="look-pieces">
           {o.prendas.map((p, i) => (
-            <li className="piece" key={i}>
-              <span className="p-tipo">{p.tipo}</span>
-              <span className="p-row">
-                <span className="p-precio">{eur(+p.precio || 0)}</span>
-                <a
-                  className="p-buy"
-                  href={p.link}
-                  target="_blank"
-                  rel="noopener"
-                  data-umami-event={`prenda_${ev}`}
-                  data-umami-event-prenda={p.tipo}
-                  onClick={(e) => onBuyClick(e, p.link)}
-                >
-                  Comprar
-                </a>
-              </span>
+            <li key={i}>
+              <span className="look-piece">{p.tipo}</span>
+              <span className="look-price">{eur(+p.precio || 0)}</span>
             </li>
           ))}
         </ul>
-        <div className="total">
-          <span className="lbl">{totalLbl}</span>
-          <span className="nums">
-            {o.precioMarca > 0 && <span className="marca">{eur(o.precioMarca)}</span>}
-            <span className="real">{eur(total)}</span>
+        <div className="look-foot">
+          <span className="look-total">
+            <span className="look-total-lbl">{totalLbl}</span>
+            {o.precioMarca > 0 && <s className="look-marca">{eur(o.precioMarca)}</s>}
+            <span className="look-total-num">{eur(total)}</span>
+          </span>
+          <span className="look-go" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </span>
         </div>
-        <a
-          className="cta"
-          href={LINKS.hipobuy}
-          target="_blank"
-          rel="noopener"
-          data-umami-event={`registro_look_${ev}`}
-          onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
-        >
-          Regístrate para comprar →
-        </a>
       </div>
+
+      <button type="button" className="look-hit" onClick={onOpen} aria-label={`Ver outfit ${o.nombre} y comprar sus prendas`} />
     </article>
   );
 }

@@ -29,23 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Archivo+Expanded:wght@800;900&family=Inter:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
-        {/* Required for OutfitScene3D.tsx: three.js's addon files (OrbitControls,
-            GLTFLoader, DRACOLoader) import the core library via the bare "three"
-            specifier, which the browser can only resolve with an import map.
-            Must be present before any module script runs, so it lives here in
-            <head> (server-rendered, present from first paint) rather than being
-            injected later from a client component. */}
-        <script
-          type="importmap"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              imports: {
-                three: "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
-              },
-            }),
-          }}
-        />
       </head>
       <body>
         {children}

@@ -14,6 +14,7 @@ import { Faq } from "./Faq";
 import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
+import { LINKS } from "@/lib/site";
 
 // Reqs / ContestForm / RankingGrid power the weekly followers' contest — fully
 // built, just not launched yet (see SeguidoresComingSoon). Swap the "seg" view
@@ -81,14 +82,12 @@ export function Catalog() {
 
       <Footer />
 
-      <PopupModal />
+      <PopupModal registered={registered} onRegister={markRegistered} />
       <GateModal
         open={gateOpen}
         onClose={() => setGateOpen(false)}
-        onGoRegister={() => {
-          markRegistered();
-          setGateOpen(false);
-        }}
+        onGoRegister={markRegistered}
+        toProduct={!!destino && destino !== LINKS.hipobuy}
         onContinue={() => {
           markRegistered();
           setGateOpen(false);
