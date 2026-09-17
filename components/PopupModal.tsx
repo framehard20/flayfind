@@ -202,6 +202,11 @@ export function PopupModal({ registered, onRegister }: Props) {
             <>
               <div className="reg-hero">
                 <div className="reg-photos" aria-hidden="true">
+                  {/* fixed hover zones (one per photo): the photos themselves move on
+                      hover, so hit-testing them would flicker as they slide away */}
+                  {PHOTOS.map((p, i) => (
+                    <span key={`zone-${p.src}`} className={`reg-zone reg-zone-${i}`} />
+                  ))}
                   {PHOTOS.map((p, i) => (
                     <div key={p.src} className={`reg-photo reg-photo-${i}`}>
                       <Image src={p.src} alt="" fill sizes="80px" loading="eager" style={{ objectFit: "cover" }} />
