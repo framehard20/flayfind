@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { CopyGuard } from "@/components/CopyGuard";
 import { UMAMI } from "@/lib/site";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <CopyGuard />
         {children}
         {process.env.NODE_ENV === "production" && UMAMI.websiteId && (
           <Script src={UMAMI.src} data-website-id={UMAMI.websiteId} strategy="afterInteractive" />

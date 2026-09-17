@@ -16,6 +16,10 @@ html,body{overflow-x:clip}
 body{font-family:"Inter",system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
 img,canvas{max-width:100%}
 a{color:inherit;text-decoration:none}
+/* content can't be selected or copied (see components/CopyGuard.tsx); form fields stay editable */
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+img{-webkit-user-drag:none}
 
 /* barra de registro */
 .sticktop{position:sticky;top:0;z-index:60}
