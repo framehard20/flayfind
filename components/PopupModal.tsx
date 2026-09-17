@@ -8,7 +8,7 @@ import { INVITE_CODE, LINKS } from "@/lib/site";
 //
 // When it opens — once per visit, whichever comes first:
 //  - the visitor scrolls past the hero (they're browsing outfits: intent),
-//  - 12 s on the page,
+//  - 5 s on the page,
 //  - desktop only: the mouse heads for the tab bar to leave (exit intent).
 // Never while another dialog is open, never for someone who already clicked
 // through to register, and after "ahora no" it stays quiet for 3 days.
@@ -18,7 +18,7 @@ import { INVITE_CODE, LINKS } from "@/lib/site";
 const DISMISS_KEY = "flayfind_pop_dismissed"; // localStorage: timestamp
 const SEEN_KEY = "flayfind_pop"; // sessionStorage: already shown this visit
 const SNOOZE_MS = 3 * 24 * 60 * 60 * 1000;
-const TIMER_MS = 12_000;
+const TIMER_MS = 5_000;
 
 const PHOTOS = [
   { src: "/img/rosa-street.jpg", alt: "Outfit rosa street" },
