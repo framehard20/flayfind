@@ -19,9 +19,10 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://cloud.umami.is 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "img-src 'self' data: blob:",
+  // photos uploaded from /admin are served from Supabase storage
+  "img-src 'self' data: blob: https://*.supabase.co",
   "font-src 'self' https://fonts.gstatic.com",
-  `connect-src 'self' blob: https://cloud.umami.is https://gateway.umami.is${isDev ? " ws:" : ""}`,
+  `connect-src 'self' blob: https://cloud.umami.is https://gateway.umami.is https://*.supabase.co${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -50,6 +51,19 @@ const nextConfig: NextConfig = {
   turbopack: { root: process.cwd() },
   poweredByHeader: false,
   reactStrictMode: true,
+  // next/image needs to know the photos can come from the Supabase bucket
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+      // local development against a stub/self-hosted Supabase
+      ...(isDev
+        ? ([
+            { protocol: "http", hostname: "127.0.0.1", pathname: "/storage/v1/object/public/**" },
+            { protocol: "http", hostname: "localhost", pathname: "/storage/v1/object/public/**" },
+          ] as const)
+        : []),
+    ],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

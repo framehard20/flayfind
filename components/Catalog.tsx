@@ -9,20 +9,26 @@ import { FilterZone, type Filtro } from "./FilterZone";
 import { OutfitGrid } from "./OutfitGrid";
 import { RepeatCta } from "./RepeatCta";
 import { DiscordPerks } from "./DiscordPerks";
-import { SeguidoresComingSoon } from "./SeguidoresComingSoon";
 import { Faq } from "./Faq";
 import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
+import { Reqs } from "./Reqs";
+import { RankingGrid } from "./RankingGrid";
+import { SeguidoresForm } from "./SeguidoresForm";
+import type { Outfit } from "@/lib/outfits";
+import type { Seguidor } from "@/lib/seguidores";
 import { LINKS } from "@/lib/site";
-
-// Reqs / ContestForm / RankingGrid power the weekly followers' contest — fully
-// built, just not launched yet (see SeguidoresComingSoon). Swap the "seg" view
-// below back to those three once the contest actually opens.
 
 const REG_KEY = "flayfind_reg";
 
-export function Catalog() {
+type Props = {
+  /** Managed in /admin; falls back to lib/outfits.ts when the database is off. */
+  outfits: Outfit[];
+  seguidores: Seguidor[];
+};
+
+export function Catalog({ outfits, seguidores }: Props) {
   const [view, setView] = useState<View>("outfits");
   const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", estilo: "todos", temporada: "todo", precio: "barato" });
   const [gateOpen, setGateOpen] = useState(false);
@@ -68,12 +74,15 @@ export function Catalog() {
       <div hidden={view !== "outfits"}>
         <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
         <DiscordPerks />
-        <OutfitGrid filtro={filtro} onBuyClick={handleBuyClick} />
+        <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
         <RepeatCta />
       </div>
 
       <div hidden={view !== "seg"}>
-        <SeguidoresComingSoon />
+        <Reqs />
+        <SeguidoresForm />
+        <DiscordPerks />
+        <RankingGrid seguidores={seguidores} onBuyClick={handleBuyClick} />
       </div>
 
       <div hidden={view !== "outfits"}>

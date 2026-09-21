@@ -1,22 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { OUTFITS } from "@/lib/outfits";
+import type { Outfit } from "@/lib/outfits";
 import { totalDe } from "@/lib/utils";
 import { OutfitCard } from "./OutfitCard";
 import { OutfitModal } from "./OutfitModal";
 import type { Filtro } from "./FilterZone";
 
 type Props = {
+  outfits: Outfit[];
   filtro: Filtro;
   onBuyClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 };
 
-export function OutfitGrid({ filtro, onBuyClick }: Props) {
+export function OutfitGrid({ outfits, filtro, onBuyClick }: Props) {
   const [openName, setOpenName] = useState<string | null>(null);
 
   const esTech = filtro.genero === "tech";
-  const list = OUTFITS.filter(
+  const list = outfits.filter(
     (o) =>
       o.genero === filtro.genero &&
       (esTech || filtro.estilo === "todos" || o.categoria === filtro.estilo) &&
