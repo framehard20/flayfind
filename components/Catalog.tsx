@@ -14,10 +14,8 @@ import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
 import { Reqs } from "./Reqs";
-import { RankingGrid } from "./RankingGrid";
 import { SeguidoresForm } from "./SeguidoresForm";
 import type { Outfit } from "@/lib/outfits";
-import type { Seguidor } from "@/lib/seguidores";
 import { LINKS } from "@/lib/site";
 
 const REG_KEY = "flayfind_reg";
@@ -25,7 +23,8 @@ const REG_KEY = "flayfind_reg";
 type Props = {
   /** Managed in /admin; falls back to lib/outfits.ts when the database is off. */
   outfits: Outfit[];
-  seguidores: Seguidor[];
+  /** Same shape, plus posicion / autor / instagram. */
+  seguidores: Outfit[];
 };
 
 export function Catalog({ outfits, seguidores }: Props) {
@@ -82,7 +81,13 @@ export function Catalog({ outfits, seguidores }: Props) {
         <Reqs />
         <SeguidoresForm />
         <DiscordPerks />
-        <RankingGrid seguidores={seguidores} onBuyClick={handleBuyClick} />
+        {seguidores.length > 0 && (
+          <div className="seg-head">
+            <h3>Outfits publicados</h3>
+            <span className="sub">Los mejores que han llegado</span>
+          </div>
+        )}
+        <OutfitGrid outfits={seguidores} rank onBuyClick={handleBuyClick} />
       </div>
 
       <div hidden={view !== "outfits"}>

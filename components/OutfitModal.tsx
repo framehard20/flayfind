@@ -5,11 +5,15 @@ import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { lockScroll } from "@/lib/scrollLock";
-import { CAT_LABEL, eur, slug, totalDe } from "@/lib/utils";
+import { CAT_LABEL, eur, rankClass, slug, totalDe } from "@/lib/utils";
 
 type Props = {
   list: Outfit[];
   index: number;
+  /** Matches the cards' data-outfit so the zoom finds the right one. */
+  scope?: string;
+  /** Followers' view: medal, author and the gold / silver / bronze glow. */
+  rank?: boolean;
   onIndex: (i: number) => void;
   onClose: () => void;
   onBuyClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
@@ -18,8 +22,8 @@ type Props = {
 const EASE = "cubic-bezier(.2,.9,.25,1)";
 
 /** The card photo this outfit came from, if it's on screen (zoom origin/target). */
-function cardShot(o: Outfit) {
-  const el = document.querySelector<HTMLElement>(`[data-outfit="${slug(o.nombre)}"] .look-shot`);
+function cardShot(o: Outfit, scope: string) {
+  const el = document.querySelector<HTMLElement>(`[data-outfit="${scope}-${slug(o.nombre)}"] .look-shot`);
   if (!el) return null;
   const r = el.getBoundingClientRect();
   const onScreen = r.bottom > 0 && r.top < window.innerHeight && r.width > 0;
@@ -57,11 +61,12 @@ function useCountUp(value: number, key: string) {
 // tilts towards the pointer with a moving glare; pieces cascade in; the
 // total counts up. ←/→ (or the arrow buttons) step through the filtered
 // outfits, Escape closes.
-export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props) {
+export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, onClose, onBuyClick }: Props) {
   const o = list[index];
   const total = totalDe(o.prendas);
   const shown = useCountUp(total, o.nombre);
   const ev = slug(o.nombre);
+  const medal = rank ? rankClass(o.posicion) : "";
 
   const mediaRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
@@ -75,7 +80,7 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
   useLayoutEffect(() => {
     lastFocus.current = document.activeElement as HTMLElement | null;
     const media = mediaRef.current;
-    const from = cardShot(o);
+    const from = cardShot(o, scope);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (media && from && !reduce) {
       const to = media.getBoundingClientRect();
@@ -98,7 +103,7 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
     closingRef.current = true;
     setOpen(false);
     const media = mediaRef.current;
-    const to = cardShot(o);
+    const to = cardShot(o, scope);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const done = () => {
       onClose();
@@ -159,7 +164,7 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
 
   return (
     <div
-      className={`om${open ? " open" : ""}`}
+      className={`om${open ? " open" : ""}${medal ? ` om-${medal}` : ""}`}
       role="dialog"
       aria-modal="true"
       aria-label={`Outfit ${o.nombre}`}
@@ -216,6 +221,7 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
               )}
               <span className="om-glare" aria-hidden="true" />
               <span className="om-tag">{CAT_LABEL[o.categoria] || o.categoria}</span>
+              {rank && o.posicion ? <span className="om-medal">#{o.posicion}</span> : null}
             </div>
           </div>
 
@@ -237,9 +243,20 @@ export function OutfitModal({ list, index, onIndex, onClose, onBuyClick }: Props
 
         <div className="om-info" key={o.nombre}>
           <span className="om-count">
-            {index + 1} / {list.length}
+            {rank && o.posicion ? `Puesto #${o.posicion}` : `${index + 1} / ${list.length}`}
           </span>
           <h2 className="om-name">{o.nombre}</h2>
+          {rank && o.instagram && (
+            <a
+              className="om-author"
+              href={`https://instagram.com/${o.instagram.replace(/^@/, "")}`}
+              target="_blank"
+              rel="noopener"
+              data-umami-event="seg_autor"
+            >
+              por <b>@{o.instagram.replace(/^@/, "")}</b>
+            </a>
+          )}
           <p className="om-lead">Cada prenda con su link. Toca «Comprar» y la tienes.</p>
 
           <ul className="om-pieces">

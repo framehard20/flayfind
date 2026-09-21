@@ -1,9 +1,13 @@
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
-import { CAT_LABEL, eur, slug, totalDe } from "@/lib/utils";
+import { CAT_LABEL, eur, rankClass, slug, totalDe } from "@/lib/utils";
 
 type Props = {
   outfit: Outfit;
+  /** Keeps the two grids' cards apart for the modal's zoom animation. */
+  scope?: string;
+  /** Followers' grid: show the place and who sent it. */
+  rank?: boolean;
   onOpen: () => void;
 };
 
@@ -11,14 +15,18 @@ type Props = {
 // "Comprar" link lives. The stretched <button> keeps it one accessible
 // control; nothing else in the card is interactive. data-outfit is how the
 // modal finds this card's photo for its zoom in/out animation.
-export function OutfitCard({ outfit: o, onOpen }: Props) {
+export function OutfitCard({ outfit: o, scope = "of", rank = false, onOpen }: Props) {
   const total = totalDe(o.prendas);
   const totalLbl = o.genero === "tech" ? "Precio" : "Total del look";
+  const medal = rankClass(o.posicion);
 
   return (
-    <article className="look" data-outfit={slug(o.nombre)}>
+    <article className={`look${rank && medal ? ` look-top look-${medal}` : ""}`} data-outfit={`${scope}-${slug(o.nombre)}`}>
       <div className="look-shot shot">
         <span className="look-tag">{CAT_LABEL[o.categoria] || o.categoria}</span>
+        {rank && o.posicion ? (
+          <span className={`look-rank${medal ? ` look-rank-${medal}` : ""}`}>#{o.posicion}</span>
+        ) : null}
         {o.foto ? (
           <Image src={o.foto} alt={o.nombre} fill sizes="(min-width: 720px) 290px, 50vw" style={{ objectFit: "cover" }} />
         ) : (
@@ -38,6 +46,7 @@ export function OutfitCard({ outfit: o, onOpen }: Props) {
 
       <div className="look-body">
         <h2 className="look-name">{o.nombre}</h2>
+        {rank && o.instagram && <span className="look-author">por @{o.instagram.replace(/^@/, "")}</span>}
         <ul className="look-pieces">
           {o.prendas.map((p, i) => (
             <li key={i}>

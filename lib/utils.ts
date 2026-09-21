@@ -14,6 +14,11 @@ export function totalDe(prendas: { precio: number }[]): number {
   return prendas.reduce((s, p) => s + (+p.precio || 0), 0);
 }
 
+/** gold / silver / bronze treatment for the first three places. */
+export function rankClass(posicion?: number): "gold" | "silver" | "bronze" | "" {
+  return posicion === 1 ? "gold" : posicion === 2 ? "silver" : posicion === 3 ? "bronze" : "";
+}
+
 export const CAT_LABEL: Record<string, string> = {
   gym: "Gym",
   elegante: "Elegante",

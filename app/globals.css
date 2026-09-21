@@ -513,3 +513,38 @@ footer p{font-size:12.5px;color:var(--grey);margin-top:8px;max-width:40ch;margin
 .gate-skip b{color:var(--ink)}
 .gate-skip:hover{border-color:var(--ink);color:var(--ink)}
 .gate-ready-txt{margin:10px auto 0;max-width:32ch;font-size:14px;line-height:1.45;color:var(--grey-2)}
+
+/* ============ outfits de seguidores: puesto y brillo del podio ============
+   Misma tarjeta que en «Outfits» (.look) más el puesto. Los tres primeros
+   llevan color de podio: la tarjeta con un borde y, al abrirla, el fondo del
+   modal se enciende de ese color. */
+.look-top{--podio:var(--accent);--podio-2:#8fb0ff}
+.look-gold{--podio:#e6a817;--podio-2:#ffd977}
+.look-silver{--podio:#9aa0a8;--podio-2:#d8dde3}
+.look-bronze{--podio:#c07a3e;--podio-2:#e8b183}
+.look-top{box-shadow:0 0 0 2px var(--podio),0 1px 2px rgba(10,10,10,.04),0 14px 34px -20px var(--podio)}
+.look-rank{position:absolute;z-index:2;top:9px;right:9px;display:inline-flex;align-items:center;gap:4px;font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:11.5px;letter-spacing:.02em;color:#fff;background:var(--ink);padding:5px 10px;border-radius:100px;box-shadow:0 4px 12px rgba(0,0,0,.28)}
+.look-rank-gold{background:linear-gradient(140deg,#f2c14e,#b4801a);color:#2a1d00}
+.look-rank-silver{background:linear-gradient(140deg,#dfe3e8,#8e959d);color:#20242a}
+.look-rank-bronze{background:linear-gradient(140deg,#e3a06a,#9c5c26)}
+.look-author{display:block;margin-top:3px;font-family:"Archivo",sans-serif;font-weight:600;font-size:11.5px;color:var(--grey)}
+@media(hover:hover){.look-top:hover{box-shadow:0 0 0 2px var(--podio),0 1px 2px rgba(10,10,10,.04),0 26px 48px -20px var(--podio)}}
+
+/* modal del outfit con puesto */
+.om-gold{--podio:#e6a817;--podio-2:#ffd977}
+.om-silver{--podio:#9aa0a8;--podio-2:#e8edf2}
+.om-bronze{--podio:#c07a3e;--podio-2:#f0bb8c}
+/* el fondo se enciende del color del podio */
+.om-gold.open,.om-silver.open,.om-bronze.open{background:radial-gradient(130% 90% at 50% 8%,color-mix(in srgb,var(--podio) 26%,transparent),rgba(8,8,10,.93) 62%)}
+.om-gold.open{background:radial-gradient(130% 90% at 50% 8%,color-mix(in srgb,var(--podio) 42%,transparent),rgba(8,8,10,.93) 62%)}
+.om-gold .om-ambient,.om-silver .om-ambient,.om-bronze .om-ambient{filter:blur(60px) saturate(1.6) hue-rotate(0deg)}
+.om-gold.open .om-ambient,.om-silver.open .om-ambient,.om-bronze.open .om-ambient{opacity:.26}
+.om-gold .om-tilt,.om-silver .om-tilt,.om-bronze .om-tilt{box-shadow:0 40px 80px -30px rgba(0,0,0,.75),0 0 0 2px var(--podio),0 0 60px -10px var(--podio)}
+.om-medal{position:absolute;top:12px;right:12px;font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:13px;letter-spacing:.02em;color:#2a1d00;background:linear-gradient(140deg,var(--podio-2),var(--podio));padding:6px 11px;border-radius:100px;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.om-silver .om-medal,.om-bronze .om-medal{color:#1a1d21}
+.om-gold .om-count,.om-silver .om-count,.om-bronze .om-count{color:var(--podio-2)}
+.om-gold .om-total-num,.om-silver .om-total-num,.om-bronze .om-total-num{color:var(--podio-2)}
+.om-author{display:inline-block;margin-top:6px;font-size:13.5px;color:rgba(255,255,255,.72)}
+.om-author b{color:#fff}
+.om-author:hover b{text-decoration:underline;text-underline-offset:2px}
+@media(prefers-reduced-motion:reduce){.look-top{transition:none}}

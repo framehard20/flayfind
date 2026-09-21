@@ -12,6 +12,10 @@ export type Outfit = {
   foto: string;
   precioMarca: number;
   prendas: Prenda[];
+  /** Followers' section only: place in the list (1 = first) and who sent it. */
+  posicion?: number;
+  autor?: string;
+  instagram?: string;
 };
 
 // Data copied verbatim from the original index.html OUTFITS array — see
