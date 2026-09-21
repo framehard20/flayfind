@@ -44,7 +44,7 @@ export function SubmissionList({ rows }: { rows: SubmissionRow[] }) {
                 <a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener">
                   @{s.instagram}
                 </a>{" "}
-                · <a href={`mailto:${s.email}`}>{s.email}</a> ·{" "}
+                · Hipobuy: <a href={`mailto:${s.email}`}>{s.email}</a> ·{" "}
                 {new Date(s.created_at).toLocaleDateString("es-ES", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
               </small>
               <p className="ad-sub-idea">{s.idea}</p>

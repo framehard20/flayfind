@@ -40,6 +40,29 @@ export function SeguidoresForm() {
   return (
     <section className="seg seg-form-wrap">
       <form className="seg-form" onSubmit={onSubmit}>
+        <p className="seg-step">1 · Regístrate en Hipobuy</p>
+        <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="seg_form_registro">
+          Registrarme en Hipobuy con el código {INVITE_CODE} ↗
+        </a>
+        <label className="consent">
+          <input type="checkbox" name="registrado" required />
+          <span>
+            Ya me he registrado en Hipobuy con este link (es obligatorio para participar y te da un −25% en envíos).
+          </span>
+        </label>
+        <div className="fld">
+          <label htmlFor="s-email">Email de Hipobuy</label>
+          <input
+            id="s-email"
+            name="email"
+            type="email"
+            required
+            maxLength={120}
+            placeholder="el email con el que te has registrado"
+          />
+        </div>
+
+        <p className="seg-step">2 · Cuéntanos tu outfit</p>
         <div className="fld">
           <label htmlFor="s-nombre">Tu nombre</label>
           <input id="s-nombre" name="nombre" type="text" required maxLength={80} placeholder="Tu nombre" />
@@ -53,10 +76,6 @@ export function SeguidoresForm() {
           <input id="s-ig" name="instagram" type="text" required maxLength={80} placeholder="@tucuenta" />
         </div>
         <div className="fld">
-          <label htmlFor="s-email">Tu email</label>
-          <input id="s-email" name="email" type="email" required maxLength={120} placeholder="tu@email.com" />
-        </div>
-        <div className="fld">
           <label htmlFor="s-idea">¿Qué lleva? Cuéntanoslo</label>
           <textarea
             id="s-idea"
@@ -66,21 +85,7 @@ export function SeguidoresForm() {
             placeholder="Un total black de invierno con sudadera oversize, cargo y sneakers negras…"
           />
         </div>
-        <div className="fld">
-          <label htmlFor="s-hipobuy">Tu usuario o email de Hipobuy</label>
-          <input id="s-hipobuy" name="hipobuy" type="text" maxLength={120} placeholder="para comprobar tu registro" />
-        </div>
 
-        <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="seg_form_registro">
-          Registrarme en Hipobuy con el código {INVITE_CODE} ↗
-        </a>
-
-        <label className="consent">
-          <input type="checkbox" name="registrado" required />
-          <span>
-            Ya me he registrado en Hipobuy con este link (es obligatorio para participar y te da un −25% en envíos).
-          </span>
-        </label>
         <label className="consent">
           <input type="checkbox" name="novedades" />
           <span>Quiero recibir novedades y nuevos outfits en mi email.</span>

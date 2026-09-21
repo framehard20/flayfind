@@ -28,13 +28,13 @@ export async function POST(req: Request) {
   const instagram = str(form.get("instagram"), 80).replace(/^@/, "");
   const email = str(form.get("email"), 120);
   const idea = str(form.get("idea"), 1000);
-  const hipobuy = str(form.get("hipobuy"), 120);
   const registrado = on(form.get("registrado"));
 
   if (!nombre) return Response.json({ error: "Falta tu nombre." }, { status: 400 });
   if (!outfit) return Response.json({ error: "Ponle un nombre al outfit." }, { status: 400 });
   if (!instagram) return Response.json({ error: "Falta tu Instagram." }, { status: 400 });
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return Response.json({ error: "Ese email no parece válido." }, { status: 400 });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
+    return Response.json({ error: "Ese email de Hipobuy no parece válido." }, { status: 400 });
   if (!idea) return Response.json({ error: "Cuéntanos qué outfit quieres que salga." }, { status: 400 });
   if (!registrado) return Response.json({ error: "Tienes que registrarte en Hipobuy con el link para participar." }, { status: 400 });
 
@@ -44,7 +44,8 @@ export async function POST(req: Request) {
     email,
     idea,
     novedades: on(form.get("novedades")),
-    hipobuy_usuario: hipobuy,
+    // the email above is the Hipobuy one, so there's nothing else to store
+    hipobuy_usuario: "",
     registrado,
   };
 
