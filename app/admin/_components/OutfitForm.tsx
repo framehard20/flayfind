@@ -191,7 +191,7 @@ export function OutfitForm({ seccion, outfit }: { seccion: Seccion; outfit?: Out
             <label className="ad-field">
               <span>Puesto</span>
               <input type="text" inputMode="numeric" value={posicion} onChange={(e) => setPosicion(e.target.value)} placeholder="1" />
-              <span className="ad-hint">1 = ganador de la semana.</span>
+              <span className="ad-hint">Orden en la lista: 1 sale el primero.</span>
             </label>
           </div>
         </div>

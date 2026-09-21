@@ -18,8 +18,8 @@ export function RankingGrid({ seguidores, onBuyClick }: Props) {
   return (
     <>
       <div className="seg-head">
-        <h3>Ranking de la semana</h3>
-        <span className="sub">Top elegidos</span>
+        <h3>Outfits publicados</h3>
+        <span className="sub">Los mejores que han llegado</span>
       </div>
       <main className="grid grid-seg">
         {orden.map((o) => (

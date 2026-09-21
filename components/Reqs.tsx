@@ -27,8 +27,8 @@ export function Reqs() {
             <b>Regístrate en Hipobuy con el enlace</b>
             <span>
               Hipobuy es la tienda donde se compra la ropa del mercado chino. Aunque ya tengas cuenta, para participar
-              tienes que tener una registrada con este enlace (código <b>{INVITE_CODE}</b>). Así entras al concurso y
-              encima recibes un <b>25% de descuento nuevo</b> en tus envíos.{" "}
+              tienes que tener una registrada con este enlace (código <b>{INVITE_CODE}</b>). Además te llevas un{" "}
+              <b>25% de descuento</b> en tus envíos.{" "}
               <a href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="req_registro">
                 Registrarme con {INVITE_CODE} →
               </a>
@@ -47,8 +47,8 @@ export function Reqs() {
         </li>
       </ol>
       <p className="reqs-note">
-        Al final de cada mes se comprueba que cumples los requisitos —tu cuenta de Hipobuy registrada con el enlace y
-        que sigues las dos cuentas— antes de entregar los premios.
+        Antes de publicar un outfit se comprueba que cumples lo de arriba: tu cuenta de Hipobuy registrada con el
+        enlace y que sigues las dos cuentas.
       </p>
 
       <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener" data-umami-event="discord">
@@ -59,7 +59,7 @@ export function Reqs() {
         </span>
         <span className="dc-tx">
           <b>Únete al Discord</b>
-          <span>Habla con la gente del concurso, enseña tus fits y pide opinión</span>
+          <span>Habla con la comunidad, enseña tus fits y pide opinión</span>
         </span>
         <span className="dc-ar" aria-hidden="true">
           →

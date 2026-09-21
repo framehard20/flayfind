@@ -7,13 +7,12 @@ export function SegIntro() {
         seguidores
       </h2>
       <p className="lead">
-        ¿Tienes un buen fit? Móntalo con ropa del mercado chino, mándalo y compite. <b>Se eligen solo los mejores</b>{" "}
-        de todos los que llegan (los flojos no entran), y cada semana hay un ganador al que se reacciona en vídeo. A
-        final de mes, cada ganador de la semana recibe su premio. Tu puesto no está asegurado: si llega uno mejor,
-        bajas — así que dalo todo con el tuyo.
+        ¿Tienes un buen fit? Móntalo con ropa del mercado chino y mándalo. <b>Se publican solo los mejores</b> de todos
+        los que llegan (los flojos no entran), con tu <b>@</b> puesto para que se vea que es tuyo. Si el tuyo entra, lo
+        verás aquí abajo con el link de cada prenda para que cualquiera lo pueda copiar.
       </p>
       <div className="cue">
-        <span className="dot" /> Concurso semanal
+        <span className="dot" /> Manda el tuyo y sal en la web
       </div>
     </div>
   );
