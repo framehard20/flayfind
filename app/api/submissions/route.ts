@@ -24,6 +24,7 @@ export async function POST(req: Request) {
   if (str(form.get("web"))) return Response.json({ ok: true });
 
   const nombre = str(form.get("nombre"), 80);
+  const outfit = str(form.get("outfit"), 80);
   const instagram = str(form.get("instagram"), 80).replace(/^@/, "");
   const email = str(form.get("email"), 120);
   const idea = str(form.get("idea"), 1000);
@@ -31,12 +32,13 @@ export async function POST(req: Request) {
   const registrado = on(form.get("registrado"));
 
   if (!nombre) return Response.json({ error: "Falta tu nombre." }, { status: 400 });
+  if (!outfit) return Response.json({ error: "Ponle un nombre al outfit." }, { status: 400 });
   if (!instagram) return Response.json({ error: "Falta tu Instagram." }, { status: 400 });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return Response.json({ error: "Ese email no parece válido." }, { status: 400 });
   if (!idea) return Response.json({ error: "Cuéntanos qué outfit quieres que salga." }, { status: 400 });
   if (!registrado) return Response.json({ error: "Tienes que registrarte en Hipobuy con el link para participar." }, { status: 400 });
 
-  const { error } = await db().from("submissions").insert({
+  const row = {
     nombre,
     instagram,
     email,
@@ -44,7 +46,17 @@ export async function POST(req: Request) {
     novedades: on(form.get("novedades")),
     hipobuy_usuario: hipobuy,
     registrado,
-  });
+  };
+
+  let { error } = await db().from("submissions").insert({ ...row, outfit_nombre: outfit });
+  // the outfit_nombre column was added later: if this database predates it,
+  // keep the name with the description instead of losing the submission
+  if (error && /outfit_nombre/.test(error.message)) {
+    console.warn("Falta la columna outfit_nombre en submissions; ejecuta supabase/schema.sql.");
+    ({ error } = await db()
+      .from("submissions")
+      .insert({ ...row, idea: `Outfit: ${outfit}\n\n${idea}` }));
+  }
   if (error) return Response.json({ error: "No se pudo guardar, inténtalo otra vez." }, { status: 500 });
 
   recent.set(ip, Date.now());

@@ -45,6 +45,10 @@ export function SeguidoresForm() {
           <input id="s-nombre" name="nombre" type="text" required maxLength={80} placeholder="Tu nombre" />
         </div>
         <div className="fld">
+          <label htmlFor="s-outfit">Nombre del outfit</label>
+          <input id="s-outfit" name="outfit" type="text" required maxLength={80} placeholder="Total black invierno" />
+        </div>
+        <div className="fld">
           <label htmlFor="s-ig">Tu Instagram</label>
           <input id="s-ig" name="instagram" type="text" required maxLength={80} placeholder="@tucuenta" />
         </div>
@@ -53,7 +57,7 @@ export function SeguidoresForm() {
           <input id="s-email" name="email" type="email" required maxLength={120} placeholder="tu@email.com" />
         </div>
         <div className="fld">
-          <label htmlFor="s-idea">¿Qué outfit quieres que saquemos?</label>
+          <label htmlFor="s-idea">¿Qué lleva? Cuéntanoslo</label>
           <textarea
             id="s-idea"
             name="idea"

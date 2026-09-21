@@ -26,6 +26,7 @@ create index if not exists outfits_seccion_idx on public.outfits (seccion, visib
 create table if not exists public.submissions (
   id              uuid primary key default gen_random_uuid(),
   nombre          text not null,
+  outfit_nombre   text not null default '',
   instagram       text not null,
   email           text not null,
   idea            text not null default '',
@@ -35,6 +36,9 @@ create table if not exists public.submissions (
   estado          text not null default 'nuevo' check (estado in ('nuevo', 'leido', 'aprobado', 'descartado')),
   created_at      timestamptz not null default now()
 );
+
+-- added later: safe to re-run on an existing table
+alter table public.submissions add column if not exists outfit_nombre text not null default '';
 
 create index if not exists submissions_created_idx on public.submissions (created_at desc);
 

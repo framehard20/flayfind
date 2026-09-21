@@ -36,9 +36,10 @@ export function SubmissionList({ rows }: { rows: SubmissionRow[] }) {
           <li className="ad-item" key={s.id}>
             <div className="ad-item-main ad-sub">
               <b>
-                {s.nombre}{" "}
+                {s.outfit_nombre || s.nombre}{" "}
                 {s.estado === "nuevo" && <span className="ad-tag ad-tag-new">nuevo</span>}
               </b>
+              {s.outfit_nombre && <small>de {s.nombre}</small>}
               <small>
                 <a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener">
                   @{s.instagram}

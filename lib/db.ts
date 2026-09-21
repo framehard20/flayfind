@@ -70,6 +70,8 @@ export type OutfitRow = {
 export type SubmissionRow = {
   id: string;
   nombre: string;
+  /** Empty until the outfit_nombre column exists (see supabase/schema.sql). */
+  outfit_nombre?: string;
   instagram: string;
   email: string;
   idea: string;
