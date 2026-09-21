@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { adminConfigured, isLoggedIn } from "@/lib/auth";
-import { db, hasDb } from "@/lib/db";
+import { db, hasDb, KEY_HELP, serviceKeyProblem } from "@/lib/db";
 import { ImportButton } from "./_components/ImportButton";
 import { LoginForm } from "./_components/LoginForm";
 import { Nav } from "./_components/Nav";
@@ -39,6 +39,7 @@ export default async function AdminHome() {
           Falta conectar la base de datos (Supabase). Sigue los pasos de ADMIN.md: crear el proyecto, pegar el SQL y añadir las variables en Vercel.
         </div>
       )}
+      {serviceKeyProblem() && <div className="ad-msg ad-msg-err">{KEY_HELP}</div>}
       {dbError && <div className="ad-msg ad-msg-err">Error hablando con la base de datos: {dbError}</div>}
 
       {data && (

@@ -22,6 +22,30 @@ export function db(): SupabaseClient {
   return client;
 }
 
+/** The secret key is what lets the server bypass row level security. Pasting
+ *  the public (publishable / anon) key by mistake fails with a confusing
+ *  "row-level security" error, so it's named explicitly. */
+export function serviceKeyProblem(): string | null {
+  if (!SERVICE_KEY) return null;
+  if (SERVICE_KEY.startsWith("sb_publishable_")) return "publishable";
+  if (SERVICE_KEY.startsWith("eyJ")) {
+    try {
+      const payload = JSON.parse(Buffer.from(SERVICE_KEY.split(".")[1], "base64").toString());
+      if (payload.role && payload.role !== "service_role") return String(payload.role);
+    } catch {}
+  }
+  return null;
+}
+
+export const KEY_HELP =
+  "La clave de Supabase que hay en SUPABASE_SERVICE_ROLE_KEY es la pública. Copia la secreta (Project Settings → API Keys → «Secret keys», empieza por sb_secret_, o «service_role» en las Legacy API keys), cámbiala en Vercel y vuelve a desplegar.";
+
+/** Turns Supabase's raw message into something actionable. */
+export function explain(message: string): string {
+  if (/row-level security/i.test(message)) return `${message}. ${KEY_HELP}`;
+  return message;
+}
+
 export type Seccion = "outfits" | "seguidores";
 
 /** A row of the `outfits` table. */

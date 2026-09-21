@@ -1,5 +1,5 @@
 import { isLoggedIn } from "@/lib/auth";
-import { BUCKET, db, hasDb, publicUrl } from "@/lib/db";
+import { BUCKET, db, explain, hasDb, publicUrl } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   const { error } = await db()
     .storage.from(BUCKET)
     .upload(path, await file.arrayBuffer(), { contentType: file.type, cacheControl: "31536000", upsert: false });
-  if (error) return Response.json({ error: error.message }, { status: 500 });
+  if (error) return Response.json({ error: explain(error.message) }, { status: 500 });
 
   return Response.json({ ok: true, url: publicUrl(path), path });
 }

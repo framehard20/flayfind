@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
-import { db, hasDb } from "@/lib/db";
+import { db, explain, hasDb } from "@/lib/db";
 import { OUTFITS } from "@/lib/outfits";
 import { SEGUIDORES } from "@/lib/seguidores";
 
@@ -15,7 +15,7 @@ export async function POST() {
   if (!hasDb) return Response.json({ error: "La base de datos no está configurada." }, { status: 503 });
 
   const { data: existing, error: readError } = await db().from("outfits").select("nombre, seccion");
-  if (readError) return Response.json({ error: readError.message }, { status: 500 });
+  if (readError) return Response.json({ error: explain(readError.message) }, { status: 500 });
   const seen = new Set((existing ?? []).map((r) => `${r.seccion}|${r.nombre}`));
 
   const rows = [
@@ -51,7 +51,7 @@ export async function POST() {
   if (!rows.length) return Response.json({ ok: true, importados: 0 });
 
   const { error } = await db().from("outfits").insert(rows);
-  if (error) return Response.json({ error: error.message }, { status: 500 });
+  if (error) return Response.json({ error: explain(error.message) }, { status: 500 });
   revalidatePath("/");
   return Response.json({ ok: true, importados: rows.length });
 }

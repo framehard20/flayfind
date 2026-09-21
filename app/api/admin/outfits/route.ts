@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
-import { db, hasDb, type Seccion } from "@/lib/db";
+import { db, explain, hasDb, type Seccion } from "@/lib/db";
 import { INVITE_CODE } from "@/lib/site";
 
 export const runtime = "nodejs";
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
   if (error || !row) return Response.json({ error }, { status: 400 });
 
   const { data, error: dbError } = await db().from("outfits").insert(row).select("id").single();
-  if (dbError) return Response.json({ error: dbError.message }, { status: 500 });
+  if (dbError) return Response.json({ error: explain(dbError.message) }, { status: 500 });
   refresh();
   return Response.json({ ok: true, id: data.id });
 }
@@ -100,7 +100,7 @@ export async function PATCH(req: Request) {
   if (body.only === "visible" || body.only === "orden") {
     const patch = body.only === "visible" ? { visible: body.visible !== false } : { orden: Math.round(num(body.orden)) };
     const { error } = await db().from("outfits").update(patch).eq("id", id);
-    if (error) return Response.json({ error: error.message }, { status: 500 });
+    if (error) return Response.json({ error: explain(error.message) }, { status: 500 });
     refresh();
     return Response.json({ ok: true });
   }
@@ -108,7 +108,7 @@ export async function PATCH(req: Request) {
   const { row, error } = parse(body);
   if (error || !row) return Response.json({ error }, { status: 400 });
   const { error: dbError } = await db().from("outfits").update(row).eq("id", id);
-  if (dbError) return Response.json({ error: dbError.message }, { status: 500 });
+  if (dbError) return Response.json({ error: explain(dbError.message) }, { status: 500 });
   refresh();
   return Response.json({ ok: true });
 }
@@ -120,7 +120,7 @@ export async function DELETE(req: Request) {
   const id = str(((await req.json().catch(() => ({}))) as Body).id);
   if (!id) return Response.json({ error: "Falta el id." }, { status: 400 });
   const { error } = await db().from("outfits").delete().eq("id", id);
-  if (error) return Response.json({ error: error.message }, { status: 500 });
+  if (error) return Response.json({ error: explain(error.message) }, { status: 500 });
   refresh();
   return Response.json({ ok: true });
 }
