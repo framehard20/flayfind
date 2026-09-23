@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { lockScroll } from "@/lib/scrollLock";
-import { CAT_KEY, rankClass, slug, totalDe } from "@/lib/utils";
+import { rankClass, slug, totalDe } from "@/lib/utils";
 import { useSettings } from "./Settings";
 
 type Props = {
@@ -63,7 +63,7 @@ function useCountUp(value: number, key: string) {
 // total counts up. ←/→ (or the arrow buttons) step through the filtered
 // outfits, Escape closes.
 export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, onClose, onBuyClick }: Props) {
-  const { t, money } = useSettings();
+  const { t, money, styleLabel } = useSettings();
   const o = list[index];
   const total = totalDe(o.prendas);
   const shown = useCountUp(total, o.nombre);
@@ -222,7 +222,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                 <span className="placeholder">Sin foto todavía</span>
               )}
               <span className="om-glare" aria-hidden="true" />
-              <span className="om-tag">{t(CAT_KEY[o.categoria] ?? "f.street")}</span>
+              <span className="om-tag">{styleLabel(o.categoria)}</span>
               {rank && o.posicion ? <span className="om-medal">#{o.posicion}</span> : null}
             </div>
           </div>
@@ -254,7 +254,6 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
               href={`https://instagram.com/${o.instagram.replace(/^@/, "")}`}
               target="_blank"
               rel="noopener"
-              data-umami-event="seg_autor"
             >
               {t("modal.by")} <b>@{o.instagram.replace(/^@/, "")}</b>
             </a>
@@ -274,8 +273,6 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                   href={p.link}
                   target="_blank"
                   rel="noopener"
-                  data-umami-event={`prenda_${ev}`}
-                  data-umami-event-prenda={p.tipo}
                   onClick={(e) => onBuyClick(e, p.link)}
                 >
                   {t("modal.buy")}
@@ -300,7 +297,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
             href={LINKS.hipobuy}
             target="_blank"
             rel="noopener"
-            data-umami-event={`registro_look_${ev}`}
+            data-umami-event="registro_ficha_outfit"
             onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
             style={{ "--i": o.prendas.length + 1 } as React.CSSProperties}
           >

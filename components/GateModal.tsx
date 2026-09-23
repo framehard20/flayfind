@@ -21,8 +21,20 @@ type Props = {
 // product opens. After they click through it doesn't close — it flips to
 // "¿Listo?" with a button straight to the product they were after, so the
 // purchase isn't lost on the way.
+/** Only two things are measured on this popup: the register button (through
+ *  data-umami-event) and closing it. */
+const trackClose = () => {
+  try {
+    window.umami?.track("cierre_aviso_comprar");
+  } catch {}
+};
+
 export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }: Props) {
   const { t, tr } = useSettings();
+  const close = () => {
+    trackClose();
+    onClose();
+  };
   const [step, setStep] = useState<"gate" | "ready">("gate");
   const [tip, setTip] = useState(false);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -36,7 +48,10 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
     setTip(false);
     const unlock = lockScroll();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCloseRef.current();
+      if (e.key === "Escape") {
+        trackClose();
+        onCloseRef.current();
+      }
     };
     window.addEventListener("keydown", onKey);
     requestAnimationFrame(() => ctaRef.current?.focus({ preventScroll: true }));
@@ -60,11 +75,11 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
       aria-labelledby="gate-title"
       aria-hidden={!open}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) close();
       }}
     >
       <div className="reg">
-        <button className="reg-x" aria-label={t("modal.close")} onClick={onClose} tabIndex={tab}>
+        <button className="reg-x" aria-label={t("modal.close")} onClick={close} tabIndex={tab}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
           </svg>
@@ -138,7 +153,7 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                 href={LINKS.hipobuy}
                 target="_blank"
                 rel="noopener"
-                data-umami-event="gate_registro"
+                data-umami-event="registro_aviso_comprar"
                 onClick={() => {
                   onGoRegister();
                   if (toProduct) setStep("ready");

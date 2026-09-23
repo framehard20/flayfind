@@ -42,7 +42,7 @@ export function SeguidoresForm() {
     <section className="seg seg-form-wrap">
       <form className="seg-form" onSubmit={onSubmit}>
         <p className="seg-step">{t("form.step1")}</p>
-        <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="seg_form_registro">
+        <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="registro_formulario_seguidores">
           {t("form.register", { code: INVITE_CODE })}
         </a>
         <label className="consent">

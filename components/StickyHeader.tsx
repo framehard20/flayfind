@@ -10,7 +10,7 @@ export function StickyHeader() {
   const { t } = useSettings();
   return (
     <div className="sticktop">
-      <a className="topbar" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="topbar_registro">
+      <a className="topbar" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="registro_barra_arriba">
         <span className="dot" />
         {t("topbar.free")} · <span className="code">{t("topbar.perk")}</span>
         <span className="arrow"> →</span>

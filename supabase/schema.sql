@@ -23,6 +23,22 @@ create table if not exists public.outfits (
 
 create index if not exists outfits_seccion_idx on public.outfits (seccion, visible, orden);
 
+-- Styles created from the panel. The four built-in ones (gym, elegante,
+-- streetwear, tech) live in the code and are translated; these are extra and
+-- show with the name you type. Adding them means the column can't be a fixed
+-- list any more:
+alter table public.outfits drop constraint if exists outfits_categoria_check;
+
+create table if not exists public.categorias (
+  id         uuid primary key default gen_random_uuid(),
+  slug       text not null unique,
+  nombre     text not null,
+  orden      int not null default 0,
+  created_at timestamptz not null default now()
+);
+
+alter table public.categorias enable row level security;
+
 create table if not exists public.submissions (
   id              uuid primary key default gen_random_uuid(),
   nombre          text not null,

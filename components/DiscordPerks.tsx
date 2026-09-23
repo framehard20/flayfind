@@ -10,7 +10,7 @@ export function DiscordPerks() {
   const { t } = useSettings();
   return (
     <div className="discord-standalone">
-      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener" data-umami-event="discord_busca_foto">
+      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener">
         <span className="dc-ic" aria-hidden="true">
           <DiscordIcon />
         </span>

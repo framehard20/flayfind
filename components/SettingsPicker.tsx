@@ -59,8 +59,6 @@ export function SettingsPicker() {
                   type="button"
                   aria-pressed={l.code === lang}
                   onClick={() => setLang(l.code as Lang)}
-                  data-umami-event="idioma"
-                  data-umami-event-idioma={l.code}
                 >
                   {l.label}
                 </button>
@@ -76,8 +74,6 @@ export function SettingsPicker() {
                   type="button"
                   aria-pressed={c.code === currency}
                   onClick={() => setCurrency(c.code as Currency)}
-                  data-umami-event="moneda"
-                  data-umami-event-moneda={c.code}
                 >
                   <span aria-hidden="true">{c.symbol}</span> {c.code}
                 </button>

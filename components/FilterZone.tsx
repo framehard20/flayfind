@@ -2,6 +2,7 @@
 
 import type { Genero } from "@/lib/outfits";
 import { useSettings } from "./Settings";
+import { filterStyles } from "@/lib/styles";
 
 export type Filtro = {
   genero: Genero;
@@ -15,13 +16,6 @@ type Props = {
   onChange: (patch: Partial<Filtro>) => void;
 };
 
-const ESTILOS = [
-  { v: "todos", k: "f.all" },
-  { v: "gym", k: "f.gym" },
-  { v: "elegante", k: "f.elegant" },
-  { v: "streetwear", k: "f.street" },
-] as const;
-
 const TEMPORADAS = [
   { v: "todo", k: "f.seasonAll" },
   { v: "invierno", k: "f.winter" },
@@ -29,7 +23,8 @@ const TEMPORADAS = [
 ] as const;
 
 export function FilterZone({ filtro, onChange }: Props) {
-  const { t } = useSettings();
+  const { t, estilos } = useSettings();
+  const chips = [{ slug: "todos", nombre: t("f.all"), key: "f.all" }, ...filterStyles(estilos)];
   const esTech = filtro.genero === "tech";
 
   return (
@@ -49,15 +44,15 @@ export function FilterZone({ filtro, onChange }: Props) {
       {!esTech && (
         <div className="fgroup" aria-label={t("filter.style")}>
           <span className="glabel">{t("filter.style")}</span>
-          {ESTILOS.map((o) => (
+          {chips.map((o) => (
             <button
-              key={o.v}
+              key={o.slug}
               type="button"
               className="chip"
-              aria-pressed={filtro.estilo === o.v}
-              onClick={() => onChange({ estilo: o.v })}
+              aria-pressed={filtro.estilo === o.slug}
+              onClick={() => onChange({ estilo: o.slug })}
             >
-              {t(o.k)}
+              {o.key ? t(o.key) : o.nombre}
             </button>
           ))}
         </div>

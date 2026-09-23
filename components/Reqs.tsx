@@ -35,7 +35,7 @@ export function Reqs() {
             <b>{t("reqs.2t")}</b>
             <span>
               {tr("reqs.2d", { code: INVITE_CODE })}{" "}
-              <a href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="req_registro">
+              <a href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="registro_como_participar">
                 {t("reqs.2cta", { code: INVITE_CODE })}
               </a>
             </span>
@@ -51,7 +51,7 @@ export function Reqs() {
       </ol>
       <p className="reqs-note">{t("reqs.note")}</p>
 
-      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener" data-umami-event="discord">
+      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener">
         <span className="dc-ic" aria-hidden="true">
           <DiscordIcon />
         </span>

@@ -69,7 +69,6 @@ export function PopupModal({ registered, onRegister }: Props) {
     setStep("offer");
     setOpen(true);
     setPill(false);
-    track("popup_mostrado", { motivo: reason });
   }, []);
 
   // triggers
@@ -137,7 +136,7 @@ export function PopupModal({ registered, onRegister }: Props) {
     if (!open) return;
     if (step === "offer") ctaRef.current?.focus({ preventScroll: true });
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") dismiss();
+      if (e.key === "Escape") dismiss("x");
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -152,12 +151,13 @@ export function PopupModal({ registered, onRegister }: Props) {
     lastFocus.current?.focus?.({ preventScroll: true });
   }
 
-  function dismiss() {
+  /** `via` tells the two ways of closing apart in the analytics. */
+  function dismiss(via: "x" | "boton" = "x") {
     if (step === "offer") {
       try {
         sessionStorage.setItem(DISMISS_KEY, "1");
       } catch {}
-      track("popup_cerrado");
+      track(via === "boton" ? "cierre_popup_ahora_no" : "cierre_popup");
       if (!registeredRef.current) setPill(true);
     }
     close();
@@ -186,11 +186,11 @@ export function PopupModal({ registered, onRegister }: Props) {
         aria-labelledby="reg-title"
         aria-hidden={!open}
         onClick={(e) => {
-          if (e.target === e.currentTarget) dismiss();
+          if (e.target === e.currentTarget) dismiss("x");
         }}
       >
         <div className="reg">
-          <button className="reg-x" aria-label={t("modal.close")} onClick={dismiss} tabIndex={open ? 0 : -1}>
+          <button className="reg-x" aria-label={t("modal.close")} onClick={() => dismiss("x")} tabIndex={open ? 0 : -1}>
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
             </svg>
@@ -253,7 +253,7 @@ export function PopupModal({ registered, onRegister }: Props) {
                   href={LINKS.hipobuy}
                   target="_blank"
                   rel="noopener"
-                  data-umami-event="popup_registro_hipobuy"
+                  data-umami-event="registro_popup_bienvenida"
                   onClick={register}
                   tabIndex={open ? 0 : -1}
                 >
@@ -264,7 +264,7 @@ export function PopupModal({ registered, onRegister }: Props) {
                 </a>
                 <p className="reg-fine">{t("popup.fine")}</p>
 
-                <button type="button" className="reg-later" onClick={dismiss} tabIndex={open ? 0 : -1}>
+                <button type="button" className="reg-later" onClick={() => dismiss("boton")} tabIndex={open ? 0 : -1}>
                   {t("popup.later")}
                 </button>
               </div>

@@ -67,6 +67,15 @@ export type OutfitRow = {
   created_at: string;
 };
 
+/** A style created from the panel (the built-in ones live in the code). */
+export type CategoriaRow = {
+  id: string;
+  slug: string;
+  nombre: string;
+  orden: number;
+  created_at: string;
+};
+
 export type SubmissionRow = {
   id: string;
   nombre: string;
@@ -138,6 +147,17 @@ export async function getOutfit(id: string): Promise<OutfitRow | null> {
   const { data, error } = await db().from("outfits").select("*").eq("id", id).maybeSingle();
   if (error) throw new Error(error.message);
   return (data as OutfitRow) ?? null;
+}
+
+/** Extra styles, in the order they should appear after the built-in ones. */
+export async function listCategorias(): Promise<CategoriaRow[]> {
+  const { data, error } = await db()
+    .from("categorias")
+    .select("*")
+    .order("orden", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return (data ?? []) as CategoriaRow[];
 }
 
 export async function listSubmissions(): Promise<SubmissionRow[]> {

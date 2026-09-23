@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
-import { CAT_KEY, rankClass, slug, totalDe } from "@/lib/utils";
+import { rankClass, slug, totalDe } from "@/lib/utils";
 import { useSettings } from "./Settings";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 // control; nothing else in the card is interactive. data-outfit is how the
 // modal finds this card's photo for its zoom in/out animation.
 export function OutfitCard({ outfit: o, scope = "of", rank = false, onOpen }: Props) {
-  const { t, money } = useSettings();
+  const { t, money, styleLabel } = useSettings();
   const total = totalDe(o.prendas);
   const totalLbl = t(o.genero === "tech" ? "card.priceOnly" : "card.total");
   const medal = rankClass(o.posicion);
@@ -27,7 +27,7 @@ export function OutfitCard({ outfit: o, scope = "of", rank = false, onOpen }: Pr
   return (
     <article className={`look${rank && medal ? ` look-top look-${medal}` : ""}`} data-outfit={`${scope}-${slug(o.nombre)}`}>
       <div className="look-shot shot">
-        <span className="look-tag">{t(CAT_KEY[o.categoria] ?? "f.street")}</span>
+        <span className="look-tag">{styleLabel(o.categoria)}</span>
         {rank && o.posicion ? (
           <span className={`look-rank${medal ? ` look-rank-${medal}` : ""}`}>#{o.posicion}</span>
         ) : null}

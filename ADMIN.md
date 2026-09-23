@@ -26,6 +26,11 @@ datos, muestra los outfits que están escritos en `lib/outfits.ts`.
 > La clave `service_role` solo se usa en el servidor. No la pegues en el código
 > ni la compartas: quien la tenga puede leer y borrar la base de datos.
 
+> Si ya tenías la base de datos creada antes de los estilos personalizados,
+> vuelve al SQL Editor y ejecuta otra vez `supabase/schema.sql` (o solo las
+> líneas de `categorias` y el `alter table … drop constraint`). Es seguro:
+> todo está escrito para poder repetirse.
+
 ### 2. Generar tus claves de acceso al panel
 
 En tu ordenador, dentro de la carpeta del proyecto:
@@ -74,6 +79,11 @@ poder editarlos desde el panel.
   y link; si el link es de Hipobuy y se te olvida el código de invitación, se
   añade solo.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
+- **Estilos** → crea los tuyos («Y2K», «Vintage»…). Salen en el desplegable
+  de los outfits y como filtro en la web. Los cuatro de fábrica (Streetwear,
+  Gym, Elegante, Accesorios) están traducidos a los 7 idiomas; los tuyos se
+  ven con el nombre que escribas en todos ellos. No se puede borrar un estilo
+  que algún outfit esté usando: primero cámbiales el estilo.
 - **Ocultar** deja el outfit guardado pero fuera de la web. **Borrar** es
   definitivo.
 - **Solicitudes**: lo que manda la gente por el formulario. Puedes marcarlas
@@ -83,6 +93,29 @@ poder editarlos desde el panel.
 - Red de seguridad: si la base de datos se queda **sin ningún outfit** (o no
   responde), la web vuelve a mostrar los que están escritos en
   `lib/outfits.ts` en vez de quedarse vacía.
+
+## Analítica (Umami)
+
+Solo se cuentan dos cosas, para que el panel de Umami no se llene de ruido:
+
+**Clics en los enlaces de registro** (cada sitio con su nombre):
+
+| Evento | Dónde está |
+| --- | --- |
+| `registro_barra_arriba` | la barra negra de arriba del todo |
+| `registro_popup_bienvenida` | el popup del −25% |
+| `registro_aviso_comprar` | el aviso que sale al pulsar «Comprar» |
+| `registro_ficha_outfit` | el botón dentro de la ficha de un outfit |
+| `registro_boton_final` | el botón grande debajo del catálogo |
+| `registro_como_participar` | el paso 2 de «Cómo participar» |
+| `registro_formulario_seguidores` | el formulario de «De seguidores» |
+
+**Clics en cerrar**: `cierre_popup` (la X del popup), `cierre_popup_ahora_no`
+(«Ahora no, solo estoy mirando») y `cierre_aviso_comprar` (cerrar el aviso de
+comprar).
+
+Ya no se cuentan los clics en las prendas, en Discord, en los Instagram ni en
+los selectores de idioma y moneda.
 
 ## Seguridad
 

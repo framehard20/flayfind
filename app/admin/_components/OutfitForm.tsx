@@ -13,18 +13,22 @@ const GENEROS = [
   { v: "mujer", l: "Mujer" },
   { v: "tech", l: "Accesorios" },
 ];
-const CATEGORIAS = [
-  { v: "streetwear", l: "Streetwear" },
-  { v: "gym", l: "Gym" },
-  { v: "elegante", l: "Elegante" },
-  { v: "tech", l: "Accesorios" },
-];
+
 const TEMPORADAS = [
   { v: "invierno", l: "Invierno" },
   { v: "verano", l: "Verano" },
 ];
 
-export function OutfitForm({ seccion, outfit }: { seccion: Seccion; outfit?: OutfitRow }) {
+export function OutfitForm({
+  seccion,
+  outfit,
+  estilos,
+}: {
+  seccion: Seccion;
+  outfit?: OutfitRow;
+  /** Built-in styles plus the ones created in /admin/estilos. */
+  estilos: { slug: string; nombre: string }[];
+}) {
   const router = useRouter();
   const editing = !!outfit;
   const backTo = seccion === "seguidores" ? "/admin/seguidores" : "/admin/outfits";
@@ -131,9 +135,9 @@ export function OutfitForm({ seccion, outfit }: { seccion: Seccion; outfit?: Out
           <label className="ad-field">
             <span>Estilo</span>
             <select value={categoria} onChange={(e) => setCategoria(e.target.value as typeof categoria)}>
-              {CATEGORIAS.map((o) => (
-                <option key={o.v} value={o.v}>
-                  {o.l}
+              {estilos.map((o) => (
+                <option key={o.slug} value={o.slug}>
+                  {o.nombre}
                 </option>
               ))}
             </select>

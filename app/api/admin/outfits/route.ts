@@ -2,12 +2,13 @@ import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
 import { db, explain, hasDb, type Seccion } from "@/lib/db";
 import { INVITE_CODE } from "@/lib/site";
+import { BUILTIN_STYLES } from "@/lib/styles";
 
 export const runtime = "nodejs";
 
 const GENEROS = ["hombre", "mujer", "tech"];
 const TEMPORADAS = ["invierno", "verano"];
-const CATEGORIAS = ["gym", "elegante", "streetwear", "tech"];
+
 
 type Body = Record<string, unknown>;
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
@@ -22,7 +23,13 @@ const num = (v: unknown) => {
   return Number.isFinite(n) ? n : 0;
 };
 
-function parse(body: Body): { row?: Record<string, unknown>; error?: string } {
+async function knownStyles(): Promise<string[]> {
+  const builtin = BUILTIN_STYLES.map((s) => s.slug);
+  const { data } = await db().from("categorias").select("slug");
+  return [...builtin, ...(data ?? []).map((c) => String(c.slug))];
+}
+
+function parse(body: Body, estilos: string[]): { row?: Record<string, unknown>; error?: string } {
   const seccion: Seccion = body.seccion === "seguidores" ? "seguidores" : "outfits";
   const nombre = str(body.nombre);
   const genero = str(body.genero);
@@ -33,7 +40,7 @@ function parse(body: Body): { row?: Record<string, unknown>; error?: string } {
   if (!nombre) return { error: "Ponle un nombre al outfit." };
   if (!GENEROS.includes(genero)) return { error: "Elige una sección: hombre, mujer o accesorios." };
   if (!TEMPORADAS.includes(temporada)) return { error: "Elige la época: invierno o verano." };
-  if (!CATEGORIAS.includes(categoria)) return { error: "Elige el estilo." };
+  if (!estilos.includes(categoria)) return { error: "Ese estilo ya no existe, elige otro." };
   if (!foto) return { error: "Falta la foto del outfit." };
 
   const prendas = Array.isArray(body.prendas)
@@ -79,7 +86,7 @@ export async function POST(req: Request) {
   const stop = await guard();
   if (stop) return stop;
 
-  const { row, error } = parse((await req.json().catch(() => ({}))) as Body);
+  const { row, error } = parse((await req.json().catch(() => ({}))) as Body, await knownStyles());
   if (error || !row) return Response.json({ error }, { status: 400 });
 
   const { data, error: dbError } = await db().from("outfits").insert(row).select("id").single();
@@ -105,7 +112,7 @@ export async function PATCH(req: Request) {
     return Response.json({ ok: true });
   }
 
-  const { row, error } = parse(body);
+  const { row, error } = parse(body, await knownStyles());
   if (error || !row) return Response.json({ error }, { status: 400 });
   const { error: dbError } = await db().from("outfits").update(row).eq("id", id);
   if (dbError) return Response.json({ error: explain(dbError.message) }, { status: 500 });

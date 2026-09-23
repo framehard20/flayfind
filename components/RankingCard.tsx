@@ -45,7 +45,7 @@ export function RankingCard({ seguidor: o, onBuyClick }: Props) {
                   href={p.link}
                   target="_blank"
                   rel="noopener"
-                  data-umami-event="seg_prenda"
+                 
                   onClick={(e) => onBuyClick(e, p.link)}
                 >
                   Comprar
@@ -65,7 +65,7 @@ export function RankingCard({ seguidor: o, onBuyClick }: Props) {
           href={LINKS.hipobuy}
           target="_blank"
           rel="noopener"
-          data-umami-event="seg_registro"
+         
           onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
         >
           Regístrate para comprar →

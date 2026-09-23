@@ -12,6 +12,7 @@ import {
   type Rates,
 } from "@/lib/currency";
 import { DEFAULT_LANG, isLang, LANGS, localeOf, pickLang, raw, type Lang } from "@/lib/i18n";
+import { BUILTIN_STYLES } from "@/lib/styles";
 
 // Language + currency for the whole public site. The choice lives in
 // localStorage, so it survives reloads; the first visit follows the browser's
@@ -38,6 +39,10 @@ type Ctx = {
   money: (amountEur: number) => string;
   /** Rounded version for marketing numbers ("under 50 €"). */
   moneyRound: (amountEur: number) => string;
+  /** Styles created in /admin/estilos, on top of the built-in ones. */
+  estilos: { slug: string; nombre: string }[];
+  /** Label for an outfit's style: translated if built in, as typed if custom. */
+  styleLabel: (slug: string) => string;
 };
 
 const SettingsContext = createContext<Ctx | null>(null);
@@ -64,7 +69,13 @@ function withNodes(text: string, nodes: Record<string, React.ReactNode>): React.
   });
 }
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
+export function SettingsProvider({
+  children,
+  estilos = [],
+}: {
+  children: React.ReactNode;
+  estilos?: { slug: string; nombre: string }[];
+}) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
   const [currency, setCurrencyState] = useState<Currency>(DEFAULT_CURRENCY);
   const [rates, setRates] = useState<Rates>(FALLBACK_RATES);
@@ -136,8 +147,14 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       tn: (key, nodes) => withNodes(raw(lang, key), nodes),
       money: (amountEur) => formatMoney(amountEur, currency, rates, locale),
       moneyRound: (amountEur) => formatMoneyRounded(amountEur, currency, rates, locale),
+      estilos,
+      styleLabel: (slug) => {
+        const builtin = BUILTIN_STYLES.find((s) => s.slug === slug);
+        if (builtin) return raw(lang, builtin.key);
+        return estilos.find((s) => s.slug === slug)?.nombre ?? slug;
+      },
     };
-  }, [lang, currency, rates, setLang, setCurrency]);
+  }, [lang, currency, rates, setLang, setCurrency, estilos]);
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 }
