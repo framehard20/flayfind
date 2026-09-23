@@ -568,3 +568,6 @@ footer p{font-size:12.5px;color:var(--grey);margin-top:8px;max-width:40ch;margin
 .setpick-list button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .setpick-note{font-size:11px;line-height:1.4;color:var(--grey);margin:2px}
 @media(max-width:400px){.setpick-btn{font-size:11.5px;padding:6px 9px;gap:4px}}
+.setpick-list-cur{grid-template-columns:repeat(3,minmax(0,1fr))}
+.setpick-list-cur button{justify-content:center;gap:5px;padding:8px 4px;font-size:12.5px}
+.setpick-panel{max-height:min(70vh,520px);overflow:auto;overscroll-behavior:contain}

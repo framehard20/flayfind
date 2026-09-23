@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
+  availableCurrencies,
   CURRENCIES,
   DEFAULT_CURRENCY,
   FALLBACK_RATES,
@@ -39,6 +40,8 @@ type Ctx = {
   money: (amountEur: number) => string;
   /** Rounded version for marketing numbers ("under 50 €"). */
   moneyRound: (amountEur: number) => string;
+  /** Currencies the loaded rates can convert to. */
+  currencies: { code: string; label: string; symbol: string }[];
   /** Styles created in /admin/estilos, on top of the built-in ones. */
   estilos: { slug: string; nombre: string }[];
   /** Label for an outfit's style: translated if built in, as typed if custom. */
@@ -134,19 +137,24 @@ export function SettingsProvider({
     } catch {}
   }, []);
 
+  // the backup rates source carries fewer currencies: if the chosen one
+  // isn't in them, fall back to euros rather than showing a wrong number
+  const usable: Currency = currency === "EUR" || rates.rates[currency] ? currency : DEFAULT_CURRENCY;
+
   const value = useMemo<Ctx>(() => {
     const locale = localeOf(lang);
     return {
       lang,
-      currency,
+      currency: usable,
       rates,
       setLang,
       setCurrency,
       t: (key, vars) => raw(lang, key, vars),
       tr: (key, vars) => bold(raw(lang, key, vars)),
       tn: (key, nodes) => withNodes(raw(lang, key), nodes),
-      money: (amountEur) => formatMoney(amountEur, currency, rates, locale),
-      moneyRound: (amountEur) => formatMoneyRounded(amountEur, currency, rates, locale),
+      currencies: availableCurrencies(rates).map((c) => ({ ...c })),
+      money: (amountEur) => formatMoney(amountEur, usable, rates, locale),
+      moneyRound: (amountEur) => formatMoneyRounded(amountEur, usable, rates, locale),
       estilos,
       styleLabel: (slug) => {
         const builtin = BUILTIN_STYLES.find((s) => s.slug === slug);
@@ -154,7 +162,7 @@ export function SettingsProvider({
         return estilos.find((s) => s.slug === slug)?.nombre ?? slug;
       },
     };
-  }, [lang, currency, rates, setLang, setCurrency, estilos]);
+  }, [lang, currency, usable, rates, setLang, setCurrency, estilos]);
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 }

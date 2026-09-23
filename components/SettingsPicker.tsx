@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CURRENCIES, LANGS, useSettings } from "./Settings";
+import { LANGS, useSettings } from "./Settings";
 import type { Currency } from "@/lib/currency";
 import type { Lang } from "@/lib/i18n";
 
@@ -9,7 +9,7 @@ import type { Lang } from "@/lib/i18n";
 // panel with both lists.
 
 export function SettingsPicker() {
-  const { lang, currency, rates, setLang, setCurrency, t } = useSettings();
+  const { lang, currency, currencies, rates, setLang, setCurrency, t } = useSettings();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const current = LANGS.find((l) => l.code === lang) ?? LANGS[0];
@@ -68,7 +68,7 @@ export function SettingsPicker() {
 
           <p className="setpick-title">{t("set.currency")}</p>
           <ul className="setpick-list setpick-list-cur">
-            {CURRENCIES.map((c) => (
+            {currencies.map((c) => (
               <li key={c.code}>
                 <button
                   type="button"

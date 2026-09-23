@@ -157,6 +157,6 @@ export const de: Dict = {
   "set.open": "Sprache und Währung",
   "set.language": "Sprache",
   "set.currency": "Währung",
-  "set.rates": "Kurse vom {fecha} (EZB). Abgerechnet wird in Euro.",
+  "set.rates": "Kurse vom {fecha}. Täglich aktualisiert; Hipobuy rechnet in Euro ab.",
   "set.close": "Schließen",
 };

@@ -157,6 +157,6 @@ export const fr: Dict = {
   "set.open": "Langue et devise",
   "set.language": "Langue",
   "set.currency": "Devise",
-  "set.rates": "Taux du {fecha} (BCE). Le paiement se fait en euros.",
+  "set.rates": "Taux du {fecha}. Mis à jour chaque jour ; Hipobuy facture en euros.",
   "set.close": "Fermer",
 };
