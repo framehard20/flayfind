@@ -6,6 +6,7 @@ import { totalDe } from "@/lib/utils";
 import { OutfitCard } from "./OutfitCard";
 import { OutfitModal } from "./OutfitModal";
 import type { Filtro } from "./FilterZone";
+import { useSettings } from "./Settings";
 
 type Props = {
   outfits: Outfit[];
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export function OutfitGrid({ outfits, filtro, rank = false, onBuyClick }: Props) {
+  const { t } = useSettings();
   const [openName, setOpenName] = useState<string | null>(null);
   const scope = rank ? "seg" : "of";
 
@@ -39,11 +41,7 @@ export function OutfitGrid({ outfits, filtro, rank = false, onBuyClick }: Props)
   if (!list.length) {
     return (
       <main className="grid">
-        <p className="empty">
-          {rank
-            ? "Aún no hay outfits de seguidores publicados. ¡Sé el primero en mandar el tuyo!"
-            : "Aún no hay looks con este filtro. Prueba otra combinación 👀"}
-        </p>
+        <p className="empty">{t(rank ? "grid.emptyFollowers" : "grid.empty")}</p>
       </main>
     );
   }

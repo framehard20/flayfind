@@ -19,6 +19,14 @@ export function rankClass(posicion?: number): "gold" | "silver" | "bronze" | "" 
   return posicion === 1 ? "gold" : posicion === 2 ? "silver" : posicion === 3 ? "bronze" : "";
 }
 
+/** Category → translation key (the admin panel keeps the Spanish labels). */
+export const CAT_KEY: Record<string, string> = {
+  gym: "f.gym",
+  elegante: "f.elegant",
+  streetwear: "f.street",
+  tech: "f.accessories",
+};
+
 export const CAT_LABEL: Record<string, string> = {
   gym: "Gym",
   elegante: "Elegante",

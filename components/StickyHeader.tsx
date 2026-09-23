@@ -1,13 +1,18 @@
+"use client";
+
 import Image from "next/image";
 import { LINKS } from "@/lib/site";
 import logo from "@/assets/flayfind-logo.png";
+import { useSettings } from "./Settings";
+import { SettingsPicker } from "./SettingsPicker";
 
 export function StickyHeader() {
+  const { t } = useSettings();
   return (
     <div className="sticktop">
       <a className="topbar" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="topbar_registro">
         <span className="dot" />
-        Regístrate gratis · <span className="code">25% en tus envíos</span>
+        {t("topbar.free")} · <span className="code">{t("topbar.perk")}</span>
         <span className="arrow"> →</span>
       </a>
       <header>
@@ -16,6 +21,7 @@ export function StickyHeader() {
           <div className="wordmark">
             Flay<span>find</span>
           </div>
+          <SettingsPicker />
         </div>
       </header>
     </div>

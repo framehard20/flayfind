@@ -1,28 +1,28 @@
+"use client";
+
 import { Outfit3DViewer } from "./Outfit3DViewer";
+import { useSettings } from "./Settings";
 
 export function Hero() {
+  const { t, tr, moneyRound } = useSettings();
   return (
     <section className="hero">
       <h1>
         <span className="hero-title">
-          <span className="hero-title-l1">El look</span>
+          <span className="hero-title-l1">{t("hero.l1")}</span>
           <br />
-          completo,
+          {t("hero.l2")}
           <br />
-          <em>ya pensado.</em>
+          <em>{t("hero.l3")}</em>
           <Outfit3DViewer />
         </span>
       </h1>
-      <p className="pitch">
-        Parece de 300&nbsp;€. Lo tienes por <strong>menos de 50</strong>.
-      </p>
-      <p className="sub">
-        Outfits del mercado chino ya montados: la talla, el precio y el link de cada prenda. Sin pensar, solo copiar.
-      </p>
+      <p className="pitch">{tr("hero.pitch", { marca: moneyRound(300), precio: moneyRound(50) })}</p>
+      <p className="sub">{t("hero.sub")}</p>
       <div className="cue">
-        <span className="dot" /> Elige tu estilo y monta el fit
+        <span className="dot" /> {t("hero.cue")}
       </div>
-      <p className="hero-season">📦 Pide ya para tenerlo antes de las fiestas</p>
+      <p className="hero-season">{t("hero.season")}</p>
     </section>
   );
 }

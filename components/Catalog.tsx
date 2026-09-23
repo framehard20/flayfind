@@ -17,6 +17,7 @@ import { Reqs } from "./Reqs";
 import { SeguidoresForm } from "./SeguidoresForm";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
+import { useSettings } from "./Settings";
 
 const REG_KEY = "flayfind_reg";
 
@@ -28,6 +29,7 @@ type Props = {
 };
 
 export function Catalog({ outfits, seguidores }: Props) {
+  const { t } = useSettings();
   const [view, setView] = useState<View>("outfits");
   const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", estilo: "todos", temporada: "todo", precio: "barato" });
   const [gateOpen, setGateOpen] = useState(false);
@@ -83,8 +85,8 @@ export function Catalog({ outfits, seguidores }: Props) {
         <DiscordPerks />
         {seguidores.length > 0 && (
           <div className="seg-head">
-            <h3>Outfits publicados</h3>
-            <span className="sub">Los mejores que han llegado</span>
+            <h3>{t("seg.head")}</h3>
+            <span className="sub">{t("seg.headSub")}</span>
           </div>
         )}
         <OutfitGrid outfits={seguidores} rank onBuyClick={handleBuyClick} />

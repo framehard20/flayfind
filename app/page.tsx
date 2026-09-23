@@ -1,5 +1,4 @@
-import { StickyHeader } from "@/components/StickyHeader";
-import { Catalog } from "@/components/Catalog";
+import { SiteShell } from "@/components/SiteShell";
 import { hasDb, listPublic, toOutfit } from "@/lib/db";
 import { OUTFITS, type Outfit } from "@/lib/outfits";
 import { SEGUIDORES } from "@/lib/seguidores";
@@ -45,10 +44,5 @@ async function load(): Promise<{ outfits: Outfit[]; seguidores: Outfit[] }> {
 
 export default async function Home() {
   const { outfits, seguidores } = await load();
-  return (
-    <>
-      <StickyHeader />
-      <Catalog outfits={outfits} seguidores={seguidores} />
-    </>
-  );
+  return <SiteShell outfits={outfits} seguidores={seguidores} />;
 }

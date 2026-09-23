@@ -1,18 +1,19 @@
+"use client";
+
+import { useSettings } from "./Settings";
+
 export function SegIntro() {
+  const { t, tr } = useSettings();
   return (
     <div className="seg seg-intro">
       <h2>
-        Outfits de
+        {t("seg.title1")}
         <br />
-        seguidores
+        {t("seg.title2")}
       </h2>
-      <p className="lead">
-        ¿Tienes un buen fit? Móntalo con ropa del mercado chino y mándalo. <b>Se publican solo los mejores</b> de todos
-        los que llegan (los flojos no entran), con tu <b>@</b> puesto para que se vea que es tuyo. Si el tuyo entra, lo
-        verás aquí abajo con el link de cada prenda para que cualquiera lo pueda copiar.
-      </p>
+      <p className="lead">{tr("seg.lead")}</p>
       <div className="cue">
-        <span className="dot" /> Manda el tuyo y sal en la web
+        <span className="dot" /> {t("seg.cue")}
       </div>
     </div>
   );

@@ -1,10 +1,13 @@
+"use client";
+
+import { useSettings } from "./Settings";
+
 export function Footer() {
+  const { t, tr } = useSettings();
   return (
     <footer>
-      <div className="code">
-        Ropa del <b>mercado chino</b>, envíos a España y a todo el mundo
-      </div>
-      <p>Regístrate gratis en Hipobuy desde aquí y tienes un 25% en tus envíos.</p>
+      <div className="code">{tr("footer.line")}</div>
+      <p>{t("footer.sub")}</p>
     </footer>
   );
 }

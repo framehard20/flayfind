@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
+import { useSettings } from "./Settings";
 
 type Props = {
   open: boolean;
@@ -21,6 +22,7 @@ type Props = {
 // "¿Listo?" with a button straight to the product they were after, so the
 // purchase isn't lost on the way.
 export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }: Props) {
+  const { t, tr } = useSettings();
   const [step, setStep] = useState<"gate" | "ready">("gate");
   const [tip, setTip] = useState(false);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -62,7 +64,7 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
       }}
     >
       <div className="reg">
-        <button className="reg-x" aria-label="Cerrar" onClick={onClose} tabIndex={tab}>
+        <button className="reg-x" aria-label={t("modal.close")} onClick={onClose} tabIndex={tab}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
           </svg>
@@ -80,10 +82,10 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
               </span>
               <div>
                 <span className="reg-kicker">
-                  <span className="reg-dot" /> Un paso antes de comprar
+                  <span className="reg-dot" /> {t("gate.kicker")}
                 </span>
                 <h2 id="gate-title" className="gate-title">
-                  Activa tu <em>−25%</em> en envíos
+                  {tr("gate.title")}
                 </h2>
               </div>
             </div>
@@ -93,15 +95,15 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                 <li>
                   <span className="gate-n">1</span>
                   <span>
-                    <b>Entra con nuestro link</b>
-                    <small>Se abre Hipobuy con el código {INVITE_CODE} ya puesto</small>
+                    <b>{t("gate.s1t")}</b>
+                    <small>{t("gate.s1d", { code: INVITE_CODE })}</small>
                   </span>
                 </li>
                 <li>
                   <span className="gate-n">2</span>
                   <span>
-                    <b>Crea la cuenta o inicia sesión</b>
-                    <small>Gratis y en menos de 1 minuto, tengas cuenta o no</small>
+                    <b>{t("gate.s2t")}</b>
+                    <small>{t("gate.s2d")}</small>
                   </span>
                 </li>
                 <li>
@@ -111,8 +113,8 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                     </svg>
                   </span>
                   <span>
-                    <b>Vuelve y compra la prenda</b>
-                    <small>Con tu descuento aplicado en el envío</small>
+                    <b>{t("gate.s3t")}</b>
+                    <small>{t("gate.s3d")}</small>
                   </span>
                 </li>
               </ol>
@@ -120,16 +122,13 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
               <div className={`gate-tip${tip ? " open" : ""}`}>
                 <button type="button" onClick={() => setTip((t) => !t)} aria-expanded={tip} tabIndex={tab}>
                   <span className="gate-tip-ico" aria-hidden="true">!</span>
-                  ¿Te sale un aviso en rojo al abrir el producto?
+                  {t("gate.tipQ")}
                   <svg className="gate-tip-chev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                     <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
                 <div className="gate-tip-body">
-                  <p>
-                    Es que no tienes la sesión abierta <b>en el navegador</b> (aunque la tengas en la app). Entra con el
-                    link de arriba, inicia sesión y desaparece.
-                  </p>
+                  <p>{tr("gate.tipA")}</p>
                 </div>
               </div>
 
@@ -147,14 +146,14 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                 }}
                 tabIndex={tab}
               >
-                Conseguir mi −25% gratis
+                {t("gate.cta")}
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
 
               <button type="button" className="gate-skip" onClick={onContinue} tabIndex={tab}>
-                Ya tengo la sesión abierta · <b>{toProduct ? "ir a la prenda →" : "continuar →"}</b>
+                {tr(toProduct ? "gate.skipProduct" : "gate.skip")}
               </button>
             </div>
           </>
@@ -166,19 +165,17 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
               </svg>
             </span>
             <h2 id="gate-title" className="reg-title">
-              ¿Ya tienes la sesión abierta?
+              {t("gate.readyTitle")}
             </h2>
-            <p className="gate-ready-txt">
-              Termina en la pestaña de Hipobuy y pulsa aquí para abrir la prenda que querías, ya con tu descuento.
-            </p>
+            <p className="gate-ready-txt">{t("gate.readyText")}</p>
             <button ref={readyRef} type="button" className="reg-go" onClick={onContinue} tabIndex={tab}>
-              Sí, ir a la prenda
+              {t("gate.readyCta")}
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
             <a className="reg-later" href={LINKS.hipobuy} target="_blank" rel="noopener" tabIndex={tab}>
-              ¿No se abrió Hipobuy? Abrir otra vez
+              {t("gate.readyAgain")}
             </a>
           </div>
         )}

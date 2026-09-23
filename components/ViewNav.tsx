@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useSettings } from "./Settings";
 
 export type View = "outfits" | "seg";
 
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export function ViewNav({ view, onChange }: Props) {
+  const { t } = useSettings();
   const ref = useRef<HTMLDivElement>(null);
   const beforeTop = useRef<number | null>(null);
 
@@ -32,10 +34,10 @@ export function ViewNav({ view, onChange }: Props) {
   return (
     <div className="viewnav" ref={ref}>
       <button type="button" aria-pressed={view === "outfits"} onClick={() => handleClick("outfits")}>
-        Outfits
+        {t("view.outfits")}
       </button>
       <button type="button" aria-pressed={view === "seg"} onClick={() => handleClick("seg")}>
-        De seguidores
+        {t("view.followers")}
       </button>
     </div>
   );

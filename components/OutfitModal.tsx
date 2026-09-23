@@ -5,7 +5,8 @@ import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { lockScroll } from "@/lib/scrollLock";
-import { CAT_LABEL, eur, rankClass, slug, totalDe } from "@/lib/utils";
+import { CAT_KEY, rankClass, slug, totalDe } from "@/lib/utils";
+import { useSettings } from "./Settings";
 
 type Props = {
   list: Outfit[];
@@ -62,6 +63,7 @@ function useCountUp(value: number, key: string) {
 // total counts up. ←/→ (or the arrow buttons) step through the filtered
 // outfits, Escape closes.
 export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, onClose, onBuyClick }: Props) {
+  const { t, money } = useSettings();
   const o = list[index];
   const total = totalDe(o.prendas);
   const shown = useCountUp(total, o.nombre);
@@ -167,7 +169,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
       className={`om${open ? " open" : ""}${medal ? ` om-${medal}` : ""}`}
       role="dialog"
       aria-modal="true"
-      aria-label={`Outfit ${o.nombre}`}
+      aria-label={o.nombre}
       onClick={(e) => {
         if (e.target === e.currentTarget) close();
       }}
@@ -179,7 +181,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
       )}
 
       <div className="om-panel">
-        <button ref={closeRef} type="button" className="om-x" onClick={close} aria-label="Cerrar">
+        <button ref={closeRef} type="button" className="om-x" onClick={close} aria-label={t("modal.close")}>
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
           </svg>
@@ -220,19 +222,19 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                 <span className="placeholder">Sin foto todavía</span>
               )}
               <span className="om-glare" aria-hidden="true" />
-              <span className="om-tag">{CAT_LABEL[o.categoria] || o.categoria}</span>
+              <span className="om-tag">{t(CAT_KEY[o.categoria] ?? "f.street")}</span>
               {rank && o.posicion ? <span className="om-medal">#{o.posicion}</span> : null}
             </div>
           </div>
 
           {list.length > 1 && (
             <>
-              <button type="button" className="om-nav om-prev" onClick={() => go(-1)} aria-label="Outfit anterior">
+              <button type="button" className="om-nav om-prev" onClick={() => go(-1)} aria-label={t("modal.prev")}>
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
-              <button type="button" className="om-nav om-next" onClick={() => go(1)} aria-label="Outfit siguiente">
+              <button type="button" className="om-nav om-next" onClick={() => go(1)} aria-label={t("modal.next")}>
                 <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                   <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -243,7 +245,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
 
         <div className="om-info" key={o.nombre}>
           <span className="om-count">
-            {rank && o.posicion ? `Puesto #${o.posicion}` : `${index + 1} / ${list.length}`}
+            {rank && o.posicion ? t("modal.place", { n: o.posicion }) : `${index + 1} / ${list.length}`}
           </span>
           <h2 className="om-name">{o.nombre}</h2>
           {rank && o.instagram && (
@@ -254,10 +256,10 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
               rel="noopener"
               data-umami-event="seg_autor"
             >
-              por <b>@{o.instagram.replace(/^@/, "")}</b>
+              {t("modal.by")} <b>@{o.instagram.replace(/^@/, "")}</b>
             </a>
           )}
-          <p className="om-lead">Cada prenda con su link. Toca «Comprar» y la tienes.</p>
+          <p className="om-lead">{t("modal.lead")}</p>
 
           <ul className="om-pieces">
             {o.prendas.map((p, i) => (
@@ -265,7 +267,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                 <span className="om-piece-n">{String(i + 1).padStart(2, "0")}</span>
                 <span className="om-piece-txt">
                   <span className="om-piece">{p.tipo}</span>
-                  <span className="om-price">{eur(+p.precio || 0)}</span>
+                  <span className="om-price">{money(+p.precio || 0)}</span>
                 </span>
                 <a
                   className="om-buy"
@@ -276,7 +278,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                   data-umami-event-prenda={p.tipo}
                   onClick={(e) => onBuyClick(e, p.link)}
                 >
-                  Comprar
+                  {t("modal.buy")}
                   <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
                     <path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
@@ -286,10 +288,10 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
           </ul>
 
           <div className="om-total" style={{ "--i": o.prendas.length } as React.CSSProperties}>
-            <span className="om-total-lbl">{o.genero === "tech" ? "Precio" : "Total del look"}</span>
+            <span className="om-total-lbl">{t(o.genero === "tech" ? "card.priceOnly" : "card.total")}</span>
             <span className="om-total-nums">
-              {o.precioMarca > 0 && <s>{eur(o.precioMarca)}</s>}
-              <span className="om-total-num">{eur(shown)}</span>
+              {o.precioMarca > 0 && <s>{money(o.precioMarca)}</s>}
+              <span className="om-total-num">{money(shown)}</span>
             </span>
           </div>
 
@@ -302,12 +304,12 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
             onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
             style={{ "--i": o.prendas.length + 1 } as React.CSSProperties}
           >
-            Regístrate y compra el look
+            {t("modal.cta")}
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <p className="om-fine">−25% en envíos con el código de Flayfind · cuenta gratis</p>
+          <p className="om-fine">{t("modal.fine")}</p>
         </div>
       </div>
     </div>

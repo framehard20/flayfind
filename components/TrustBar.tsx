@@ -1,9 +1,13 @@
+"use client";
+
+import { useSettings } from "./Settings";
+
 // These are Hipobuy's guarantees, not Flayfind's — Flayfind never ships or
 // handles orders, it only sends people to register on Hipobuy. One mention in
 // the heading covers attribution instead of repeating the name four times.
 const ITEMS = [
   {
-    label: "Fotos reales antes de enviar",
+    key: "trust.photos",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
@@ -12,7 +16,7 @@ const ITEMS = [
     ),
   },
   {
-    label: "Devolución si algo falla",
+    key: "trust.returns",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path d="M12 3 4 6.5V11c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6.5L12 3Z" />
@@ -21,7 +25,7 @@ const ITEMS = [
     ),
   },
   {
-    label: "Asistencia 24/7",
+    key: "trust.support",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <path d="M4 13a8 8 0 0 1 16 0" />
@@ -31,7 +35,7 @@ const ITEMS = [
     ),
   },
   {
-    label: "Envíos a España y a todo el mundo",
+    key: "trust.shipping",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
         <circle cx="12" cy="12" r="9" />
@@ -42,14 +46,15 @@ const ITEMS = [
 ];
 
 export function TrustBar() {
+  const { t } = useSettings();
   return (
     <div className="trustbar-wrap">
-      <span className="trustbar-label">Con tu cuenta en Hipobuy tienes</span>
+      <span className="trustbar-label">{t("trust.label")}</span>
       <ul className="trustbar">
         {ITEMS.map((item) => (
-          <li key={item.label}>
+          <li key={item.key}>
             <span className="tb-ico">{item.icon}</span>
-            <span>{item.label}</span>
+            <span>{t(item.key)}</span>
           </li>
         ))}
       </ul>

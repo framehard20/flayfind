@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
+import { useSettings } from "./Settings";
 
 // Registration popup (Hipobuy account with the -25% shipping invite code).
 //
@@ -29,11 +30,7 @@ const PHOTOS = [
   { src: "/img/total-black-baggy.jpg", alt: "Outfit total black baggy" },
 ];
 
-const PERKS = [
-  { t: "Fotos reales de tu pedido", s: "antes de que te lo envíen" },
-  { t: "Devolución si algo falla", s: "sin quedarte tirado" },
-  { t: "Envíos a España", s: "y a todo el mundo" },
-];
+const PERKS = ["popup.perk1", "popup.perk2", "popup.perk3"];
 
 declare global {
   interface Window {
@@ -53,6 +50,7 @@ type Props = {
 };
 
 export function PopupModal({ registered, onRegister }: Props) {
+  const { t, tr } = useSettings();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"offer" | "done">("offer");
   const [pill, setPill] = useState(false);
@@ -192,7 +190,7 @@ export function PopupModal({ registered, onRegister }: Props) {
         }}
       >
         <div className="reg">
-          <button className="reg-x" aria-label="Cerrar" onClick={dismiss} tabIndex={open ? 0 : -1}>
+          <button className="reg-x" aria-label={t("modal.close")} onClick={dismiss} tabIndex={open ? 0 : -1}>
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
             </svg>
@@ -215,41 +213,37 @@ export function PopupModal({ registered, onRegister }: Props) {
                 </div>
                 <div className="reg-offer">
                   <span className="reg-kicker">
-                    <span className="reg-dot" /> Regalo de bienvenida
+                    <span className="reg-dot" /> {t("popup.kicker")}
                   </span>
                   <p className="reg-num">
                     −25<span>%</span>
                   </p>
-                  <p className="reg-num-sub">en tus envíos</p>
+                  <p className="reg-num-sub">{t("popup.numSub")}</p>
                 </div>
               </div>
 
               <div className="reg-body">
                 <h2 id="reg-title" className="reg-title">
-                  Crea tu cuenta y pide tus outfits <em>más baratos</em>
+                  {tr("popup.title")}
                 </h2>
 
                 <ul className="reg-perks">
-                  {PERKS.map((p) => (
-                    <li key={p.t}>
+                  {PERKS.map((key) => (
+                    <li key={key}>
                       <span className="reg-check" aria-hidden="true">
                         <svg viewBox="0 0 24 24" width="12" height="12">
                           <path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </span>
-                      <span>
-                        <b>{p.t}</b> {p.s}
-                      </span>
+                      <span>{tr(key)}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="reg-code">
-                  <span>
-                    Código <b>{INVITE_CODE}</b> · ya va incluido en el link
-                  </span>
+                  <span>{tr("popup.code", { code: INVITE_CODE })}</span>
                   <button type="button" onClick={copyCode} tabIndex={open ? 0 : -1}>
-                    {copied ? "¡Copiado!" : "Copiar"}
+                    {copied ? t("popup.copied") : t("popup.copy")}
                   </button>
                 </div>
 
@@ -263,15 +257,15 @@ export function PopupModal({ registered, onRegister }: Props) {
                   onClick={register}
                   tabIndex={open ? 0 : -1}
                 >
-                  Activar mi −25% gratis
+                  {t("popup.cta")}
                   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                     <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </a>
-                <p className="reg-fine">Gratis · sin compromiso · menos de 1 minuto</p>
+                <p className="reg-fine">{t("popup.fine")}</p>
 
                 <button type="button" className="reg-later" onClick={dismiss} tabIndex={open ? 0 : -1}>
-                  Ahora no, solo estoy mirando
+                  {t("popup.later")}
                 </button>
               </div>
             </>
@@ -283,18 +277,18 @@ export function PopupModal({ registered, onRegister }: Props) {
                 </svg>
               </span>
               <h2 id="reg-title" className="reg-title">
-                ¡Ya casi! Termina el registro en la pestaña nueva
+                {t("popup.doneTitle")}
               </h2>
               <ol className="reg-steps">
-                <li>Crea la cuenta en Hipobuy (el código {INVITE_CODE} ya está puesto)</li>
-                <li>Vuelve a esta pestaña</li>
-                <li>Elige tu outfit y compra cada prenda con su link</li>
+                <li>{t("popup.doneStep1", { code: INVITE_CODE })}</li>
+                <li>{t("popup.doneStep2")}</li>
+                <li>{t("popup.doneStep3")}</li>
               </ol>
               <button type="button" className="reg-go" onClick={close} tabIndex={open ? 0 : -1}>
-                Ver los outfits
+                {t("popup.doneCta")}
               </button>
               <a className="reg-later" href={LINKS.hipobuy} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
-                ¿No se abrió? Abrir Hipobuy otra vez
+                {t("popup.doneAgain")}
               </a>
             </div>
           )}
@@ -304,9 +298,9 @@ export function PopupModal({ registered, onRegister }: Props) {
       {pill && !open && (
         <div className="reg-pill">
           <button type="button" className="reg-pill-open" onClick={() => show("recordatorio")}>
-            <span className="reg-pill-num">−25%</span> en tus envíos
+            <span className="reg-pill-num">−25%</span> {t("popup.pill")}
           </button>
-          <button type="button" className="reg-pill-x" aria-label="Ocultar recordatorio" onClick={() => setPill(false)}>
+          <button type="button" className="reg-pill-x" aria-label={t("popup.pillHide")} onClick={() => setPill(false)}>
             <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
             </svg>

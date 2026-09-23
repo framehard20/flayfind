@@ -11,11 +11,12 @@ const on = (v: FormDataEntryValue | null) => v === "on" || v === "true" || v ===
 const recent = new Map<string, number>();
 
 export async function POST(req: Request) {
-  if (!hasDb) return Response.json({ error: "El formulario aún no está conectado." }, { status: 503 });
+  if (!hasDb) return Response.json({ code: "off", error: "El formulario aún no está conectado." }, { status: 503 });
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const last = recent.get(ip) ?? 0;
-  if (Date.now() - last < 60_000) return Response.json({ error: "Espera un momento antes de enviar otro." }, { status: 429 });
+  if (Date.now() - last < 60_000)
+    return Response.json({ code: "rate", error: "Espera un momento antes de enviar otro." }, { status: 429 });
 
   const form = await req.formData().catch(() => null);
   if (!form) return Response.json({ error: "Petición inválida." }, { status: 400 });
@@ -30,13 +31,17 @@ export async function POST(req: Request) {
   const idea = str(form.get("idea"), 1000);
   const registrado = on(form.get("registrado"));
 
-  if (!nombre) return Response.json({ error: "Falta tu nombre." }, { status: 400 });
-  if (!outfit) return Response.json({ error: "Ponle un nombre al outfit." }, { status: 400 });
-  if (!instagram) return Response.json({ error: "Falta tu Instagram." }, { status: 400 });
+  if (!nombre) return Response.json({ code: "name", error: "Falta tu nombre." }, { status: 400 });
+  if (!outfit) return Response.json({ code: "outfit", error: "Ponle un nombre al outfit." }, { status: 400 });
+  if (!instagram) return Response.json({ code: "instagram", error: "Falta tu Instagram." }, { status: 400 });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
-    return Response.json({ error: "Ese email de Hipobuy no parece válido." }, { status: 400 });
-  if (!idea) return Response.json({ error: "Cuéntanos qué outfit quieres que salga." }, { status: 400 });
-  if (!registrado) return Response.json({ error: "Tienes que registrarte en Hipobuy con el link para participar." }, { status: 400 });
+    return Response.json({ code: "email", error: "Ese email de Hipobuy no parece válido." }, { status: 400 });
+  if (!idea) return Response.json({ code: "idea", error: "Cuéntanos qué lleva el outfit." }, { status: 400 });
+  if (!registrado)
+    return Response.json(
+      { code: "registered", error: "Tienes que registrarte en Hipobuy con el link para participar." },
+      { status: 400 },
+    );
 
   const row = {
     nombre,
@@ -58,7 +63,7 @@ export async function POST(req: Request) {
       .from("submissions")
       .insert({ ...row, idea: `Outfit: ${outfit}\n\n${idea}` }));
   }
-  if (error) return Response.json({ error: "No se pudo guardar, inténtalo otra vez." }, { status: 500 });
+  if (error) return Response.json({ code: "save", error: "No se pudo guardar, inténtalo otra vez." }, { status: 500 });
 
   recent.set(ip, Date.now());
   return Response.json({ ok: true });

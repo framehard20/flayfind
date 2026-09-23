@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { INVITE_CODE, LINKS } from "@/lib/site";
+import { useSettings } from "./Settings";
 
 // Public form of the "De seguidores" section: the visitor says who they are,
 // which outfit they'd like to see on the page, and confirms they registered on
 // Hipobuy with the invite link. Submissions land in /admin/solicitudes.
 
 export function SeguidoresForm() {
+  const { t, tr } = useSettings();
   const [status, setStatus] = useState<"idle" | "sending" | "ok">("idle");
   const [error, setError] = useState("");
 
@@ -17,90 +19,85 @@ export function SeguidoresForm() {
     setError("");
     try {
       const res = await fetch("/api/submissions", { method: "POST", body: new FormData(e.currentTarget) });
-      const data = await res.json().catch(() => ({}));
+      const data = (await res.json().catch(() => ({}))) as { code?: string; error?: string };
       if (res.ok) setStatus("ok");
       else {
         setStatus("idle");
-        setError(data.error ?? "No se pudo enviar, inténtalo otra vez.");
+        // the server answers with a code so the message can be translated here
+        setError(data.code ? t(`err.${data.code}`) : (data.error ?? t("err.save")));
       }
     } catch {
       setStatus("idle");
-      setError("Sin conexión. Inténtalo otra vez.");
+      setError(t("err.network"));
     }
   }
 
   if (status === "ok") {
     return (
-      <p className="seg-ok">
-        ¡Recibido! 🔥 Si tu outfit encaja, lo montamos y lo verás publicado aquí con tu @.
-      </p>
+      <p className="seg-ok">{t("form.ok")}</p>
     );
   }
 
   return (
     <section className="seg seg-form-wrap">
       <form className="seg-form" onSubmit={onSubmit}>
-        <p className="seg-step">1 · Regístrate en Hipobuy</p>
+        <p className="seg-step">{t("form.step1")}</p>
         <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="seg_form_registro">
-          Registrarme en Hipobuy con el código {INVITE_CODE} ↗
+          {t("form.register", { code: INVITE_CODE })}
         </a>
         <label className="consent">
           <input type="checkbox" name="registrado" required />
-          <span>
-            Ya me he registrado en Hipobuy con este link (es obligatorio para participar y te da un −25% en envíos).
-          </span>
+          <span>{t("form.registered")}</span>
         </label>
         <div className="fld">
-          <label htmlFor="s-email">Email de Hipobuy</label>
+          <label htmlFor="s-email">{t("form.email")}</label>
           <input
             id="s-email"
             name="email"
             type="email"
             required
             maxLength={120}
-            placeholder="el email con el que te has registrado"
+            placeholder={t("form.emailPh")}
           />
         </div>
 
-        <p className="seg-step">2 · Cuéntanos tu outfit</p>
+        <p className="seg-step">{t("form.step2")}</p>
         <div className="fld">
-          <label htmlFor="s-nombre">Tu nombre</label>
-          <input id="s-nombre" name="nombre" type="text" required maxLength={80} placeholder="Tu nombre" />
+          <label htmlFor="s-nombre">{t("form.name")}</label>
+          <input id="s-nombre" name="nombre" type="text" required maxLength={80} placeholder={t("form.namePh")} />
         </div>
         <div className="fld">
-          <label htmlFor="s-outfit">Nombre del outfit</label>
-          <input id="s-outfit" name="outfit" type="text" required maxLength={80} placeholder="Total black invierno" />
+          <label htmlFor="s-outfit">{t("form.outfit")}</label>
+          <input id="s-outfit" name="outfit" type="text" required maxLength={80} placeholder={t("form.outfitPh")} />
         </div>
         <div className="fld">
-          <label htmlFor="s-ig">Tu Instagram</label>
-          <input id="s-ig" name="instagram" type="text" required maxLength={80} placeholder="@tucuenta" />
+          <label htmlFor="s-ig">{t("form.ig")}</label>
+          <input id="s-ig" name="instagram" type="text" required maxLength={80} placeholder={t("form.igPh")} />
         </div>
         <div className="fld">
-          <label htmlFor="s-idea">¿Qué lleva? Cuéntanoslo</label>
+          <label htmlFor="s-idea">{t("form.what")}</label>
           <textarea
             id="s-idea"
             name="idea"
             required
             maxLength={1000}
-            placeholder="Un total black de invierno con sudadera oversize, cargo y sneakers negras…"
+            placeholder={t("form.whatPh")}
           />
         </div>
 
         <label className="consent">
           <input type="checkbox" name="novedades" />
-          <span>Quiero recibir novedades y nuevos outfits en mi email.</span>
+          <span>{t("form.news")}</span>
         </label>
 
         {/* honeypot: hidden from people, filled in by bots */}
         <input type="text" name="web" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ display: "none" }} />
 
         <button type="submit" className="seg-submit" disabled={status === "sending"}>
-          {status === "sending" ? "Enviando…" : "Enviar mi outfit →"}
+          {status === "sending" ? t("form.sending") : t("form.send")}
         </button>
         {error && <p className="seg-photo">{error}</p>}
-        <p className="seg-photo">
-          Se eligen solo los mejores. Si sale el tuyo, lo verás aquí abajo con tu <b>@</b>.
-        </p>
+        <p className="seg-photo">{tr("form.note")}</p>
       </form>
     </section>
   );
