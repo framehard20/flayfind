@@ -9,7 +9,7 @@ import type { Lang } from "@/lib/i18n";
 // panel with both lists.
 
 export function SettingsPicker() {
-  const { lang, currency, currencies, rates, setLang, setCurrency, t } = useSettings();
+  const { lang, currency, currencies, setLang, setCurrency, t } = useSettings();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const current = LANGS.find((l) => l.code === lang) ?? LANGS[0];
@@ -80,8 +80,6 @@ export function SettingsPicker() {
               </li>
             ))}
           </ul>
-
-          <p className="setpick-note">{t("set.rates", { fecha: rates.date || "—" })}</p>
         </div>
       )}
     </div>

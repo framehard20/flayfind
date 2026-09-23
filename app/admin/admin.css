@@ -55,3 +55,24 @@
 .ad-checks .ad-check{margin:0}
 .ad-check{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--grey-2);line-height:1.4;cursor:pointer;margin:4px 0 12px}
 .ad-check input{margin-top:2px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--accent)}
+
+/* List filters: same two steps as the web (section, then what's inside it). */
+.ad-filters{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin-bottom:14px}
+.ad-frow{display:flex;align-items:center;gap:7px;overflow-x:auto;padding:4px 0;scrollbar-width:none}
+.ad-frow::-webkit-scrollbar{display:none}
+.ad-flabel{flex:0 0 auto;font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--grey);margin-right:3px;min-width:52px}
+.ad-chip{flex:0 0 auto;font-family:"Archivo",sans-serif;font-weight:600;font-size:13px;padding:7px 13px;border:1px solid var(--line);border-radius:100px;background:var(--paper);color:var(--ink);cursor:pointer}
+.ad-chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ad-count{display:block;margin-top:7px;font-size:12px;color:var(--grey)}
+
+/* Framing a photo into the 9:16 the cards use. */
+.ad-framer{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.ad-framer-frame{position:relative;width:200px;max-width:100%;aspect-ratio:9/16;flex:0 0 auto;overflow:hidden;border-radius:12px;border:1px solid var(--line);background:#141414;cursor:grab;touch-action:none;user-select:none}
+.ad-framer-frame:active{cursor:grabbing}
+.ad-framer-frame img{position:absolute;left:50%;top:50%;max-width:none;pointer-events:none}
+.ad-framer-grid{position:absolute;inset:0;pointer-events:none;background:
+  linear-gradient(to right,transparent calc(33.33% - 1px),rgba(255,255,255,.34) calc(33.33% - 1px),rgba(255,255,255,.34) 33.33%,transparent 33.33%,transparent calc(66.66% - 1px),rgba(255,255,255,.34) calc(66.66% - 1px),rgba(255,255,255,.34) 66.66%,transparent 66.66%),
+  linear-gradient(to bottom,transparent calc(33.33% - 1px),rgba(255,255,255,.34) calc(33.33% - 1px),rgba(255,255,255,.34) 33.33%,transparent 33.33%,transparent calc(66.66% - 1px),rgba(255,255,255,.34) calc(66.66% - 1px),rgba(255,255,255,.34) 66.66%,transparent 66.66%)}
+.ad-framer-tools{flex:1;min-width:210px}
+.ad-framer-tools input[type=range]{width:100%;accent-color:var(--accent)}
+.ad-framer-tools .ad-item-actions{flex-direction:row;flex-wrap:wrap;margin-top:12px}

@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { OutfitRow, Seccion } from "@/lib/db";
 import type { Genero } from "@/lib/outfits";
 import { subsections, type ExtraStyle } from "@/lib/styles";
+import { PhotoFramer } from "./PhotoFramer";
 
 type Piece = { tipo: string; precio: string; link: string };
 
@@ -54,6 +55,8 @@ export function OutfitForm({
   );
 
   const [uploading, setUploading] = useState(false);
+  /** The photo being framed: a file you just picked, or the current one. */
+  const [framing, setFraming] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
@@ -67,9 +70,16 @@ export function OutfitForm({
     setPrendas((list) => list.map((p, j) => (i === j ? { ...p, ...patch } : p)));
   }
 
-  async function onPickPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+  /** Picking a photo opens the framer; nothing is uploaded until you accept. */
+  function onPickPhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    setError("");
+    setFraming(URL.createObjectURL(file));
+    e.target.value = "";
+  }
+
+  async function upload(file: File) {
     setUploading(true);
     setError("");
     const body = new FormData();
@@ -78,8 +88,25 @@ export function OutfitForm({
     const res = await fetch("/api/admin/upload", { method: "POST", body });
     const data = await res.json().catch(() => ({}));
     setUploading(false);
-    if (res.ok) setFoto(data.url);
-    else setError(data.error ?? "No se pudo subir la foto.");
+    if (res.ok) {
+      setFoto(data.url);
+      closeFramer();
+    } else {
+      setError(data.error ?? "No se pudo subir la foto.");
+    }
+  }
+
+  /** Re-framing reads the photo's pixels back out of a canvas, which the
+   *  browser only allows for same-origin images. Next's own image route is on
+   *  this origin and already knows the Supabase bucket, so it stands in. */
+  const reframeSrc = (url: string) =>
+    `/_next/image?url=${encodeURIComponent(url)}&w=1920&q=75`;
+
+  function closeFramer() {
+    setFraming((url) => {
+      if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
+      return null;
+    });
   }
 
   async function save() {
@@ -177,16 +204,25 @@ export function OutfitForm({
 
       <div className="ad-card">
         <h2>Foto del outfit</h2>
-        <div className="ad-drop">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="ad-preview" src={foto || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
-          <div>
-            <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={onPickPhoto} />
-            <span className="ad-hint">
-              {uploading ? "Subiendo…" : "JPG, PNG o WEBP. Vertical 9:16 queda perfecto (por ejemplo 1080 × 1920)."}
-            </span>
+        {framing ? (
+          <PhotoFramer src={framing} busy={uploading} onDone={upload} onCancel={closeFramer} />
+        ) : (
+          <div className="ad-drop">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="ad-preview" src={foto || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
+            <div>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={onPickPhoto} />
+              <span className="ad-hint">
+                JPG, PNG o WEBP. Al elegirla podrás moverla y centrarla; se guarda recortada en vertical 9:16.
+              </span>
+              {foto && (
+                <button type="button" className="ad-btn ad-btn-ghost ad-btn-sm" onClick={() => setFraming(reframeSrc(foto))}>
+                  Reencuadrar esta foto
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {seccion === "seguidores" && (

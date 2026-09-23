@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isLoggedIn } from "@/lib/auth";
-import { hasDb, listAll } from "@/lib/db";
+import { hasDb, listAll, listStyles } from "@/lib/db";
 import { Nav } from "../_components/Nav";
 import { OutfitList } from "../_components/OutfitList";
 
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function SeguidoresPage() {
   if (!(await isLoggedIn())) redirect("/admin");
 
-  const rows = hasDb ? await listAll("seguidores") : [];
+  const [rows, estilos] = await Promise.all([hasDb ? listAll("seguidores") : [], listStyles()]);
 
   return (
     <>
@@ -24,7 +24,7 @@ export default async function SeguidoresPage() {
       <p className="ad-lead">
         Los que se ven en la pestaña «De seguidores» de la web, con el autor, su Instagram y el puesto de la semana.
       </p>
-      <OutfitList rows={rows} seccion="seguidores" />
+      <OutfitList rows={rows} seccion="seguidores" estilos={estilos} />
     </>
   );
 }

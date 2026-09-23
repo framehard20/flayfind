@@ -158,6 +158,5 @@ export const fr: Dict = {
   "set.open": "Langue et devise",
   "set.language": "Langue",
   "set.currency": "Devise",
-  "set.rates": "Taux du {fecha}, mis à jour chaque jour.",
   "set.close": "Fermer",
 };

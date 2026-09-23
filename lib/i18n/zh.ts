@@ -158,6 +158,5 @@ export const zh: Dict = {
   "set.open": "语言与货币",
   "set.language": "语言",
   "set.currency": "货币",
-  "set.rates": "{fecha} 汇率，每日更新。",
   "set.close": "关闭",
 };
