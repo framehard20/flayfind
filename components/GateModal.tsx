@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
+import { track } from "@/lib/track";
 import { useSettings } from "./Settings";
 
 type Props = {
@@ -23,11 +24,7 @@ type Props = {
 // purchase isn't lost on the way.
 /** Only two things are measured on this popup: the register button (through
  *  data-umami-event) and closing it. */
-const trackClose = () => {
-  try {
-    window.umami?.track("cierre_aviso_comprar");
-  } catch {}
-};
+const trackClose = () => track("cierre_aviso_comprar");
 
 export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }: Props) {
   const { t, tr } = useSettings();

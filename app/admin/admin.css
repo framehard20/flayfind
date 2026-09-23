@@ -51,5 +51,7 @@
 .ad-sub b{font-family:"Archivo",sans-serif;font-size:15px}
 .ad-sub a{color:var(--accent-ink);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 .ad-sub-idea{font-size:13.5px;color:var(--grey-2);line-height:1.45;white-space:pre-wrap}
+.ad-checks{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:4px}
+.ad-checks .ad-check{margin:0}
 .ad-check{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--grey-2);line-height:1.4;cursor:pointer;margin:4px 0 12px}
 .ad-check input{margin-top:2px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--accent)}

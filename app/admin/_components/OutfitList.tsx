@@ -9,10 +9,12 @@ import { eur, totalDe } from "@/lib/utils";
 const LABEL: Record<string, string> = {
   hombre: "Hombre",
   mujer: "Mujer",
+  ambos: "Hombre y Mujer",
   tech: "Accesorios",
   streetwear: "Streetwear",
   gym: "Gym",
   elegante: "Elegante",
+  plumiferos: "Plumíferos",
   invierno: "Invierno",
   verano: "Verano",
 };

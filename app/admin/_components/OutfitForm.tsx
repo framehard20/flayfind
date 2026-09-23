@@ -3,15 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { OutfitRow, Seccion } from "@/lib/db";
+import type { Genero } from "@/lib/outfits";
+import { subsections, type ExtraStyle } from "@/lib/styles";
 
 type Piece = { tipo: string; precio: string; link: string };
 
 const empty: Piece = { tipo: "", precio: "", link: "" };
 
-const GENEROS = [
+const GENEROS: { v: Genero; l: string }[] = [
   { v: "hombre", l: "Hombre" },
   { v: "mujer", l: "Mujer" },
-  { v: "tech", l: "Accesorios" },
+  { v: "ambos", l: "Hombre y Mujer" },
 ];
 
 const TEMPORADAS = [
@@ -26,15 +28,17 @@ export function OutfitForm({
 }: {
   seccion: Seccion;
   outfit?: OutfitRow;
-  /** Built-in styles plus the ones created in /admin/estilos. */
-  estilos: { slug: string; nombre: string }[];
+  /** The subsections created in /admin/estilos. */
+  estilos: ExtraStyle[];
 }) {
   const router = useRouter();
   const editing = !!outfit;
   const backTo = seccion === "seguidores" ? "/admin/seguidores" : "/admin/outfits";
 
   const [nombre, setNombre] = useState(outfit?.nombre ?? "");
-  const [genero, setGenero] = useState(outfit?.genero ?? "hombre");
+  const [genero, setGenero] = useState<Genero>(
+    ((outfit?.genero as string) === "tech" ? "ambos" : outfit?.genero) ?? "hombre",
+  );
   const [temporada, setTemporada] = useState(outfit?.temporada ?? "invierno");
   const [categoria, setCategoria] = useState(outfit?.categoria ?? "streetwear");
   const [foto, setFoto] = useState(outfit?.foto ?? "");
@@ -54,6 +58,10 @@ export function OutfitForm({
   const [error, setError] = useState("");
 
   const total = prendas.reduce((s, p) => s + (parseFloat(p.precio.replace(",", ".")) || 0), 0);
+
+  // a subsection created for only one section shouldn't be offered in the other
+  const disponibles = subsections(genero, estilos);
+  const estiloPerdido = !disponibles.some((s) => s.slug === categoria);
 
   function setPiece(i: number, patch: Partial<Piece>) {
     setPrendas((list) => list.map((p, j) => (i === j ? { ...p, ...patch } : p)));
@@ -124,7 +132,7 @@ export function OutfitForm({
         <div className="ad-grid">
           <label className="ad-field">
             <span>Sección</span>
-            <select value={genero} onChange={(e) => setGenero(e.target.value as typeof genero)}>
+            <select value={genero} onChange={(e) => setGenero(e.target.value as Genero)}>
               {GENEROS.map((o) => (
                 <option key={o.v} value={o.v}>
                   {o.l}
@@ -134,8 +142,9 @@ export function OutfitForm({
           </label>
           <label className="ad-field">
             <span>Estilo</span>
-            <select value={categoria} onChange={(e) => setCategoria(e.target.value as typeof categoria)}>
-              {estilos.map((o) => (
+            <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+              {estiloPerdido && <option value={categoria}>{categoria} (no está en esta sección)</option>}
+              {disponibles.map((o) => (
                 <option key={o.slug} value={o.slug}>
                   {o.nombre}
                 </option>

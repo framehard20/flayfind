@@ -7,6 +7,8 @@ import { OutfitCard } from "./OutfitCard";
 import { OutfitModal } from "./OutfitModal";
 import type { Filtro } from "./FilterZone";
 import { useSettings } from "./Settings";
+import { ACCESSORIES } from "@/lib/styles";
+import { EVENTS, track } from "@/lib/track";
 
 type Props = {
   outfits: Outfit[];
@@ -22,13 +24,16 @@ export function OutfitGrid({ outfits, filtro, rank = false, onBuyClick }: Props)
   const [openName, setOpenName] = useState<string | null>(null);
   const scope = rank ? "seg" : "of";
 
-  const esTech = filtro?.genero === "tech";
+  // accessories have no season of their own, so that filter doesn't apply
+  const esTech = filtro?.estilo === ACCESSORIES;
   const list = filtro
     ? outfits
         .filter(
           (o) =>
-            o.genero === filtro.genero &&
-            (esTech || filtro.estilo === "todos" || o.categoria === filtro.estilo) &&
+            (o.genero === filtro.genero || o.genero === "ambos") &&
+            // "Todos" means every look: accessories are single products, so
+            // they only show under their own chip
+            (filtro.estilo === "todos" ? o.categoria !== ACCESSORIES : o.categoria === filtro.estilo) &&
             (esTech || filtro.temporada === "todo" || o.temporada === filtro.temporada),
         )
         .sort((a, b) =>
@@ -49,7 +54,16 @@ export function OutfitGrid({ outfits, filtro, rank = false, onBuyClick }: Props)
   return (
     <main className="grid">
       {list.map((o) => (
-        <OutfitCard key={o.nombre} outfit={o} scope={scope} rank={rank} onOpen={() => setOpenName(o.nombre)} />
+        <OutfitCard
+          key={o.nombre}
+          outfit={o}
+          scope={scope}
+          rank={rank}
+          onOpen={() => {
+            track(EVENTS.outfitOpened);
+            setOpenName(o.nombre);
+          }}
+        />
       ))}
       {openIndex >= 0 && (
         <OutfitModal

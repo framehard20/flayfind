@@ -6,6 +6,8 @@ import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { lockScroll } from "@/lib/scrollLock";
 import { rankClass, slug, totalDe } from "@/lib/utils";
+import { ACCESSORIES } from "@/lib/styles";
+import { EVENTS, track } from "@/lib/track";
 import { useSettings } from "./Settings";
 
 type Props = {
@@ -273,7 +275,10 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
                   href={p.link}
                   target="_blank"
                   rel="noopener"
-                  onClick={(e) => onBuyClick(e, p.link)}
+                  onClick={(e) => {
+                    track(EVENTS.buy);
+                    onBuyClick(e, p.link);
+                  }}
                 >
                   {t("modal.buy")}
                   <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true">
@@ -285,7 +290,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
           </ul>
 
           <div className="om-total" style={{ "--i": o.prendas.length } as React.CSSProperties}>
-            <span className="om-total-lbl">{t(o.genero === "tech" ? "card.priceOnly" : "card.total")}</span>
+            <span className="om-total-lbl">{t(o.categoria === ACCESSORIES ? "card.priceOnly" : "card.total")}</span>
             <span className="om-total-nums">
               {o.precioMarca > 0 && <s>{money(o.precioMarca)}</s>}
               <span className="om-total-num">{money(shown)}</span>

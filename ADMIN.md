@@ -26,10 +26,11 @@ datos, muestra los outfits que están escritos en `lib/outfits.ts`.
 > La clave `service_role` solo se usa en el servidor. No la pegues en el código
 > ni la compartas: quien la tenga puede leer y borrar la base de datos.
 
-> Si ya tenías la base de datos creada antes de los estilos personalizados,
-> vuelve al SQL Editor y ejecuta otra vez `supabase/schema.sql` (o solo las
-> líneas de `categorias` y el `alter table … drop constraint`). Es seguro:
-> todo está escrito para poder repetirse.
+> Si ya tenías la base de datos creada antes, vuelve al SQL Editor y ejecuta
+> otra vez `supabase/schema.sql` entero. Es seguro: todo está escrito para
+> poder repetirse. Hace falta cada vez que añadimos algo (los estilos
+> personalizados, y ahora los accesorios dentro de Hombre y Mujer, las
+> secciones por estilo y sus traducciones).
 
 ### 2. Generar tus claves de acceso al panel
 
@@ -74,16 +75,19 @@ poder editarlos desde el panel.
 
 ## Uso diario
 
-- **Outfits** → `+ Añadir outfit`: nombre, sección (hombre / mujer /
-  accesorios), estilo, época, foto y prendas. Cada prenda lleva nombre, precio
-  y link; si el link es de Hipobuy y se te olvida el código de invitación, se
-  añade solo.
+- **Outfits** → `+ Añadir outfit`: nombre, sección (Hombre / Mujer / Hombre y
+  Mujer), estilo, época, foto y prendas. «Hombre y Mujer» lo hace salir en las
+  dos secciones, que es lo normal para los accesorios. Cada prenda lleva
+  nombre, precio y link; si el link es de Hipobuy y se te olvida el código de
+  invitación, se añade solo.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
-- **Estilos** → crea los tuyos («Y2K», «Vintage»…). Salen en el desplegable
-  de los outfits y como filtro en la web. Los cuatro de fábrica (Streetwear,
-  Gym, Elegante, Accesorios) están traducidos a los 7 idiomas; los tuyos se
-  ven con el nombre que escribas en todos ellos. No se puede borrar un estilo
-  que algún outfit esté usando: primero cámbiales el estilo.
+- **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
+  tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si
+  quieres, escribe su nombre en cada idioma; lo que dejes en blanco se ve con
+  el nombre en español. Los cinco de fábrica (Accesorios, Streetwear, Gym,
+  Elegante, Plumíferos) salen en las dos secciones y están traducidos a los 7
+  idiomas. No se puede borrar un estilo que algún outfit esté usando: primero
+  cámbiales el estilo.
 - **Ocultar** deja el outfit guardado pero fuera de la web. **Borrar** es
   definitivo.
 - **Solicitudes**: lo que manda la gente por el formulario. Puedes marcarlas

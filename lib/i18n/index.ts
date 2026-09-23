@@ -7,8 +7,7 @@ import { pt } from "./pt";
 import { zh } from "./zh";
 
 // Every string on the public site, in the seven languages of the picker.
-// Spanish is the source: lib/i18n/*.ts are generated from the table in
-// gen-i18n.py, so add new strings there and re-run it.
+// Spanish is the source: add a key to es.ts and the same key to the other six.
 //
 // Values may contain **bold** and {placeholders}; <T> / tr() below turn them
 // into React nodes. The admin panel stays in Spanish.

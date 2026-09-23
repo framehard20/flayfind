@@ -1,6 +1,7 @@
 "use client";
 
 import type { Outfit } from "@/lib/outfits";
+import type { ExtraStyle } from "@/lib/styles";
 import { Catalog } from "./Catalog";
 import { SettingsProvider } from "./Settings";
 import { StickyHeader } from "./StickyHeader";
@@ -13,7 +14,7 @@ export function SiteShell({
 }: {
   outfits: Outfit[];
   seguidores: Outfit[];
-  estilos: { slug: string; nombre: string }[];
+  estilos: ExtraStyle[];
 }) {
   return (
     <SettingsProvider estilos={estilos}>

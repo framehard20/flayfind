@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/SiteShell";
-import { hasDb, listCategorias, listPublic, toOutfit } from "@/lib/db";
+import { hasDb, listPublic, listStyles, toOutfit } from "@/lib/db";
 import { OUTFITS, type Outfit } from "@/lib/outfits";
 import { SEGUIDORES } from "@/lib/seguidores";
 
@@ -42,17 +42,7 @@ async function load(): Promise<{ outfits: Outfit[]; seguidores: Outfit[] }> {
   }
 }
 
-/** Styles created in the panel; the built-in four live in lib/styles.ts. */
-async function loadEstilos(): Promise<{ slug: string; nombre: string }[]> {
-  if (!hasDb) return [];
-  try {
-    return (await listCategorias()).map((c) => ({ slug: c.slug, nombre: c.nombre }));
-  } catch {
-    return [];
-  }
-}
-
 export default async function Home() {
-  const [{ outfits, seguidores }, estilos] = await Promise.all([load(), loadEstilos()]);
+  const [{ outfits, seguidores }, estilos] = await Promise.all([load(), listStyles()]);
   return <SiteShell outfits={outfits} seguidores={seguidores} estilos={estilos} />;
 }

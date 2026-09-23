@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
 import { rankClass, slug, totalDe } from "@/lib/utils";
+import { ACCESSORIES } from "@/lib/styles";
 import { useSettings } from "./Settings";
 
 type Props = {
@@ -21,7 +22,8 @@ type Props = {
 export function OutfitCard({ outfit: o, scope = "of", rank = false, onOpen }: Props) {
   const { t, money, styleLabel } = useSettings();
   const total = totalDe(o.prendas);
-  const totalLbl = t(o.genero === "tech" ? "card.priceOnly" : "card.total");
+  const esTech = o.categoria === ACCESSORIES;
+  const totalLbl = t(esTech ? "card.priceOnly" : "card.total");
   const medal = rankClass(o.posicion);
 
   return (
@@ -37,7 +39,7 @@ export function OutfitCard({ outfit: o, scope = "of", rank = false, onOpen }: Pr
           <span className="placeholder">
             {t("card.noPhoto1")}
             <br />
-            {t(o.genero === "tech" ? "card.noPhotoProduct" : "card.noPhotoLook")}
+            {t(esTech ? "card.noPhotoProduct" : "card.noPhotoLook")}
           </span>
         )}
         <span className="look-peek" aria-hidden="true">

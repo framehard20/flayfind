@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { lockScroll } from "@/lib/scrollLock";
 import { INVITE_CODE, LINKS } from "@/lib/site";
+import { track } from "@/lib/track";
 import { useSettings } from "./Settings";
 
 // Registration popup (Hipobuy account with the -25% shipping invite code).
@@ -31,17 +32,6 @@ const PHOTOS = [
 ];
 
 const PERKS = ["popup.perk1", "popup.perk2", "popup.perk3"];
-
-declare global {
-  interface Window {
-    umami?: { track: (event: string, data?: Record<string, unknown>) => void };
-  }
-}
-const track = (event: string, data?: Record<string, unknown>) => {
-  try {
-    window.umami?.track(event, data);
-  } catch {}
-};
 
 type Props = {
   /** Already clicked through to register this visit (from Catalog). */

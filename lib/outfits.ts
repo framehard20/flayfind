@@ -1,8 +1,12 @@
 export type Prenda = { tipo: string; precio: number; link: string };
 
-export type Genero = "hombre" | "mujer" | "tech";
+/** Which section an outfit shows in. "ambos" appears in Hombre and Mujer —
+ *  handy for accessories that suit anyone. */
+export type Genero = "hombre" | "mujer" | "ambos";
 export type Temporada = "invierno" | "verano";
-export type Categoria = "gym" | "elegante" | "streetwear" | "tech";
+/** A subsection slug: the built-in ones live in lib/styles.ts, the rest are
+ *  created in /admin/estilos, so this can be any slug. */
+export type Categoria = string;
 
 export type Outfit = {
   nombre: string;
@@ -337,7 +341,7 @@ export const OUTFITS: Outfit[] = [
   // ---------- ACCESORIOS ----------
   {
     nombre:"Gafas transparentes",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-gafas-transparentes.jpg",
@@ -348,7 +352,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Gafas de sol negras",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-gafas-negras.jpg",
@@ -359,7 +363,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Máscara térmica",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-mascara.jpg",
@@ -370,7 +374,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Bolso bandolera",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-bolso-azul.jpg",
@@ -381,7 +385,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Gorra NY negra",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-gorra-ny.jpg",
@@ -392,7 +396,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Brazalete acero",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-brazalete.jpg",
@@ -403,7 +407,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Bóxer blanco",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-boxer.jpg",
@@ -414,7 +418,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Cartera tarjetero",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-cartera.jpg",
@@ -425,7 +429,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Reloj plateado",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-reloj.jpg",
@@ -436,7 +440,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Gorra LA azul",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-gorra-la.jpg",
@@ -447,7 +451,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Mochila deportiva",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-mochila.jpg",
@@ -458,7 +462,7 @@ export const OUTFITS: Outfit[] = [
   },
   {
     nombre:"Pack calcetines",
-    genero:"tech",
+    genero:"ambos",
     temporada:"verano",
     categoria:"tech",
     foto:"/img/acc-calcetines.jpg",

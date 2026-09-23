@@ -7,7 +7,7 @@ create table if not exists public.outfits (
   id           uuid primary key default gen_random_uuid(),
   seccion      text not null default 'outfits' check (seccion in ('outfits', 'seguidores')),
   nombre       text not null,
-  genero       text not null check (genero in ('hombre', 'mujer', 'tech')),
+  genero       text not null check (genero in ('hombre', 'mujer', 'ambos')),
   temporada    text not null check (temporada in ('invierno', 'verano')),
   categoria    text not null check (categoria in ('gym', 'elegante', 'streetwear', 'tech')),
   foto         text not null default '',
@@ -29,13 +29,28 @@ create index if not exists outfits_seccion_idx on public.outfits (seccion, visib
 -- list any more:
 alter table public.outfits drop constraint if exists outfits_categoria_check;
 
+-- Accessories moved from being a section of their own to a subsection inside
+-- Hombre and Mujer, so an outfit's section can now also be 'ambos' (it shows
+-- in both). The old 'tech' rows become 'ambos'; their categoria stays 'tech',
+-- which is what marks them as accessories.
+alter table public.outfits drop constraint if exists outfits_genero_check;
+update public.outfits set genero = 'ambos' where genero = 'tech';
+alter table public.outfits
+  add constraint outfits_genero_check check (genero in ('hombre', 'mujer', 'ambos'));
+
 create table if not exists public.categorias (
-  id         uuid primary key default gen_random_uuid(),
-  slug       text not null unique,
-  nombre     text not null,
-  orden      int not null default 0,
-  created_at timestamptz not null default now()
+  id           uuid primary key default gen_random_uuid(),
+  slug         text not null unique,
+  nombre       text not null,
+  generos      text[] not null default '{hombre,mujer}',  -- where the chip shows
+  traducciones jsonb  not null default '{}'::jsonb,       -- {"en":"Puffers", ...}
+  orden        int not null default 0,
+  created_at   timestamptz not null default now()
 );
+
+-- added later: safe to re-run on an existing table
+alter table public.categorias add column if not exists generos text[] not null default '{hombre,mujer}';
+alter table public.categorias add column if not exists traducciones jsonb not null default '{}'::jsonb;
 
 alter table public.categorias enable row level security;
 

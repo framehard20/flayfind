@@ -29,6 +29,7 @@ export const de: Dict = {
   "f.gym": "Gym",
   "f.elegant": "Elegant",
   "f.street": "Streetwear",
+  "f.puffer": "Pufferjacken",
   "f.seasonAll": "Ganzjährig",
   "f.winter": "Winter",
   "f.summer": "Sommer",

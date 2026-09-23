@@ -6,7 +6,8 @@ import { BUILTIN_STYLES } from "@/lib/styles";
 
 export const runtime = "nodejs";
 
-const GENEROS = ["hombre", "mujer", "tech"];
+// "ambos" shows the outfit in both sections — mostly used for accessories
+const GENEROS = ["hombre", "mujer", "ambos"];
 const TEMPORADAS = ["invierno", "verano"];
 
 
@@ -38,7 +39,7 @@ function parse(body: Body, estilos: string[]): { row?: Record<string, unknown>; 
   const foto = str(body.foto);
 
   if (!nombre) return { error: "Ponle un nombre al outfit." };
-  if (!GENEROS.includes(genero)) return { error: "Elige una sección: hombre, mujer o accesorios." };
+  if (!GENEROS.includes(genero)) return { error: "Elige una sección: hombre, mujer o ambos." };
   if (!TEMPORADAS.includes(temporada)) return { error: "Elige la época: invierno o verano." };
   if (!estilos.includes(categoria)) return { error: "Ese estilo ya no existe, elige otro." };
   if (!foto) return { error: "Falta la foto del outfit." };

@@ -1,5 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Categoria, Genero, Outfit, Prenda, Temporada } from "./outfits";
+import type { ExtraStyle } from "./styles";
 
 // Supabase holds the outfits shown on the site, the followers' entries and the
 // submissions from the public form. Photos live in the "outfits" storage
@@ -67,11 +68,15 @@ export type OutfitRow = {
   created_at: string;
 };
 
-/** A style created from the panel (the built-in ones live in the code). */
+/** A subsection created from the panel (the built-in ones live in the code).
+ *  `generos` and `traducciones` only exist once the newer columns are added
+ *  (see supabase/schema.sql), so both are optional here. */
 export type CategoriaRow = {
   id: string;
   slug: string;
   nombre: string;
+  generos?: string[] | null;
+  traducciones?: Record<string, string> | null;
   orden: number;
   created_at: string;
 };
@@ -109,7 +114,9 @@ function safeFoto(foto: string): string {
 
 export const toOutfit = (r: OutfitRow): Outfit => ({
   nombre: r.nombre,
-  genero: r.genero,
+  // accessories used to be a section of their own; until the migration in
+  // supabase/schema.sql runs, those rows still say "tech"
+  genero: (r.genero as string) === "tech" ? "ambos" : r.genero,
   temporada: r.temporada,
   categoria: r.categoria,
   foto: safeFoto(r.foto),
@@ -149,7 +156,19 @@ export async function getOutfit(id: string): Promise<OutfitRow | null> {
   return (data as OutfitRow) ?? null;
 }
 
-/** Extra styles, in the order they should appear after the built-in ones. */
+/** A `categorias` row as the site uses it, with sensible values for the two
+ *  columns that may not exist yet. Blank `generos` means both sections. */
+export const toStyle = (c: CategoriaRow): ExtraStyle => {
+  const generos = (c.generos ?? []).filter((g): g is Genero => g === "hombre" || g === "mujer" || g === "ambos");
+  return {
+    slug: c.slug,
+    nombre: c.nombre,
+    generos: generos.length ? generos : ["hombre", "mujer"],
+    traducciones: (c.traducciones ?? {}) as ExtraStyle["traducciones"],
+  };
+};
+
+/** Extra subsections, in the order they should appear after the built-in ones. */
 export async function listCategorias(): Promise<CategoriaRow[]> {
   const { data, error } = await db()
     .from("categorias")
@@ -158,6 +177,17 @@ export async function listCategorias(): Promise<CategoriaRow[]> {
     .order("created_at", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as CategoriaRow[];
+}
+
+/** Subsections from the panel, or none while the table isn't there yet. */
+export async function listStyles(): Promise<ExtraStyle[]> {
+  if (!hasDb) return [];
+  try {
+    return (await listCategorias()).map(toStyle);
+  } catch (error) {
+    console.error("No se pudieron leer los estilos:", error);
+    return [];
+  }
 }
 
 export async function listSubmissions(): Promise<SubmissionRow[]> {

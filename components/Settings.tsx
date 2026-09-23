@@ -13,7 +13,7 @@ import {
   type Rates,
 } from "@/lib/currency";
 import { DEFAULT_LANG, isLang, LANGS, localeOf, pickLang, raw, type Lang } from "@/lib/i18n";
-import { BUILTIN_STYLES } from "@/lib/styles";
+import { BUILTIN_STYLES, type ExtraStyle } from "@/lib/styles";
 
 // Language + currency for the whole public site. The choice lives in
 // localStorage, so it survives reloads; the first visit follows the browser's
@@ -42,9 +42,10 @@ type Ctx = {
   moneyRound: (amountEur: number) => string;
   /** Currencies the loaded rates can convert to. */
   currencies: { code: string; label: string; symbol: string }[];
-  /** Styles created in /admin/estilos, on top of the built-in ones. */
-  estilos: { slug: string; nombre: string }[];
-  /** Label for an outfit's style: translated if built in, as typed if custom. */
+  /** Subsections created in /admin/estilos, on top of the built-in ones. */
+  estilos: ExtraStyle[];
+  /** Label for a subsection: built-in ones use the dictionary, the panel's own
+   *  use the translation typed there, falling back to their Spanish name. */
   styleLabel: (slug: string) => string;
 };
 
@@ -77,7 +78,7 @@ export function SettingsProvider({
   estilos = [],
 }: {
   children: React.ReactNode;
-  estilos?: { slug: string; nombre: string }[];
+  estilos?: ExtraStyle[];
 }) {
   const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
   const [currency, setCurrencyState] = useState<Currency>(DEFAULT_CURRENCY);
@@ -159,7 +160,9 @@ export function SettingsProvider({
       styleLabel: (slug) => {
         const builtin = BUILTIN_STYLES.find((s) => s.slug === slug);
         if (builtin) return raw(lang, builtin.key);
-        return estilos.find((s) => s.slug === slug)?.nombre ?? slug;
+        const custom = estilos.find((s) => s.slug === slug);
+        if (!custom) return slug;
+        return custom.traducciones[lang]?.trim() || custom.nombre;
       },
     };
   }, [lang, currency, usable, rates, setLang, setCurrency, estilos]);

@@ -1,7 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { isLoggedIn } from "@/lib/auth";
-import { getOutfit, hasDb, listCategorias } from "@/lib/db";
-import { allStyles } from "@/lib/styles";
+import { getOutfit, hasDb, listStyles } from "@/lib/db";
 import { Nav } from "../../_components/Nav";
 import { OutfitForm } from "../../_components/OutfitForm";
 
@@ -12,7 +11,7 @@ export default async function EditarOutfit({ params }: { params: Promise<{ id: s
   const { id } = await params;
   const outfit = hasDb ? await getOutfit(id) : null;
   if (!outfit) notFound();
-  const estilos = allStyles(hasDb ? await listCategorias() : []);
+  const estilos = await listStyles();
 
   return (
     <>

@@ -29,6 +29,7 @@ export const zh: Dict = {
   "f.gym": "运动",
   "f.elegant": "优雅",
   "f.street": "街头",
+  "f.puffer": "羽绒服",
   "f.seasonAll": "全年",
   "f.winter": "冬季",
   "f.summer": "夏季",
