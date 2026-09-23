@@ -6,7 +6,7 @@ export const de: Dict = {
   "topbar.perk": "25% auf deinen Versand",
   "hero.l1": "Der ganze",
   "hero.l2": "Look,",
-  "hero.l3": "schon fertig.",
+  "hero.l3": "fertig.",
   "hero.pitch": "Sieht aus wie {marca}. Du bekommst es für **unter {precio}**.",
   "hero.sub": "Fertige Outfits vom chinesischen Markt: Größe, Preis und Link für jedes Teil. Nicht überlegen, einfach nachmachen.",
   "hero.cue": "Wähle deinen Stil und stell dein Fit zusammen",
