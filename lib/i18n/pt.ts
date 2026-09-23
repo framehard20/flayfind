@@ -157,6 +157,6 @@ export const pt: Dict = {
   "set.open": "Idioma e moeda",
   "set.language": "Idioma",
   "set.currency": "Moeda",
-  "set.rates": "Câmbio de {fecha}. Atualizado diariamente; a Hipobuy cobra em euros.",
+  "set.rates": "Câmbio de {fecha}, atualizado diariamente.",
   "set.close": "Fechar",
 };
