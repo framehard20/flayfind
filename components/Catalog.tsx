@@ -13,7 +13,6 @@ import { Faq } from "./Faq";
 import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
-import { Reqs } from "./Reqs";
 import { SeguidoresForm } from "./SeguidoresForm";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
@@ -80,7 +79,7 @@ export function Catalog({ outfits, seguidores }: Props) {
       </div>
 
       <div hidden={view !== "seg"}>
-        <Reqs />
+        <DiscordPerks join />
         <SeguidoresForm />
         <DiscordPerks />
         {seguidores.length > 0 && (

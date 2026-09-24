@@ -5,8 +5,9 @@ import { useSettings } from "./Settings";
 import { DiscordIcon } from "./DiscordIcon";
 
 /** Real feature: Mario's own Discord has a channel where a bot finds the best-quality
- *  match for a photo you send, plus Discord-only discounts and his own personal help. */
-export function DiscordPerks() {
+ *  match for a photo you send, plus Discord-only discounts and his own personal help.
+ *  `join` swaps the words for the plain invitation used in the followers' tab. */
+export function DiscordPerks({ join = false }: { join?: boolean } = {}) {
   const { t } = useSettings();
   return (
     <div className="discord-standalone">
@@ -15,8 +16,8 @@ export function DiscordPerks() {
           <DiscordIcon />
         </span>
         <span className="dc-tx">
-          <b>{t("discord.t")}</b>
-          <span>{t("discord.s")}</span>
+          <b>{t(join ? "discord.join" : "discord.t")}</b>
+          <span>{t(join ? "discord.joinSub" : "discord.s")}</span>
         </span>
         <span className="dc-ar" aria-hidden="true">
           →
