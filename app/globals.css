@@ -197,7 +197,7 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .seg-intro{margin:0 auto;padding:24px 20px 0}
 .seg-intro .cue{margin-top:22px;display:inline-flex;align-items:center;gap:9px;font-family:"Inter",system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--ink)}
 .seg-intro .cue .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-in-out infinite}
-.seg-form-wrap{margin:12px auto 0;padding:2px 20px 6px}
+.seg-form-wrap{margin:12px auto 0;padding:2px 20px 22px}
 /* requisitos + discord */
 .discord-standalone{max-width:920px;margin:4px auto 20px;padding:0 20px}
 /* sits right under the two big tab buttons, so it needs room */
@@ -223,18 +223,18 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .seg h2{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:clamp(30px,10vw,52px);line-height:.94;letter-spacing:-.02em;text-transform:uppercase}
 .seg .lead{margin-top:16px;max-width:54ch;font-size:15px;color:var(--grey-2);line-height:1.55}
 .seg .lead b{color:var(--ink)}
-.seg-form{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 18px;position:relative}
-.seg-form .fld{margin-bottom:14px}
-.seg-form label{display:block;font-family:"Archivo",sans-serif;font-weight:700;font-size:12.5px;margin-bottom:6px}
-.seg-form input[type=text],.seg-form input[type=email],.seg-form textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline:none}
+.seg-form{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 20px;position:relative}
+.seg-form .fld{margin-bottom:20px}
+.seg-form label{display:block;font-family:"Archivo",sans-serif;font-weight:700;font-size:12.5px;margin-bottom:8px}
+.seg-form input[type=text],.seg-form input[type=email],.seg-form textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:13px 12px;outline:none}
 .seg-form input:focus,.seg-form textarea:focus{border-color:var(--accent)}
-.seg-form textarea{resize:vertical;min-height:72px;line-height:1.45}
-.seg-form .consent{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--grey-2);line-height:1.4;cursor:pointer;margin:4px 0 2px}
+.seg-form textarea{resize:vertical;min-height:104px;line-height:1.45}
+.seg-form .consent{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:var(--grey-2);line-height:1.45;cursor:pointer;margin:14px 0 6px}
 .seg-form .consent input{margin-top:2px;width:16px;height:16px;flex:0 0 auto;accent-color:var(--accent)}
-.seg-submit{width:100%;margin-top:16px;display:block;text-align:center;font-family:"Archivo",sans-serif;font-weight:800;font-size:16px;color:#fff;background:var(--accent);border:none;border-radius:12px;padding:15px;cursor:pointer}
+.seg-submit{width:100%;margin-top:22px;display:block;text-align:center;font-family:"Archivo",sans-serif;font-weight:800;font-size:16px;color:#fff;background:var(--accent);border:none;border-radius:12px;padding:15px;cursor:pointer}
 .seg-submit:active{opacity:.85}
 .seg-submit:disabled{opacity:.6;cursor:default}
-.seg-photo{margin-top:13px;font-size:12.5px;color:var(--grey);line-height:1.45;text-align:center}
+.seg-photo{margin-top:17px;font-size:12.5px;color:var(--grey);line-height:1.45;text-align:center}
 .seg-photo b{color:var(--ink)}
 .seg-ok{max-width:920px;margin:18px auto 0;padding:0 20px;background:none;color:#146c3a;text-align:center;font-weight:700;font-size:15px}
 .seg-head{margin:36px auto 4px;max-width:920px;padding:0 20px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
@@ -546,7 +546,7 @@ footer p{font-size:12.5px;color:var(--grey);margin-top:8px;max-width:40ch;margin
 .om-author b{color:#fff}
 .om-author:hover b{text-decoration:underline;text-underline-offset:2px}
 @media(prefers-reduced-motion:reduce){.look-top{transition:none}}
-.seg-step{margin:18px 0 10px;font-family:"Archivo",sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
+.seg-step{margin:32px 0 14px;font-family:"Archivo",sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey)}
 .seg-form>.seg-step:first-child{margin-top:0}
 
 /* ============ selector de idioma y moneda (SettingsPicker.tsx) ============ */
