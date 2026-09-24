@@ -19,6 +19,7 @@ export const pt: Dict = {
   "view.outfits": "Outfits",
   "view.followers": "De seguidores",
   "filter.section": "Secção",
+  "filter.kind": "Tipo",
   "filter.style": "Estilo",
   "filter.season": "Época",
   "filter.price": "Preço",

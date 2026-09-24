@@ -8,8 +8,12 @@ import { EVENTS, track } from "@/lib/track";
 /** The two sections. Accessories is a subsection inside each of them. */
 export type Seccion = Exclude<Genero, "ambos">;
 
+/** Inside a section: the looks, or the accessories. */
+export type Tipo = "outfits" | "accesorios";
+
 export type Filtro = {
   genero: Seccion;
+  tipo: Tipo;
   estilo: string;
   temporada: string;
   precio: "barato" | "caro";
@@ -33,8 +37,9 @@ const TEMPORADAS = [
 
 export function FilterZone({ filtro, onChange }: Props) {
   const { t, estilos, styleLabel } = useSettings();
-  const chips = ["todos", ...subsections(filtro.genero, estilos).map((s) => s.slug)];
-  const esTech = filtro.estilo === ACCESSORIES;
+  // accessories are their own choice above, so they aren't a style chip too
+  const chips = ["todos", ...subsections(filtro.genero, estilos).map((s) => s.slug).filter((s) => s !== ACCESSORIES)];
+  const esTech = filtro.tipo === "accesorios";
 
   function pickSeccion(genero: Seccion) {
     track(EVENTS.section[genero]);
@@ -43,9 +48,9 @@ export function FilterZone({ filtro, onChange }: Props) {
     onChange({ genero, estilo: keeps ? filtro.estilo : "todos" });
   }
 
-  function pickEstilo(slug: string) {
-    if (slug === ACCESSORIES) track(EVENTS.accessories[filtro.genero]);
-    onChange({ estilo: slug });
+  function pickTipo(tipo: Tipo) {
+    if (tipo === "accesorios") track(EVENTS.accessories[filtro.genero]);
+    onChange({ tipo });
   }
 
   return (
@@ -58,20 +63,31 @@ export function FilterZone({ filtro, onChange }: Props) {
         ))}
       </div>
 
-      <div className="fgroup" aria-label={t("filter.style")}>
-        <span className="glabel">{t("filter.style")}</span>
-        {chips.map((slug) => (
-          <button
-            key={slug}
-            type="button"
-            className="chip"
-            aria-pressed={filtro.estilo === slug}
-            onClick={() => pickEstilo(slug)}
-          >
-            {slug === "todos" ? t("f.all") : styleLabel(slug)}
-          </button>
-        ))}
+      <div className="genero genero-tipo" role="group" aria-label={t("filter.kind")}>
+        <button type="button" aria-pressed={!esTech} onClick={() => pickTipo("outfits")}>
+          {t("view.outfits")}
+        </button>
+        <button type="button" aria-pressed={esTech} onClick={() => pickTipo("accesorios")}>
+          {t("f.accessories")}
+        </button>
       </div>
+
+      {!esTech && (
+        <div className="fgroup" aria-label={t("filter.style")}>
+          <span className="glabel">{t("filter.style")}</span>
+          {chips.map((slug) => (
+            <button
+              key={slug}
+              type="button"
+              className="chip"
+              aria-pressed={filtro.estilo === slug}
+              onClick={() => onChange({ estilo: slug })}
+            >
+              {slug === "todos" ? t("f.all") : styleLabel(slug)}
+            </button>
+          ))}
+        </div>
+      )}
 
       {!esTech && (
         <div className="fgroup" aria-label={t("filter.season")}>

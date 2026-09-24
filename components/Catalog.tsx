@@ -31,7 +31,7 @@ type Props = {
 export function Catalog({ outfits, seguidores }: Props) {
   const { t } = useSettings();
   const [view, setView] = useState<View>("outfits");
-  const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", estilo: "todos", temporada: "todo", precio: "barato" });
+  const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", tipo: "outfits", estilo: "todos", temporada: "todo", precio: "barato" });
   const [gateOpen, setGateOpen] = useState(false);
   const [destino, setDestino] = useState<string | null>(null);
   const [registered, setRegistered] = useState(false);

@@ -24,18 +24,17 @@ export function OutfitGrid({ outfits, filtro, rank = false, onBuyClick }: Props)
   const [openName, setOpenName] = useState<string | null>(null);
   const scope = rank ? "seg" : "of";
 
-  // accessories have no season of their own, so that filter doesn't apply
-  const esTech = filtro?.estilo === ACCESSORIES;
+  // accessories are single products: no style and no season of their own
+  const esTech = filtro?.tipo === "accesorios";
   const list = filtro
     ? outfits
-        .filter(
-          (o) =>
-            (o.genero === filtro.genero || o.genero === "ambos") &&
-            // "Todos" means every look: accessories are single products, so
-            // they only show under their own chip
-            (filtro.estilo === "todos" ? o.categoria !== ACCESSORIES : o.categoria === filtro.estilo) &&
-            (esTech || filtro.temporada === "todo" || o.temporada === filtro.temporada),
-        )
+        .filter((o) => {
+          if (o.genero !== filtro.genero && o.genero !== "ambos") return false;
+          if (esTech) return o.categoria === ACCESSORIES;
+          if (o.categoria === ACCESSORIES) return false;
+          if (filtro.estilo !== "todos" && o.categoria !== filtro.estilo) return false;
+          return filtro.temporada === "todo" || o.temporada === filtro.temporada;
+        })
         .sort((a, b) =>
           filtro.precio === "caro" ? totalDe(b.prendas) - totalDe(a.prendas) : totalDe(a.prendas) - totalDe(b.prendas),
         )

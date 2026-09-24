@@ -19,6 +19,7 @@ export const zh: Dict = {
   "view.outfits": "穿搭",
   "view.followers": "粉丝投稿",
   "filter.section": "分类",
+  "filter.kind": "类型",
   "filter.style": "风格",
   "filter.season": "季节",
   "filter.price": "价格",

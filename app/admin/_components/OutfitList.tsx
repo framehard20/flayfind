@@ -29,6 +29,14 @@ const SECCIONES = [
 
 type SeccionFiltro = (typeof SECCIONES)[number]["v"];
 
+/** Same choice as the web: the looks, or the accessories. */
+const TIPOS = [
+  { v: "outfits", l: "Outfits" },
+  { v: "accesorios", l: "Accesorios" },
+] as const;
+
+type TipoFiltro = (typeof TIPOS)[number]["v"];
+
 export function OutfitList({
   rows,
   seccion,
@@ -43,19 +51,23 @@ export function OutfitList({
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [genero, setGenero] = useState<SeccionFiltro>("todas");
+  const [tipo, setTipo] = useState<TipoFiltro>("outfits");
   const [estilo, setEstilo] = useState("todos");
 
-  // same two steps as the web: first the section, then what's inside it
+  // same steps as the web: the section, then outfits or accessories, then style
   const chips = useMemo(() => {
     const all = genero === "todas" ? subsections("ambos", estilos) : subsections(genero as Genero, estilos);
-    return ["todos", ...all.map((s) => s.slug)];
+    return ["todos", ...all.map((s) => s.slug).filter((s) => s !== ACCESSORIES)];
   }, [genero, estilos]);
 
-  const lista = rows.filter(
-    (r) =>
-      (genero === "todas" || r.genero === genero || r.genero === "ambos" || (r.genero as string) === "tech") &&
-      (estilo === "todos" || r.categoria === estilo),
-  );
+  const lista = rows.filter((r) => {
+    const enSeccion =
+      genero === "todas" || r.genero === genero || r.genero === "ambos" || (r.genero as string) === "tech";
+    if (!enSeccion) return false;
+    if (tipo === "accesorios") return r.categoria === ACCESSORIES;
+    if (r.categoria === ACCESSORIES) return false;
+    return estilo === "todos" || r.categoria === estilo;
+  });
 
   async function send(method: "PATCH" | "DELETE", body: Record<string, unknown>) {
     setBusy(String(body.id));
@@ -106,6 +118,21 @@ export function OutfitList({
           ))}
         </div>
         <div className="ad-frow">
+          <span className="ad-flabel">Tipo</span>
+          {TIPOS.map((o) => (
+            <button
+              key={o.v}
+              type="button"
+              className="ad-chip"
+              aria-pressed={tipo === o.v}
+              onClick={() => setTipo(o.v)}
+            >
+              {o.l}
+            </button>
+          ))}
+        </div>
+        {tipo === "outfits" && (
+        <div className="ad-frow">
           <span className="ad-flabel">Estilo</span>
           {chips.map((slug) => (
             <button
@@ -115,10 +142,11 @@ export function OutfitList({
               aria-pressed={estilo === slug}
               onClick={() => setEstilo(slug)}
             >
-              {slug === "todos" ? "Todos" : slug === ACCESSORIES ? "Accesorios" : label(slug)}
+              {slug === "todos" ? "Todos" : label(slug)}
             </button>
           ))}
         </div>
+        )}
         <span className="ad-count">
           {lista.length === rows.length
             ? `${rows.length} en total`

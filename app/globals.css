@@ -112,6 +112,9 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .genero button{min-width:0;font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;padding:12px;border:none;background:transparent;color:var(--ink);cursor:pointer;transition:background .15s,color .15s}
 .genero.g3 button{font-size:13.5px;padding:12px 4px}
 .genero button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* second step: the looks or the accessories, a notch below the section */
+.genero-tipo{margin-top:-6px}
+.genero-tipo button{font-size:14px;padding:10px}
 .fgroup{display:flex;align-items:center;gap:7px;overflow-x:auto;padding:5px 0;scrollbar-width:none}
 .fgroup::-webkit-scrollbar{display:none}
 .fgroup .glabel{flex:0 0 auto;font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--grey);margin-right:3px}
