@@ -20,7 +20,19 @@ export function Reqs() {
 
   return (
     <section className="seg reqs">
-      <h3 className="reqs-title">{t("reqs.title")}</h3>
+      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener">
+        <span className="dc-ic" aria-hidden="true">
+          <DiscordIcon />
+        </span>
+        <span className="dc-tx">
+          <b>{t("discord.join")}</b>
+          <span>{t("discord.joinSub")}</span>
+        </span>
+        <span className="dc-ar" aria-hidden="true">
+          →
+        </span>
+      </a>
+      <h3 className="reqs-title reqs-title-after">{t("reqs.title")}</h3>
       <ol className="reqs-list">
         <li>
           <span className="rn">1</span>
@@ -50,19 +62,6 @@ export function Reqs() {
         </li>
       </ol>
       <p className="reqs-note">{t("reqs.note")}</p>
-
-      <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener">
-        <span className="dc-ic" aria-hidden="true">
-          <DiscordIcon />
-        </span>
-        <span className="dc-tx">
-          <b>{t("discord.join")}</b>
-          <span>{t("discord.joinSub")}</span>
-        </span>
-        <span className="dc-ar" aria-hidden="true">
-          →
-        </span>
-      </a>
     </section>
   );
 }

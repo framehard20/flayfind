@@ -200,6 +200,8 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 /* requisitos + discord */
 .reqs{margin:14px auto 0;padding:6px 20px 0}
 .reqs-title{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:14px}
+.reqs .discord-cta{margin-top:0}
+.reqs-title-after{margin-top:20px}
 .reqs-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:13px}
 .reqs-list li{display:flex;gap:12px;align-items:flex-start}
 .reqs-list .rn{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Archivo",sans-serif;font-weight:800;font-size:14px}
