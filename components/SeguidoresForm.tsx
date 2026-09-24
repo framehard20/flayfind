@@ -40,6 +40,7 @@ export function SeguidoresForm() {
 
   return (
     <section className="seg seg-form-wrap">
+      <h3 className="seg-form-title">{t("reqs.title")}</h3>
       <form className="seg-form" onSubmit={onSubmit}>
         <p className="seg-step">{t("form.step1")}</p>
         <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="registro_formulario_seguidores">

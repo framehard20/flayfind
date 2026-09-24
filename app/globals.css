@@ -193,12 +193,15 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 
 /* seguidores / concurso */
 .seg{max-width:920px;margin:14px auto 0;padding:38px 20px 6px}
+.seg-form-title{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:18px;text-transform:uppercase;letter-spacing:-.01em;margin-bottom:14px}
 .seg-intro{margin:0 auto;padding:24px 20px 0}
 .seg-intro .cue{margin-top:22px;display:inline-flex;align-items:center;gap:9px;font-family:"Inter",system-ui,sans-serif;font-weight:600;font-size:14px;color:var(--ink)}
 .seg-intro .cue .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-in-out infinite}
 .seg-form-wrap{margin:12px auto 0;padding:2px 20px 6px}
 /* requisitos + discord */
 .discord-standalone{max-width:920px;margin:4px auto 20px;padding:0 20px}
+/* sits right under the two big tab buttons, so it needs room */
+.discord-standalone-join{margin-top:20px}
 .discord-standalone .discord-cta{margin-top:0}
 .discord-cta{display:flex;align-items:center;gap:12px;margin-top:16px;background:#5865F2;border-radius:14px;padding:14px 16px;text-decoration:none}
 .discord-cta .dc-ic{flex:0 0 auto;display:flex;color:#fff}

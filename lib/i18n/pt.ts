@@ -116,6 +116,7 @@ export const pt: Dict = {
   "seg.title2": "seguidores",
   "seg.lead": "Tens um bom fit? Monta-o com roupa do mercado chinês e envia. **Publicam-se só os melhores** de todos os que chegam (os fracos não entram), com o teu **@** para se ver que é teu. Se o teu entrar, vê-lo-ás aqui em baixo com o link de cada peça para qualquer um copiar.",
   "seg.cue": "Envia o teu e aparece no site",
+  "reqs.title": "Como participar",
   "seg.head": "Outfits publicados",
   "seg.headSub": "Os melhores que chegaram",
   "form.step1": "1 · Regista-te na Hipobuy",

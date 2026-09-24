@@ -10,7 +10,7 @@ import { DiscordIcon } from "./DiscordIcon";
 export function DiscordPerks({ join = false }: { join?: boolean } = {}) {
   const { t } = useSettings();
   return (
-    <div className="discord-standalone">
+    <div className={`discord-standalone${join ? " discord-standalone-join" : ""}`}>
       <a className="discord-cta" href={LINKS.discord} target="_blank" rel="noopener">
         <span className="dc-ic" aria-hidden="true">
           <DiscordIcon />
