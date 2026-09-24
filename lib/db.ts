@@ -41,9 +41,21 @@ export function serviceKeyProblem(): string | null {
 export const KEY_HELP =
   "La clave de Supabase que hay en SUPABASE_SERVICE_ROLE_KEY es la pública. Copia la secreta (Project Settings → API Keys → «Secret keys», empieza por sb_secret_, o «service_role» en las Legacy API keys), cámbiala en Vercel y vuelve a desplegar.";
 
+/** Accessories moved inside Hombre and Mujer, so an outfit's section can be
+ *  "ambos" — which the old rule in the database refuses until the migration
+ *  runs. Raw Postgres says "violates check constraint", which helps nobody. */
+export const GENERO_HELP = `La base de datos todavía no acepta la sección «Hombre y Mujer». Abre Supabase → SQL Editor → New query, pega esto y pulsa Run:
+
+alter table public.outfits drop constraint if exists outfits_genero_check;
+update public.outfits set genero = 'ambos' where genero = 'tech';
+alter table public.outfits add constraint outfits_genero_check check (genero in ('hombre', 'mujer', 'ambos'));
+
+Después vuelve a guardar el outfit. No hace falta desplegar nada.`;
+
 /** Turns Supabase's raw message into something actionable. */
 export function explain(message: string): string {
   if (/row-level security/i.test(message)) return `${message}. ${KEY_HELP}`;
+  if (/outfits_genero_check/i.test(message)) return GENERO_HELP;
   return message;
 }
 

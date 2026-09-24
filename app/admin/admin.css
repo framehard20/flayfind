@@ -24,7 +24,7 @@
 .ad-btn-ghost{background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
 .ad-btn-danger{background:var(--urgente)}
 .ad-btn-sm{font-size:13px;padding:9px 13px;border-radius:10px}
-.ad-msg{margin-top:12px;font-size:13.5px;font-weight:600;border-radius:10px;padding:10px 12px}
+.ad-msg{margin-top:12px;font-size:13.5px;font-weight:600;border-radius:10px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere}
 .ad-msg-ok{color:#146c3a;background:#e3f5ea;border:1px solid #bfe6cf}
 .ad-msg-err{color:var(--urgente-ink);background:#fdece8;border:1px solid #f6c9bf}
 .ad-list{display:grid;gap:10px;list-style:none}
