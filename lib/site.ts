@@ -9,7 +9,7 @@ export const INVITE_CODE = "YILTEC";
 
 export const LINKS = {
   hipobuy: `https://hipobuy.com/register?inviteCode=${INVITE_CODE}`,
-  discord: "https://discord.gg/JAHXtxX6tb",
+  discord: "https://discord.gg/BUrt9M2dyS",
   instagramMain: "https://instagram.com/mariosanczz",
   instagramFits: "https://instagram.com/mariofits.czz",
 } as const;
