@@ -18,10 +18,10 @@ const isHttpsDeploy = !!process.env.VERCEL;
 const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://cloud.umami.is 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "style-src 'self' 'unsafe-inline'",
   // photos uploaded from /admin are served from Supabase storage
   "img-src 'self' data: blob: https://*.supabase.co",
-  "font-src 'self' https://fonts.gstatic.com",
+  "font-src 'self'",
   `connect-src 'self' blob: https://cloud.umami.is https://gateway.umami.is https://*.supabase.co${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",

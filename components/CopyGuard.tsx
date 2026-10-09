@@ -6,11 +6,11 @@ import { useEffect } from "react";
 // turns off selection (and the iOS long-press menu); this catches what CSS
 // can't: keyboard / menu copy & cut, select-all, dragging images out and the
 // right-click / long-press "save / copy image" menu on photos.
-// Form fields keep working normally. The invite-code "Copiar" button writes
+// Form fields and the privacy page (.legal) keep working normally. The invite-code "Copiar" button writes
 // with navigator.clipboard, which doesn't go through these events.
 
 const editable = (t: EventTarget | null) =>
-  t instanceof Element && !!t.closest("input, textarea, select, [contenteditable='true']");
+  t instanceof Element && !!t.closest("input, textarea, select, [contenteditable='true'], .legal");
 
 export function CopyGuard() {
   useEffect(() => {

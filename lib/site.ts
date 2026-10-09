@@ -7,6 +7,9 @@
 
 export const INVITE_CODE = "YILTEC";
 
+// Dirección pública de la web (la que usan Google y las vistas previas al compartir).
+export const SITE_URL = "https://www.flayfind.com";
+
 export const LINKS = {
   hipobuy: `https://hipobuy.com/register?inviteCode=${INVITE_CODE}`,
   discord: "https://discord.gg/BUrt9M2dyS",

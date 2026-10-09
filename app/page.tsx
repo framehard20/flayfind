@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SiteShell } from "@/components/SiteShell";
 import { countAll, getOutfitsOcultos, hasDb, listPublic, listStyles, toOutfit } from "@/lib/db";
 import { OUTFITS, type Outfit } from "@/lib/outfits";
@@ -12,6 +13,8 @@ import { OUTFITS_OCULTOS_POR_DEFECTO } from "@/lib/site";
 // the panel's "Ocultar todos" is on, or when every outfit has been hidden one
 // by one — never the code's old outfits in their place.
 export const revalidate = 60;
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 /** The followers' entries are outfits too, with a place and an author. */
 const fromStatic = (): Outfit[] =>

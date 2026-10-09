@@ -1,23 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { CopyGuard } from "@/components/CopyGuard";
-import { UMAMI } from "@/lib/site";
+import { SITE_URL, UMAMI } from "@/lib/site";
 import "./globals.css";
 
 const title = "Flayfind · Encuentra tu outfit ya montado";
 const description =
   "Outfits del mercado chino ya montados: talla, precio y link de cada prenda. Parece de 300€, lo tienes por menos de 50.";
 
-const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "http://localhost:3000";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  // the www address: flayfind.com redirects there, so links and previews point straight at it
+  metadataBase: new URL(SITE_URL),
   title,
   description,
-  openGraph: { title, description, type: "website", locale: "es_ES" },
-  twitter: { card: "summary", title, description },
+  openGraph: { title, description, type: "website", locale: "es_ES", siteName: "Flayfind" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export const viewport: Viewport = {
@@ -30,12 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800;900&family=Archivo+Expanded:wght@800;900&family=Inter:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
+        {/* the two files every page needs first; the rest load as text asks for them */}
+        <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
       </head>
       <body>
         <CopyGuard />
