@@ -12,7 +12,15 @@ export const LINKS = {
   discord: "https://discord.gg/BUrt9M2dyS",
   instagramMain: "https://instagram.com/mariosanczz",
   instagramFits: "https://instagram.com/mariofits.czz",
+  // la lista de productos (Google Sheets) que se ofrece mientras los outfits están ocultos
+  productos:
+    "https://docs.google.com/spreadsheets/d/17WHP0zYLfmwC9NZ9itCUNSPT9ymWnxT6qIXDKgO09Cs/edit?gid=1281688000#gid=1281688000",
 } as const;
+
+// «Ocultar todos» se cambia desde /admin/outfits. Este valor solo se usa cuando
+// la web no puede leer ese interruptor: antes de ejecutar supabase/schema.sql
+// (que crea la tabla «ajustes») o si la base de datos no responde.
+export const OUTFITS_OCULTOS_POR_DEFECTO = true;
 
 export const CONTACT_EMAIL = "flayfind@gmail.com";
 

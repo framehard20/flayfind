@@ -76,3 +76,12 @@
 .ad-framer-tools{flex:1;min-width:210px}
 .ad-framer-tools input[type=range]{width:100%;accent-color:var(--accent)}
 .ad-framer-tools .ad-item-actions{flex-direction:row;flex-wrap:wrap;margin-top:12px}
+
+/* «Ocultar todos / Mostrar todos» at the top of /admin/outfits */
+.ad-switch{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 18px;border-left:4px solid #22c55e}
+.ad-switch>div{flex:1 1 260px;min-width:0}
+.ad-switch .ad-hint{margin-top:6px}
+.ad-switch-off{border-left-color:#f59e0b;background:#fffaf0}
+.ad-switch .ad-msg{flex-basis:100%}
+.ad-avisos-tools{flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.ad-avisos-tools .ad-count{margin-right:auto}

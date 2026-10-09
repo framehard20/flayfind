@@ -52,12 +52,23 @@ alter table public.outfits add constraint outfits_genero_check check (genero in 
 
 Después vuelve a guardar el outfit. No hace falta desplegar nada.`;
 
+/** The "Ocultar todos" switch and the notify-me list need two tables that
+ *  older databases don't have yet. */
+export const TABLAS_HELP =
+  "La base de datos todavía no tiene las tablas «ajustes» y «avisos». Abre Supabase → SQL Editor → New query, pega todo el contenido de supabase/schema.sql y pulsa Run (es seguro repetirlo). No hace falta desplegar nada.";
+
+const missingTable = (message: string) =>
+  /(ajustes|avisos)/i.test(message) && /(does not exist|schema cache|could not find)/i.test(message);
+
 /** Turns Supabase's raw message into something actionable. */
 export function explain(message: string): string {
   if (/row-level security/i.test(message)) return `${message}. ${KEY_HELP}`;
   if (/outfits_genero_check/i.test(message)) return GENERO_HELP;
+  if (missingTable(message)) return TABLAS_HELP;
   return message;
 }
+
+export const isMissingTable = missingTable;
 
 export type Seccion = "outfits" | "seguidores";
 
@@ -160,6 +171,46 @@ export async function listAll(seccion: Seccion): Promise<OutfitRow[]> {
     .order("created_at", { ascending: true });
   if (error) throw new Error(error.message);
   return (data ?? []) as OutfitRow[];
+}
+
+/** How many rows a section has, visible or not. Tells "everything is hidden"
+ *  apart from "the table is empty", which is when the code's outfits fill in. */
+export async function countAll(seccion: Seccion): Promise<number> {
+  const { count, error } = await db().from("outfits").select("id", { count: "exact", head: true }).eq("seccion", seccion);
+  if (error) throw new Error(error.message);
+  return count ?? 0;
+}
+
+export const AJUSTE_OUTFITS_OCULTOS = "outfits_ocultos";
+
+/** The panel's "Ocultar todos" switch, or null when it can't be read (table
+ *  not created yet, database down) so the caller falls back to the default. */
+export async function getOutfitsOcultos(): Promise<boolean | null> {
+  if (!hasDb) return null;
+  try {
+    const { data, error } = await db().from("ajustes").select("valor").eq("clave", AJUSTE_OUTFITS_OCULTOS).maybeSingle();
+    if (error) throw new Error(error.message);
+    return data ? data.valor === true : null;
+  } catch (error) {
+    console.error("No se pudo leer «Ocultar todos»:", error);
+    return null;
+  }
+}
+
+export async function setOutfitsOcultos(ocultos: boolean): Promise<void> {
+  const { error } = await db()
+    .from("ajustes")
+    .upsert({ clave: AJUSTE_OUTFITS_OCULTOS, valor: ocultos, updated_at: new Date().toISOString() });
+  if (error) throw new Error(error.message);
+}
+
+/** Someone waiting for the outfits to come back. */
+export type AvisoRow = { id: string; email: string; idioma: string; created_at: string };
+
+export async function listAvisos(): Promise<AvisoRow[]> {
+  const { data, error } = await db().from("avisos").select("*").order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data ?? []) as AvisoRow[];
 }
 
 export async function getOutfit(id: string): Promise<OutfitRow | null> {

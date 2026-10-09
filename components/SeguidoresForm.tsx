@@ -9,7 +9,7 @@ import { useSettings } from "./Settings";
 // Hipobuy with the invite link. Submissions land in /admin/solicitudes.
 
 export function SeguidoresForm() {
-  const { t, tr } = useSettings();
+  const { t, tr, tn } = useSettings();
   const [status, setStatus] = useState<"idle" | "sending" | "ok">("idle");
   const [error, setError] = useState("");
 
@@ -99,6 +99,15 @@ export function SeguidoresForm() {
         </button>
         {error && <p className="seg-photo">{error}</p>}
         <p className="seg-photo">{tr("form.note")}</p>
+        <p className="seg-photo">
+          {tn("form.privacy", {
+            privacy: (
+              <a href="/privacidad" target="_blank" rel="noopener">
+                {t("soon.privacy")}
+              </a>
+            ),
+          })}
+        </p>
       </form>
     </section>
   );

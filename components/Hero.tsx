@@ -25,7 +25,8 @@ const SNEAK_RATIO = 0.267;
 const SHORT_LINE = 5.5;
 const SNEAK_END_GAP = 0.5;
 
-export function Hero() {
+/** `sinCatalogo`: the outfits are hidden, so there are no styles to pick below. */
+export function Hero({ sinCatalogo = false }: { sinCatalogo?: boolean }) {
   const { t, tr, lang, moneyRound } = useSettings();
   const heroRef = useRef<HTMLElement>(null);
   const h1Ref = useRef<HTMLHeadingElement>(null);
@@ -84,7 +85,7 @@ export function Hero() {
       </h1>
       <p className="pitch">{tr("hero.pitch", { marca: moneyRound(300), precio: moneyRound(50) })}</p>
       <p className="sub">{t("hero.sub")}</p>
-      <div className="cue">
+      <div className="cue" hidden={sinCatalogo}>
         <span className="dot" /> {t("hero.cue")}
       </div>
       <p className="hero-season">{t("hero.season")}</p>

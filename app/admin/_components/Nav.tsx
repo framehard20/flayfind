@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/admin/seguidores", label: "De seguidores" },
   { href: "/admin/estilos", label: "Estilos" },
   { href: "/admin/solicitudes", label: "Solicitudes" },
+  { href: "/admin/avisos", label: "Avisos" },
 ];
 
 export function Nav({ nuevas = 0 }: { nuevas?: number }) {

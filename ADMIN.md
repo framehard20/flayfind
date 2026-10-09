@@ -90,6 +90,26 @@ poder editarlos desde el panel.
   cámbiales el estilo.
 - **Ocultar** deja el outfit guardado pero fuera de la web. **Borrar** es
   definitivo.
+- **Ocultar todos / Mostrar todos** (arriba del todo en *Outfits*) quita de
+  golpe todo el catálogo mientras preparas outfits nuevos. La pestaña Outfits
+  enseña entonces «Nuevos outfits en camino», una casilla para que la gente deje
+  su email y le avises, y el enlace a la lista de productos. Puedes seguir
+  creando y editando outfits: nadie los ve hasta que pulses «Mostrar todos», y al
+  hacerlo vuelve exactamente lo que estaba visible (lo que ocultaste uno a uno
+  sigue oculto). Si ocultas todos los outfits uno a uno, la web también enseña
+  ese aviso, nunca los outfits antiguos del código.
+- **Avisos**: los emails de quienes pidieron que les avises. «Copiar emails» los
+  copia separados por comas (pégalos en **CCO** para que nadie vea los de los
+  demás) o «Descargar CSV». Solo dieron permiso para ese aviso: cuando les
+  escribas, **bórralos** («Borrar todos»). La política de privacidad promete
+  borrarlos tras avisar y, como máximo, a los 12 meses.
+
+> **Una vez:** «Ocultar todos» y «Avisos» necesitan dos tablas nuevas. Abre
+> Supabase → SQL Editor → New query, pega todo `supabase/schema.sql` y pulsa
+> **Run** (es seguro repetirlo). Hasta entonces la web se queda oculta (lo marca
+> `OUTFITS_OCULTOS_POR_DEFECTO` en `lib/site.ts`) y los emails que deje la gente se
+> guardan en **Solicitudes** con el nombre «Aviso de nuevos outfits», para que no
+> se pierda ninguno.
 - **Solicitudes**: lo que manda la gente por el formulario. Puedes marcarlas
   como leídas, aprobadas o descartadas.
 - Los cambios aparecen en la web en menos de un minuto (la portada se
@@ -118,6 +138,9 @@ Solo se cuentan dos cosas, para que el panel de Umami no se llene de ruido:
 («Ahora no, solo estoy mirando») y `cierre_aviso_comprar` (cerrar el aviso de
 comprar).
 
+**Mientras los outfits están ocultos**: `aviso_outfits` (pulsar «Avisarme») y
+`lista_productos_preparacion` (abrir la lista de productos).
+
 Ya no se cuentan los clics en las prendas, en Discord, en los Instagram ni en
 los selectores de idioma y moneda.
 
@@ -127,5 +150,8 @@ los selectores de idioma y moneda.
 - La sesión dura 8 horas y luego pide entrar otra vez.
 - Tras 8 intentos fallidos seguidos, ese visitante espera 10 minutos.
 - `/admin` no se indexa en Google.
+- La política de privacidad está en `/privacidad` (enlazada en el pie de página y
+  en los dos formularios). El contacto que aparece es `CONTACT_EMAIL` de
+  `lib/site.ts`.
 - Si pierdes el móvil: vuelve a ejecutar el script del paso 2 y cambia las
   variables en Vercel.

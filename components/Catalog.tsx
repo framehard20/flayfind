@@ -14,6 +14,7 @@ import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
 import { SeguidoresForm } from "./SeguidoresForm";
+import { OutfitsSoon } from "./OutfitsSoon";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { useSettings } from "./Settings";
@@ -25,9 +26,11 @@ type Props = {
   outfits: Outfit[];
   /** Same shape, plus posicion / autor / instagram. */
   seguidores: Outfit[];
+  /** "Ocultar todos" is on in /admin/outfits: no catalog, a notify-me notice instead. */
+  enPreparacion: boolean;
 };
 
-export function Catalog({ outfits, seguidores }: Props) {
+export function Catalog({ outfits, seguidores, enPreparacion }: Props) {
   const { t } = useSettings();
   const [view, setView] = useState<View>("outfits");
   const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", tipo: "outfits", estilo: "todos", temporada: "todo", precio: "barato" });
@@ -62,7 +65,7 @@ export function Catalog({ outfits, seguidores }: Props) {
   return (
     <>
       <div hidden={view !== "outfits"}>
-        <Hero />
+        <Hero sinCatalogo={enPreparacion} />
         <TrustBar />
       </div>
       <div hidden={view !== "seg"}>
@@ -72,9 +75,18 @@ export function Catalog({ outfits, seguidores }: Props) {
       <ViewNav view={view} onChange={setView} />
 
       <div hidden={view !== "outfits"}>
-        <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
-        <DiscordPerks />
-        <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
+        {enPreparacion ? (
+          <>
+            <OutfitsSoon />
+            <DiscordPerks />
+          </>
+        ) : (
+          <>
+            <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
+            <DiscordPerks />
+            <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
+          </>
+        )}
         <RepeatCta />
       </div>
 

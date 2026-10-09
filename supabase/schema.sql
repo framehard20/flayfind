@@ -79,6 +79,30 @@ create index if not exists submissions_created_idx on public.submissions (create
 alter table public.outfits enable row level security;
 alter table public.submissions enable row level security;
 
+-- Switches the panel flips for the whole site. "outfits_ocultos" is the
+-- "Ocultar todos" button: while true, the Outfits tab shows the "being
+-- prepared" notice instead of the catalog, without touching each outfit's own
+-- visible flag. It starts hidden; re-running this file never flips it back.
+create table if not exists public.ajustes (
+  clave      text primary key,
+  valor      jsonb not null,
+  updated_at timestamptz not null default now()
+);
+insert into public.ajustes (clave, valor) values ('outfits_ocultos', 'true'::jsonb)
+on conflict (clave) do nothing;
+
+-- People who asked to be emailed when the outfits are back. Only stored after
+-- they tick the privacy checkbox; delete a row to honour an erasure request.
+create table if not exists public.avisos (
+  id         uuid primary key default gen_random_uuid(),
+  email      text not null unique,
+  idioma     text not null default 'es',
+  created_at timestamptz not null default now()
+);
+
+alter table public.ajustes enable row level security;
+alter table public.avisos enable row level security;
+
 -- Public bucket for the photos uploaded from the panel.
 insert into storage.buckets (id, name, public)
 values ('outfits', 'outfits', true)
