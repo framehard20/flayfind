@@ -1,6 +1,7 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Categoria, Genero, Outfit, Prenda, Temporada } from "./outfits";
 import type { ExtraStyle } from "./styles";
+import { lanzamiento, OUTFITS_OCULTOS_POR_DEFECTO } from "./site";
 
 // Supabase holds the outfits shown on the site, the followers' entries and the
 // submissions from the public form. Photos live in the "outfits" storage
@@ -183,18 +184,35 @@ export async function countAll(seccion: Seccion): Promise<number> {
 
 export const AJUSTE_OUTFITS_OCULTOS = "outfits_ocultos";
 
-/** The panel's "Ocultar todos" switch, or null when it can't be read (table
- *  not created yet, database down) so the caller falls back to the default. */
-export async function getOutfitsOcultos(): Promise<boolean | null> {
+/** The same switch plus when it was last flipped — the launch needs both: a
+ *  switch left on from before the launch no longer hides anything after it. */
+export async function getOutfitsOcultosDesde(): Promise<{ ocultos: boolean; desde: number } | null> {
   if (!hasDb) return null;
   try {
-    const { data, error } = await db().from("ajustes").select("valor").eq("clave", AJUSTE_OUTFITS_OCULTOS).maybeSingle();
+    const { data, error } = await db()
+      .from("ajustes")
+      .select("valor, updated_at")
+      .eq("clave", AJUSTE_OUTFITS_OCULTOS)
+      .maybeSingle();
     if (error) throw new Error(error.message);
-    return data ? data.valor === true : null;
+    if (!data) return null;
+    return { ocultos: data.valor === true, desde: Date.parse(data.updated_at) || 0 };
   } catch (error) {
     console.error("No se pudo leer «Ocultar todos»:", error);
     return null;
   }
+}
+
+/** "Ocultar todos" as it actually applies now — the one rule the public page
+ *  and the panel both use. After LANZAMIENTO a switch left on from before it
+ *  no longer counts; only one flipped on again since then does. `leido` is
+ *  false when the switch couldn't be read and a default stands in. */
+export async function outfitsOcultos(ahora = Date.now()): Promise<{ ocultos: boolean; leido: boolean }> {
+  const ajuste = await getOutfitsOcultosDesde();
+  const l = lanzamiento();
+  const despues = l !== null && ahora >= l;
+  if (!ajuste) return { ocultos: despues ? false : OUTFITS_OCULTOS_POR_DEFECTO, leido: false };
+  return { ocultos: despues ? ajuste.ocultos && ajuste.desde >= (l as number) : ajuste.ocultos, leido: true };
 }
 
 export async function setOutfitsOcultos(ocultos: boolean): Promise<void> {

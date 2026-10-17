@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { LINKS } from "@/lib/site";
 import { useSettings } from "./Settings";
+import { LaunchCountdown } from "./LaunchCountdown";
 
 // Shown in the Outfits tab instead of the catalog while "Ocultar todos" is on
 // in /admin/outfits: says new outfits are on the way, takes an email (only with
 // the privacy checkbox ticked) to notify when they're back, and points to the
 // product list so nobody leaves empty-handed. Emails land in /admin/avisos.
 
-export function OutfitsSoon() {
+export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boolean }) {
   const { t, tn, lang } = useSettings();
   const [status, setStatus] = useState<"idle" | "sending" | "ok">("idle");
   const [error, setError] = useState("");
@@ -47,6 +48,7 @@ export function OutfitsSoon() {
       <h3 className="soon-title" id="soon-title">
         {t("soon.title")}
       </h3>
+      {prelanzamiento && <LaunchCountdown />}
       <p className="soon-lead">{t("soon.lead")}</p>
 
       {status === "ok" ? (

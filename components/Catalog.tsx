@@ -15,6 +15,7 @@ import { PopupModal } from "./PopupModal";
 import { GateModal } from "./GateModal";
 import { SeguidoresForm } from "./SeguidoresForm";
 import { OutfitsSoon } from "./OutfitsSoon";
+import { LaunchCountdown } from "./LaunchCountdown";
 import type { Outfit } from "@/lib/outfits";
 import { LINKS } from "@/lib/site";
 import { useSettings } from "./Settings";
@@ -28,9 +29,11 @@ type Props = {
   seguidores: Outfit[];
   /** "Ocultar todos" is on in /admin/outfits: no catalog, a notify-me notice instead. */
   enPreparacion: boolean;
+  /** Before LANZAMIENTO: followers' outfits wait too, and the notice counts down. */
+  prelanzamiento: boolean;
 };
 
-export function Catalog({ outfits, seguidores, enPreparacion }: Props) {
+export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: Props) {
   const { t } = useSettings();
   const [view, setView] = useState<View>("outfits");
   const [filtro, setFiltro] = useState<Filtro>({ genero: "hombre", tipo: "outfits", estilo: "todos", temporada: "todo", precio: "barato" });
@@ -77,7 +80,7 @@ export function Catalog({ outfits, seguidores, enPreparacion }: Props) {
       <div hidden={view !== "outfits"}>
         {enPreparacion ? (
           <>
-            <OutfitsSoon />
+            <OutfitsSoon prelanzamiento={prelanzamiento} />
             <DiscordPerks />
           </>
         ) : (
@@ -94,13 +97,19 @@ export function Catalog({ outfits, seguidores, enPreparacion }: Props) {
         <DiscordPerks join />
         <SeguidoresForm />
         <DiscordPerks />
-        {seguidores.length > 0 && (
-          <div className="seg-head">
-            <h3>{t("seg.head")}</h3>
-            <span className="sub">{t("seg.headSub")}</span>
-          </div>
+        {prelanzamiento ? (
+          <LaunchCountdown compact />
+        ) : (
+          <>
+            {seguidores.length > 0 && (
+              <div className="seg-head">
+                <h3>{t("seg.head")}</h3>
+                <span className="sub">{t("seg.headSub")}</span>
+              </div>
+            )}
+            <OutfitGrid outfits={seguidores} rank onBuyClick={handleBuyClick} />
+          </>
         )}
-        <OutfitGrid outfits={seguidores} rank onBuyClick={handleBuyClick} />
       </div>
 
       <div hidden={view !== "outfits"}>

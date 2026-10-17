@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isLoggedIn } from "@/lib/auth";
-import { getOutfitsOcultos, hasDb, listAll, listStyles } from "@/lib/db";
-import { OUTFITS_OCULTOS_POR_DEFECTO } from "@/lib/site";
+import { hasDb, listAll, listStyles, outfitsOcultos } from "@/lib/db";
 import { Nav } from "../_components/Nav";
 import { HideAllSwitch } from "../_components/HideAllSwitch";
+import { antesDelLanzamiento } from "@/lib/site";
 import { OutfitList } from "../_components/OutfitList";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function OutfitsPage() {
   if (!(await isLoggedIn())) redirect("/admin");
 
-  const [rows, estilos, ocultos] = await Promise.all([hasDb ? listAll("outfits") : [], listStyles(), getOutfitsOcultos()]);
+  const [rows, estilos, ajuste] = await Promise.all([hasDb ? listAll("outfits") : [], listStyles(), outfitsOcultos()]);
 
   return (
     <>
@@ -24,7 +24,7 @@ export default async function OutfitsPage() {
         </Link>
       </div>
       <p className="ad-lead">Los que se ven en la pestaña «Outfits» de la web, con sus filtros de sección, estilo y época.</p>
-      {hasDb && <HideAllSwitch ocultos={ocultos ?? OUTFITS_OCULTOS_POR_DEFECTO} leido={ocultos !== null} />}
+      {hasDb && <HideAllSwitch ocultos={ajuste.ocultos} leido={ajuste.leido} prelanzamiento={antesDelLanzamiento()} />}
       <OutfitList rows={rows} seccion="outfits" estilos={estilos} />
     </>
   );

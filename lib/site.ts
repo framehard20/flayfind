@@ -25,6 +25,25 @@ export const LINKS = {
 // (que crea la tabla «ajustes») o si la base de datos no responde.
 export const OUTFITS_OCULTOS_POR_DEFECTO = true;
 
+// 🚀 Lanzamiento de los outfits nuevos, en hora de España. Hasta ese momento la
+// web oculta todo (Outfits y De seguidores) y enseña una cuenta atrás. Desde
+// ese momento vuelven solos: el «Ocultar todos» que estuviera encendido de
+// antes deja de contar, y solo cuenta si lo vuelves a encender después.
+// "+01:00" porque el 1 de noviembre España ya está en horario de invierno.
+// Vacío ("") = sin lanzamiento: el interruptor del panel manda, como antes.
+export const LANZAMIENTO = "2026-11-01T00:00:00+01:00";
+
+const lanzamientoMs = LANZAMIENTO ? Date.parse(LANZAMIENTO) : NaN;
+
+/** Milliseconds of the launch, or null when no launch is set. */
+export const lanzamiento = (): number | null => (Number.isFinite(lanzamientoMs) ? lanzamientoMs : null);
+
+/** True while a launch is set and hasn't arrived yet. */
+export const antesDelLanzamiento = (ahora = Date.now()): boolean => {
+  const l = lanzamiento();
+  return l !== null && ahora < l;
+};
+
 export const CONTACT_EMAIL = "flayfind@gmail.com";
 
 // Umami (analítica gratis y sin cookies). Deja websiteId vacío para desactivarla.

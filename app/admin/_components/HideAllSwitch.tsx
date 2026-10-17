@@ -2,12 +2,22 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { lanzamiento } from "@/lib/site";
 
 // The "Ocultar todos / Mostrar todos" card at the top of /admin/outfits. It
 // doesn't change each outfit's own Ocultar/Mostrar: it hides the whole
 // catalog, and turning it off brings back exactly what was visible before.
 
-export function HideAllSwitch({ ocultos, leido }: { ocultos: boolean; leido: boolean }) {
+export function HideAllSwitch({
+  ocultos,
+  leido,
+  prelanzamiento = false,
+}: {
+  ocultos: boolean;
+  leido: boolean;
+  /** Before LANZAMIENTO the site hides everything whatever this switch says. */
+  prelanzamiento?: boolean;
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -30,6 +40,13 @@ export function HideAllSwitch({ ocultos, leido }: { ocultos: boolean; leido: boo
   return (
     <div className={`ad-card ad-switch${ocultos ? " ad-switch-off" : ""}`}>
       <div>
+        {prelanzamiento && (
+          <p className="ad-launch">
+            🚀 <b>Lanzamiento: {fechaLanzamiento()}.</b> Hasta entonces la web lo oculta todo —también De
+            seguidores— esté como esté este interruptor, con una cuenta atrás. A esa hora los outfits salen solos,
+            sin que tengas que tocar nada. Si después quieres volver a ocultarlos, pulsa «Ocultar todos».
+          </p>
+        )}
         <b>{ocultos ? "🚧 Outfits ocultos en la web" : "🟢 Outfits visibles en la web"}</b>
         <p className="ad-hint">
           {ocultos
@@ -49,4 +66,17 @@ export function HideAllSwitch({ ocultos, leido }: { ocultos: boolean; leido: boo
       {error && <p className="ad-msg ad-msg-err">{error}</p>}
     </div>
   );
+}
+
+/** "1 de noviembre a las 0:00" in Spanish time, from LANZAMIENTO. */
+function fechaLanzamiento(): string {
+  const l = lanzamiento();
+  if (l === null) return "";
+  return new Intl.DateTimeFormat("es-ES", {
+    day: "numeric",
+    month: "long",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(new Date(l));
 }

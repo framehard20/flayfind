@@ -735,3 +735,14 @@ footer p{font-size:12.5px;color:var(--grey);margin-top:8px;max-width:40ch;margin
 .legal li{margin-top:8px}
 .legal b{color:var(--ink)}
 .legal a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px}
+
+/* Cuenta atrás al lanzamiento (LANZAMIENTO en lib/site.ts). Fecha real: al
+   llegar a cero los outfits salen de verdad. */
+.cd{margin-top:16px;max-width:520px}
+.cd-cells{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cd-cell{display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 4px 10px}
+.cd-n{font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:900;font-size:clamp(26px,8vw,36px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.cd-l{font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#a9abb3}
+.cd-when{margin-top:10px;font-family:"Archivo",sans-serif;font-weight:700;font-size:13px;color:var(--accent-ink)}
+.cd-done{background:#e7f6ec;border:1px solid #bfe6cf;border-radius:14px;padding:16px;color:#146c3a;font-family:"Archivo",sans-serif;font-size:15px}
+.cd-compact{max-width:920px;margin:28px auto 0;padding:0 20px;text-align:center;font-family:"Archivo",sans-serif;font-weight:700;font-size:14px;color:var(--grey-2)}

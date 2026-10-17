@@ -12,17 +12,20 @@ export function SiteShell({
   seguidores,
   estilos,
   enPreparacion,
+  prelanzamiento,
 }: {
   outfits: Outfit[];
   seguidores: Outfit[];
   estilos: ExtraStyle[];
   /** "Ocultar todos" is on: the Outfits tab shows the notify-me notice. */
   enPreparacion: boolean;
+  /** Before LANZAMIENTO: everything hidden, with the countdown. */
+  prelanzamiento: boolean;
 }) {
   return (
     <SettingsProvider estilos={estilos}>
       <StickyHeader />
-      <Catalog outfits={outfits} seguidores={seguidores} enPreparacion={enPreparacion} />
+      <Catalog outfits={outfits} seguidores={seguidores} enPreparacion={enPreparacion} prelanzamiento={prelanzamiento} />
     </SettingsProvider>
   );
 }

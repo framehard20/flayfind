@@ -85,3 +85,4 @@
 .ad-switch .ad-msg{flex-basis:100%}
 .ad-avisos-tools{flex-wrap:wrap;gap:8px;margin:6px 0 14px}
 .ad-avisos-tools .ad-count{margin-right:auto}
+.ad-launch{margin:0 0 10px;padding:10px 12px;background:#eef3ff;border:1px solid #cfdcff;border-radius:10px;font-size:13px;line-height:1.5;color:#1f3a8a}
