@@ -78,8 +78,8 @@ poder editarlos desde el panel.
 - **Outfits** → `+ Añadir outfit`: nombre, sección (Hombre / Mujer / Hombre y
   Mujer), estilo, época, foto y prendas. «Hombre y Mujer» lo hace salir en las
   dos secciones, que es lo normal para los accesorios. Cada prenda lleva
-  nombre, precio y link; si el link es de Hipobuy y se te olvida el código de
-  invitación, se añade solo.
+  nombre, precio y link; si el link es de Uidbuy y se te olvida tu código de
+  referido (`ref=UWSV3X`), se añade solo.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
 - **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
   tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si
@@ -127,7 +127,7 @@ Solo se cuentan dos cosas, para que el panel de Umami no se llene de ruido:
 | Evento | Dónde está |
 | --- | --- |
 | `registro_barra_arriba` | la barra negra de arriba del todo |
-| `registro_popup_bienvenida` | el popup del −25% |
+| `registro_popup_bienvenida` | el popup de los 800 $ |
 | `registro_aviso_comprar` | el aviso que sale al pulsar «Comprar» |
 | `registro_ficha_outfit` | el botón dentro de la ficha de un outfit |
 | `registro_boton_final` | el botón grande debajo del catálogo |
@@ -155,3 +155,16 @@ los selectores de idioma y moneda.
   `lib/site.ts`.
 - Si pierdes el móvil: vuelve a ejecutar el script del paso 2 y cambia las
   variables en Vercel.
+
+## Agente de compras: Uidbuy
+
+Desde el 18 de octubre de 2026 la web manda a **Uidbuy** (antes Hipobuy). Todo
+está en `lib/site.ts`: `LINKS.registro` (el link con tu `ref`), `CODIGO` (800,
+para quien se registra sin el link) y `REFERIDO`. Los textos dicen que los
+**800 $ de descuento** solo se consiguen así, con el link o el código, y que el
+**40% en el envío** es el cupón de bienvenida de Uidbuy. Si cambia la oferta,
+cambia esas frases en `lib/i18n/*.ts` (7 idiomas).
+
+Las promesas sobre Uidbuy (revisión de calidad, posventa, un solo paquete,
+envíos a todo el mundo) son las que dice su propia web. No añadas otras
+(fotos, reembolsos, asistencia 24/7…) sin comprobarlas antes.

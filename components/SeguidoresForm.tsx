@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { INVITE_CODE, LINKS } from "@/lib/site";
+import { CODIGO, LINKS } from "@/lib/site";
 import { useSettings } from "./Settings";
 
 // Public form of the "De seguidores" section: the visitor says who they are,
 // which outfit they'd like to see on the page, and confirms they registered on
-// Hipobuy with the invite link. Submissions land in /admin/solicitudes.
+// Uidbuy with the referral link or code. Submissions land in /admin/solicitudes.
 
 export function SeguidoresForm() {
   const { t, tr, tn } = useSettings();
@@ -43,12 +43,12 @@ export function SeguidoresForm() {
       <h3 className="seg-form-title">{t("reqs.title")}</h3>
       <form className="seg-form" onSubmit={onSubmit}>
         <p className="seg-step">{t("form.step1")}</p>
-        <a className="seg-submit" href={LINKS.hipobuy} target="_blank" rel="noopener" data-umami-event="registro_formulario_seguidores">
-          {t("form.register", { code: INVITE_CODE })}
+        <a className="seg-submit" href={LINKS.registro} target="_blank" rel="noopener" data-umami-event="registro_formulario_seguidores">
+          {t("form.register", { code: CODIGO })}
         </a>
         <label className="consent">
           <input type="checkbox" name="registrado" required />
-          <span>{t("form.registered")}</span>
+          <span>{t("form.registered", { code: CODIGO })}</span>
         </label>
         <div className="fld">
           <label htmlFor="s-email">{t("form.email")}</label>

@@ -1,4 +1,4 @@
-// Prices are stored in euros (that's what Hipobuy charges). The picker only
+// Prices are stored in euros (that's how they're typed in the panel). The picker only
 // converts them for display, with daily rates through /api/rates.
 
 export const CURRENCIES = [

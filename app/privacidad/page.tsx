@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CONTACT_EMAIL, INVITE_CODE } from "@/lib/site";
+import { AGENTE, antesDelLanzamiento, CONTACT_EMAIL } from "@/lib/site";
 
 // Privacy notice for the two places the site asks for personal data: the
 // "notify me" box shown while the outfits are hidden, and the followers' form.
@@ -12,7 +12,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacidad" },
 };
 
-const UPDATED = "9 de octubre de 2026";
+const UPDATED = "18 de octubre de 2026";
+
+// The handle stays out of the page until the launch (lib/site.ts); regenerating
+// hourly is what brings it back on its own afterwards.
+export const revalidate = 3600;
 
 export default function PrivacidadPage() {
   const mail = <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>;
@@ -27,7 +31,8 @@ export default function PrivacidadPage() {
 
       <h2>Quién trata tus datos</h2>
       <p>
-        Flayfind (flayfind.com), el proyecto de outfits de @mariosanczz. Para cualquier cosa sobre tus datos, escribe a{" "}
+        {antesDelLanzamiento() ? "Flayfind (flayfind.com)." : "Flayfind (flayfind.com), el proyecto de outfits de @mariosanczz."} Para
+        cualquier cosa sobre tus datos, escribe a{" "}
         {mail}.
       </p>
 
@@ -40,7 +45,7 @@ export default function PrivacidadPage() {
         </li>
         <li>
           <b>Formulario de «De seguidores».</b> Si nos envías un outfit, guardamos tu nombre, tu Instagram, el email con el
-          que te registraste en Hipobuy y lo que nos cuentes del outfit, para valorarlo y, si sale elegido, publicarlo con
+          que te registraste en {AGENTE} y lo que nos cuentes del outfit, para valorarlo y, si sale elegido, publicarlo con
           tu @. Si marcas la casilla de novedades, también para escribirte con nuevos outfits.
         </li>
       </ul>
@@ -83,9 +88,9 @@ export default function PrivacidadPage() {
 
       <h2>Enlaces a otras tiendas</h2>
       <p>
-        Flayfind no vende nada: enlaza a Hipobuy y a sus vendedores, que tienen sus propias condiciones y su propia
-        política de privacidad. Los enlaces a Hipobuy llevan el código de invitación {INVITE_CODE}, que a ti te da el
-        descuento en el envío y a nosotros nos puede reportar un beneficio por recomendarlo.
+        Flayfind no vende nada: enlaza a {AGENTE} y a sus vendedores, que tienen sus propias condiciones y su propia
+        política de privacidad. Los enlaces a {AGENTE} llevan nuestro código de referido, que a ti te da el descuento
+        al registrarte y a nosotros nos puede reportar un beneficio por recomendarlo.
       </p>
     </main>
   );

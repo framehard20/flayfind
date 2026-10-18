@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { lockScroll } from "@/lib/scrollLock";
-import { INVITE_CODE, LINKS } from "@/lib/site";
+import { CODIGO, LINKS } from "@/lib/site";
 import { track } from "@/lib/track";
 import { useSettings } from "./Settings";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  /** Visitor clicked through to Hipobuy to register / log in. */
+  /** Visitor clicked through to Uidbuy to register / log in. */
   onGoRegister: () => void;
   /** Go on to the product they wanted. */
   onContinue: () => void;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 // Shown the first time someone taps "Comprar" in a visit: make sure they're
-// signed in to Hipobuy in this browser (with the -25% invite code) before the
+// signed up on Uidbuy through the referral link (that's what gives the $800) before the
 // product opens. After they click through it doesn't close — it flips to
 // "¿Listo?" with a button straight to the product they were after, so the
 // purchase isn't lost on the way.
@@ -108,7 +108,7 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                   <span className="gate-n">1</span>
                   <span>
                     <b>{t("gate.s1t")}</b>
-                    <small>{t("gate.s1d", { code: INVITE_CODE })}</small>
+                    <small>{t("gate.s1d", { code: CODIGO })}</small>
                   </span>
                 </li>
                 <li>
@@ -140,14 +140,14 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                   </svg>
                 </button>
                 <div className="gate-tip-body">
-                  <p>{tr("gate.tipA")}</p>
+                  <p>{tr("gate.tipA", { code: CODIGO })}</p>
                 </div>
               </div>
 
               <a
                 ref={ctaRef}
                 className="reg-go"
-                href={LINKS.hipobuy}
+                href={LINKS.registro}
                 target="_blank"
                 rel="noopener"
                 data-umami-event="registro_aviso_comprar"
@@ -186,7 +186,7 @@ export function GateModal({ open, onClose, onGoRegister, onContinue, toProduct }
                 <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-            <a className="reg-later" href={LINKS.hipobuy} target="_blank" rel="noopener" tabIndex={tab}>
+            <a className="reg-later" href={LINKS.registro} target="_blank" rel="noopener" tabIndex={tab}>
               {t("gate.readyAgain")}
             </a>
           </div>

@@ -94,12 +94,17 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
       </div>
 
       <div hidden={view !== "seg"}>
+        {/* before the launch the countdown leads this tab too, as in Outfits */}
+        {prelanzamiento && (
+          <section className="seg seg-launch">
+            <LaunchCountdown />
+            <LaunchCountdown compact />
+          </section>
+        )}
         <DiscordPerks join />
         <SeguidoresForm />
         <DiscordPerks />
-        {prelanzamiento ? (
-          <LaunchCountdown compact />
-        ) : (
+        {prelanzamiento ? null : (
           <>
             {seguidores.length > 0 && (
               <div className="seg-head">
@@ -123,7 +128,7 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         open={gateOpen}
         onClose={() => setGateOpen(false)}
         onGoRegister={markRegistered}
-        toProduct={!!destino && destino !== LINKS.hipobuy}
+        toProduct={!!destino && destino !== LINKS.registro}
         onContinue={() => {
           markRegistered();
           setGateOpen(false);

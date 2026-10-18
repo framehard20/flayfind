@@ -35,11 +35,11 @@ export async function POST(req: Request) {
   if (!outfit) return Response.json({ code: "outfit", error: "Ponle un nombre al outfit." }, { status: 400 });
   if (!instagram) return Response.json({ code: "instagram", error: "Falta tu Instagram." }, { status: 400 });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
-    return Response.json({ code: "email", error: "Ese email de Hipobuy no parece válido." }, { status: 400 });
+    return Response.json({ code: "email", error: "Ese email de Uidbuy no parece válido." }, { status: 400 });
   if (!idea) return Response.json({ code: "idea", error: "Cuéntanos qué lleva el outfit." }, { status: 400 });
   if (!registrado)
     return Response.json(
-      { code: "registered", error: "Tienes que registrarte en Hipobuy con el link para participar." },
+      { code: "registered", error: "Tienes que registrarte en Uidbuy con el link o el código para participar." },
       { status: 400 },
     );
 
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     email,
     idea,
     novedades: on(form.get("novedades")),
-    // the email above is the Hipobuy one, so there's nothing else to store
+    // the email above is the Uidbuy one, so there's nothing else to store
     hipobuy_usuario: "",
     registrado,
   };

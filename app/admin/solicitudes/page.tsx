@@ -18,7 +18,7 @@ export default async function SolicitudesPage() {
       <h1>Solicitudes</h1>
       <p className="ad-lead">
         Lo que manda la gente desde el formulario de «De seguidores»: su nombre, Instagram, email, el outfit que quieren ver y si se ha
-        registrado en Hipobuy con tu link.
+        registrado en Uidbuy con tu link o tu código.
       </p>
       <SubmissionList rows={rows} />
     </>

@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { Outfit } from "@/lib/outfits";
-import { LINKS } from "@/lib/site";
+import { CODIGO, LINKS } from "@/lib/site";
 import { lockScroll } from "@/lib/scrollLock";
 import { rankClass, slug, totalDe } from "@/lib/utils";
 import { ACCESSORIES } from "@/lib/styles";
@@ -299,11 +299,11 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
 
           <a
             className="om-cta"
-            href={LINKS.hipobuy}
+            href={LINKS.registro}
             target="_blank"
             rel="noopener"
             data-umami-event="registro_ficha_outfit"
-            onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
+            onClick={(e) => onBuyClick(e, LINKS.registro)}
             style={{ "--i": o.prendas.length + 1 } as React.CSSProperties}
           >
             {t("modal.cta")}
@@ -311,7 +311,7 @@ export function OutfitModal({ list, index, scope = "of", rank = false, onIndex, 
               <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
-          <p className="om-fine">{t("modal.fine")}</p>
+          <p className="om-fine">{t("modal.fine", { code: CODIGO })}</p>
         </div>
       </div>
     </div>

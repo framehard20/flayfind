@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { lockScroll } from "@/lib/scrollLock";
-import { INVITE_CODE, LINKS } from "@/lib/site";
+import { CODIGO, LINKS } from "@/lib/site";
 import { track } from "@/lib/track";
 import { useSettings } from "./Settings";
 
-// Registration popup (Hipobuy account with the -25% shipping invite code).
+// Registration popup (Uidbuy account through the referral link: $800 off + 40% shipping).
 //
 // When it opens — once per visit, whichever comes first:
 //  - 5 s on the page,
@@ -16,7 +16,7 @@ import { useSettings } from "./Settings";
 // Never for someone who already clicked through to register. If another
 // dialog (an outfit, the buy gate) is open at that moment it waits for it to
 // close instead of giving up. Closing it keeps it quiet for the rest of the
-// visit and leaves a small "-25%" pill in the corner, so the offer is still
+// visit and leaves a small "800 $" pill in the corner, so the offer is still
 // one tap away without interrupting again.
 
 const DISMISS_KEY = "flayfind_pop_dismissed"; // sessionStorage: closed this visit
@@ -161,7 +161,7 @@ export function PopupModal({ registered, onRegister }: Props) {
 
   async function copyCode() {
     try {
-      await navigator.clipboard.writeText(INVITE_CODE);
+      await navigator.clipboard.writeText(CODIGO);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {}
@@ -205,9 +205,7 @@ export function PopupModal({ registered, onRegister }: Props) {
                   <span className="reg-kicker">
                     <span className="reg-dot" /> {t("popup.kicker")}
                   </span>
-                  <p className="reg-num">
-                    −25<span>%</span>
-                  </p>
+                  <p className="reg-num">{tr("popup.num")}</p>
                   <p className="reg-num-sub">{t("popup.numSub")}</p>
                 </div>
               </div>
@@ -231,7 +229,7 @@ export function PopupModal({ registered, onRegister }: Props) {
                 </ul>
 
                 <div className="reg-code">
-                  <span>{tr("popup.code", { code: INVITE_CODE })}</span>
+                  <span>{tr("popup.code", { code: CODIGO })}</span>
                   <button type="button" onClick={copyCode} tabIndex={open ? 0 : -1}>
                     {copied ? t("popup.copied") : t("popup.copy")}
                   </button>
@@ -240,7 +238,7 @@ export function PopupModal({ registered, onRegister }: Props) {
                 <a
                   ref={ctaRef}
                   className="reg-go"
-                  href={LINKS.hipobuy}
+                  href={LINKS.registro}
                   target="_blank"
                   rel="noopener"
                   data-umami-event="registro_popup_bienvenida"
@@ -270,14 +268,14 @@ export function PopupModal({ registered, onRegister }: Props) {
                 {t("popup.doneTitle")}
               </h2>
               <ol className="reg-steps">
-                <li>{t("popup.doneStep1", { code: INVITE_CODE })}</li>
+                <li>{t("popup.doneStep1", { code: CODIGO })}</li>
                 <li>{t("popup.doneStep2")}</li>
                 <li>{t("popup.doneStep3")}</li>
               </ol>
               <button type="button" className="reg-go" onClick={close} tabIndex={open ? 0 : -1}>
                 {t("popup.doneCta")}
               </button>
-              <a className="reg-later" href={LINKS.hipobuy} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
+              <a className="reg-later" href={LINKS.registro} target="_blank" rel="noopener" tabIndex={open ? 0 : -1}>
                 {t("popup.doneAgain")}
               </a>
             </div>
@@ -288,7 +286,7 @@ export function PopupModal({ registered, onRegister }: Props) {
       {pill && !open && (
         <div className="reg-pill">
           <button type="button" className="reg-pill-open" onClick={() => show("recordatorio")}>
-            <span className="reg-pill-num">−25%</span> {t("popup.pill")}
+            <span className="reg-pill-num">{t("popup.pillNum")}</span> {t("popup.pill")}
           </button>
           <button type="button" className="reg-pill-x" aria-label={t("popup.pillHide")} onClick={() => setPill(false)}>
             <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">

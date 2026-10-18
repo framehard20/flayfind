@@ -1,7 +1,7 @@
 "use client";
 
 import { useSettings } from "./Settings";
-import { INVITE_CODE } from "@/lib/site";
+import { CODIGO } from "@/lib/site";
 
 const ITEMS = [1, 2, 3, 4, 5, 6];
 
@@ -13,7 +13,7 @@ export function Faq() {
       {ITEMS.map((n) => (
         <details key={n}>
           <summary>{t(`faq.q${n}`)}</summary>
-          <div className="ans">{tr(`faq.a${n}`, { code: INVITE_CODE })}</div>
+          <div className="ans">{tr(`faq.a${n}`, { code: CODIGO })}</div>
         </details>
       ))}
     </section>

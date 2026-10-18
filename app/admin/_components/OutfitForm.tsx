@@ -269,7 +269,7 @@ export function OutfitForm({
               </button>
               <label className="ad-field ad-piece-link">
                 <span>Link de compra</span>
-                <input type="url" value={p.link} onChange={(e) => setPiece(i, { link: e.target.value })} placeholder="https://hipobuy.com/product/..." />
+                <input type="url" value={p.link} onChange={(e) => setPiece(i, { link: e.target.value })} placeholder="https://www.uidbuy.com/..." />
               </label>
             </li>
           ))}
@@ -279,7 +279,7 @@ export function OutfitForm({
             + Añadir prenda
           </button>
           <span className="ad-hint">
-            Total del look: <b>{total.toFixed(2).replace(".", ",")} €</b> · el código {"YILTEC"} se añade solo a los links de Hipobuy.
+            Total del look: <b>{total.toFixed(2).replace(".", ",")} €</b> · tu código de referido se añade solo a los links de Uidbuy.
           </span>
         </div>
       </div>

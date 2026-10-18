@@ -2,16 +2,19 @@
 
 import { useSettings } from "./Settings";
 
-// These are Hipobuy's guarantees, not Flayfind's — Flayfind never ships or
-// handles orders, it only sends people to register on Hipobuy. One mention in
+// These are Uidbuy's services, not Flayfind's — Flayfind never ships or
+// handles orders, it only sends people to register on Uidbuy. Only what
+// uidbuy.com itself states (quality check, after-sales, one parcel, worldwide
+// shipping); don't add promises it doesn't make. One mention in
 // the heading covers attribution instead of repeating the name four times.
 const ITEMS = [
   {
     key: "trust.photos",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
-        <circle cx="12" cy="13.5" r="3.3" />
+        <circle cx="10.5" cy="10.5" r="6.5" />
+        <path d="m15.3 15.3 5 5" />
+        <path d="m7.8 10.6 1.9 1.9 3.4-3.6" />
       </svg>
     ),
   },
@@ -28,9 +31,8 @@ const ITEMS = [
     key: "trust.support",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M4 13a8 8 0 0 1 16 0" />
-        <rect x="3" y="13" width="4" height="6" rx="1.4" />
-        <rect x="17" y="13" width="4" height="6" rx="1.4" />
+        <path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z" />
+        <path d="m4 7 8 4 8-4M12 11v10" />
       </svg>
     ),
   },

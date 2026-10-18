@@ -44,13 +44,13 @@ export function SubmissionList({ rows }: { rows: SubmissionRow[] }) {
                 <a href={`https://instagram.com/${s.instagram}`} target="_blank" rel="noopener">
                   @{s.instagram}
                 </a>{" "}
-                · Hipobuy: <a href={`mailto:${s.email}`}>{s.email}</a> ·{" "}
+                · Email: <a href={`mailto:${s.email}`}>{s.email}</a> ·{" "}
                 {new Date(s.created_at).toLocaleDateString("es-ES", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
               </small>
               <p className="ad-sub-idea">{s.idea}</p>
               <div className="ad-tags">
                 <span className="ad-tag">{s.registrado ? "Dice estar registrado" : "Sin registrar"}</span>
-                {s.hipobuy_usuario && <span className="ad-tag">Hipobuy: {s.hipobuy_usuario}</span>}
+                {s.hipobuy_usuario && <span className="ad-tag">Usuario: {s.hipobuy_usuario}</span>}
                 <span className="ad-tag">{s.novedades ? "Quiere novedades" : "Sin novedades"}</span>
               </div>
             </div>

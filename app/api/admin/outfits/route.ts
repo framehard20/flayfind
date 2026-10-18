@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
 import { db, explain, hasDb, type Seccion } from "@/lib/db";
-import { INVITE_CODE } from "@/lib/site";
+import { REFERIDO } from "@/lib/site";
 import { BUILTIN_STYLES } from "@/lib/styles";
 
 export const runtime = "nodejs";
@@ -14,10 +14,11 @@ const TEMPORADAS = ["invierno", "verano"];
 type Body = Record<string, unknown>;
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
-/** Hipobuy links always carry the invite code, even if it was pasted without it. */
+/** Uidbuy links always carry the referral code, even if pasted without it.
+ *  Links to anywhere else (old Hipobuy ones included) are kept as they are. */
 function withInviteCode(link: string): string {
-  if (!/^https?:\/\/(www\.)?hipobuy\.com/i.test(link) || /[?&]inviteCode=/i.test(link)) return link;
-  return link + (link.includes("?") ? "&" : "?") + `inviteCode=${INVITE_CODE}`;
+  if (!/^https?:\/\/(www\.)?uidbuy\.com/i.test(link) || /[?&]ref=/i.test(link)) return link;
+  return link + (link.includes("?") ? "&" : "?") + `ref=${REFERIDO}`;
 }
 const num = (v: unknown) => {
   const n = typeof v === "number" ? v : parseFloat(String(v ?? "").replace(",", "."));

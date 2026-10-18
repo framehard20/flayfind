@@ -5,16 +5,21 @@
    ...?utm_source=instagram&utm_medium=bio para saber de dónde vino el clic.
    ===================================================================== */
 
-export const INVITE_CODE = "YILTEC";
+// 🛒 Agente de compras al que se manda a la gente: Uidbuy (antes Hipobuy).
+// Hay dos formas de llevarse los 800 $ de descuento, y solo esas dos:
+// registrarse con el link (ya lleva el código de referido) o registrarse y
+// escribir CODIGO. El 40% en el envío es el cupón de bienvenida de Uidbuy.
+export const AGENTE = "Uidbuy";
+export const CODIGO = "800";
+// código de referido que va dentro del link de registro
+export const REFERIDO = "UWSV3X";
 
 // Dirección pública de la web (la que usan Google y las vistas previas al compartir).
 export const SITE_URL = "https://www.flayfind.com";
 
 export const LINKS = {
-  hipobuy: `https://hipobuy.com/register?inviteCode=${INVITE_CODE}`,
+  registro: `https://www.uidbuy.com/register?ref=${REFERIDO}`,
   discord: "https://discord.gg/BUrt9M2dyS",
-  instagramMain: "https://instagram.com/mariosanczz",
-  instagramFits: "https://instagram.com/mariofits.czz",
   // la lista de productos (Google Sheets) que se ofrece mientras los outfits están ocultos
   productos:
     "https://docs.google.com/spreadsheets/d/17WHP0zYLfmwC9NZ9itCUNSPT9ymWnxT6qIXDKgO09Cs/edit?gid=1281688000#gid=1281688000",

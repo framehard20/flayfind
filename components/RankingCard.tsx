@@ -62,11 +62,11 @@ export function RankingCard({ seguidor: o, onBuyClick }: Props) {
         </div>
         <a
           className="cta"
-          href={LINKS.hipobuy}
+          href={LINKS.registro}
           target="_blank"
           rel="noopener"
          
-          onClick={(e) => onBuyClick(e, LINKS.hipobuy)}
+          onClick={(e) => onBuyClick(e, LINKS.registro)}
         >
           Regístrate para comprar →
         </a>
