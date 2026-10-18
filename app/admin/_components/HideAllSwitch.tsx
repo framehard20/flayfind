@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { lanzamiento } from "@/lib/site";
+import { lanzamiento, MOSTRAR_LISTA_PRODUCTOS } from "@/lib/site";
 
 // The "Ocultar todos / Mostrar todos" card at the top of /admin/outfits. It
 // doesn't change each outfit's own Ocultar/Mostrar: it hides the whole
@@ -50,7 +50,7 @@ export function HideAllSwitch({
         <b>{ocultos ? "🚧 Outfits ocultos en la web" : "🟢 Outfits visibles en la web"}</b>
         <p className="ad-hint">
           {ocultos
-            ? "La pestaña Outfits muestra «Nuevos outfits en camino», el formulario para avisar por email y el enlace a la lista de productos. Puedes seguir añadiendo y editando outfits: nadie los ve hasta que pulses «Mostrar todos»."
+            ? `La pestaña Outfits muestra «Nuevos outfits en camino» y el formulario para avisar por email${MOSTRAR_LISTA_PRODUCTOS ? ", con el enlace a la lista de productos" : ""}. Puedes seguir añadiendo y editando outfits: nadie los ve hasta que pulses «Mostrar todos».`
             : "La web enseña los outfits que no estén ocultos uno a uno. «Ocultar todos» los quita de golpe sin perder qué estaba oculto y qué no."}
         </p>
         {!leido && (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LINKS } from "@/lib/site";
+import { LINKS, MOSTRAR_LISTA_PRODUCTOS } from "@/lib/site";
 import { useSettings } from "./Settings";
 import { LaunchCountdown } from "./LaunchCountdown";
 
@@ -51,7 +51,7 @@ export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boole
       {prelanzamiento && <LaunchCountdown />}
       <p className="soon-lead">{t("soon.lead")}</p>
 
-      <div className="soon-cols">
+      <div className={MOSTRAR_LISTA_PRODUCTOS ? "soon-cols" : "soon-cols soon-cols-one"}>
         <div className="soon-main">
           {status === "ok" ? (
             <p className="seg-ok" role="status">
@@ -92,6 +92,7 @@ export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boole
           )}
         </div>
 
+        {MOSTRAR_LISTA_PRODUCTOS && (
         <a className="soon-list" href={LINKS.productos} target="_blank" rel="noopener" data-umami-event="lista_productos_preparacion">
           <span className="soon-list-ic" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
@@ -106,6 +107,7 @@ export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boole
             <span className="soon-list-cta">{t("soon.listCta")}</span>
           </span>
         </a>
+        )}
       </div>
     </section>
   );

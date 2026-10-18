@@ -20,10 +20,15 @@ export const SITE_URL = "https://www.flayfind.com";
 export const LINKS = {
   registro: `https://www.uidbuy.com/register?ref=${REFERIDO}`,
   discord: "https://discord.gg/BUrt9M2dyS",
-  // la lista de productos (Google Sheets) que se ofrece mientras los outfits están ocultos
+  // la lista de productos (Google Sheets); solo se enseña si MOSTRAR_LISTA_PRODUCTOS es true
   productos:
     "https://docs.google.com/spreadsheets/d/17WHP0zYLfmwC9NZ9itCUNSPT9ymWnxT6qIXDKgO09Cs/edit?gid=1281688000#gid=1281688000",
 } as const;
+
+// 📋 Enlace a la lista de productos dentro de «Nuevos outfits en camino».
+// Oculto desde el 18 de octubre de 2026 a petición de Mario; para volver a
+// enseñarlo, pon true.
+export const MOSTRAR_LISTA_PRODUCTOS = false;
 
 // «Ocultar todos» se cambia desde /admin/outfits. Este valor solo se usa cuando
 // la web no puede leer ese interruptor: antes de ejecutar supabase/schema.sql
