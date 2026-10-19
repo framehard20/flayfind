@@ -93,8 +93,9 @@ poder editarlos desde el panel.
 - **Ocultar todos / Mostrar todos** (arriba del todo en *Outfits*) quita de
   golpe todo el catálogo mientras preparas outfits nuevos. La pestaña Outfits
   enseña entonces «Nuevos outfits en camino», una casilla para que la gente deje
-  su email y le avises, y el enlace a la lista de productos (este último solo si
-  `MOSTRAR_LISTA_PRODUCTOS` es `true` en `lib/site.ts`; ahora está oculto). Puedes seguir
+  su email y le avises, y el enlace a la lista de productos, que lleva a
+  masterspread.com (solo si `MOSTRAR_LISTA_PRODUCTOS` es `true` en `lib/site.ts`;
+  ahora se enseña). Puedes seguir
   creando y editando outfits: nadie los ve hasta que pulses «Mostrar todos», y al
   hacerlo vuelve exactamente lo que estaba visible (lo que ocultaste uno a uno
   sigue oculto). Si ocultas todos los outfits uno a uno, la web también enseña
@@ -140,7 +141,7 @@ Solo se cuentan dos cosas, para que el panel de Umami no se llene de ruido:
 comprar).
 
 **Mientras los outfits están ocultos**: `aviso_outfits` (pulsar «Avisarme») y
-`lista_productos_preparacion` (abrir la lista de productos).
+`abrir_masterspread` (abrir la lista de productos, que lleva a masterspread.com).
 
 Ya no se cuentan los clics en las prendas, en Discord, en los Instagram ni en
 los selectores de idioma y moneda.

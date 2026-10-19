@@ -715,13 +715,13 @@ footer p{font-size:12.5px;color:var(--grey);margin-top:8px;max-width:40ch;margin
 .soon-form .consent{font-weight:500}
 .soon-form .consent a,.seg-form .seg-photo a,.soon-outfits .consent a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px}
 .soon-outfits .seg-ok{margin-top:18px}
-.soon-list{margin-top:18px;max-width:520px;display:flex;align-items:flex-start;gap:14px;background:var(--card);border:1.5px solid #159A57;border-radius:18px;padding:16px 18px;color:var(--ink);transition:transform .12s}
+.soon-list{margin-top:18px;max-width:520px;display:flex;align-items:flex-start;gap:14px;background:var(--card);border:1.5px solid var(--accent);border-radius:18px;padding:16px 18px;color:var(--ink);transition:transform .12s}
 .soon-list:active{transform:scale(.99)}
-.soon-list-ic{flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:#e7f6ec;display:flex;align-items:center;justify-content:center}
+.soon-list-ic{flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:#eaf0fe;display:flex;align-items:center;justify-content:center}
 .soon-list-tx{display:flex;flex-direction:column;gap:4px;min-width:0}
 .soon-list-tx b{font-family:"Archivo",sans-serif;font-weight:800;font-size:15px;line-height:1.25}
 .soon-list-tx span{font-size:13.5px;color:var(--grey-2);line-height:1.45}
-.soon-list-tx .soon-list-cta{margin-top:4px;font-family:"Archivo",sans-serif;font-weight:800;font-size:13.5px;color:#159A57}
+.soon-list-tx .soon-list-cta{margin-top:4px;font-family:"Archivo",sans-serif;font-weight:800;font-size:13.5px;color:var(--accent-ink)}
 
 /* ================= footer + legal page ================= */
 .footer-links{margin-top:10px;font-size:12.5px}

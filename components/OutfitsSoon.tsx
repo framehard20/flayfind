@@ -8,7 +8,8 @@ import { LaunchCountdown } from "./LaunchCountdown";
 // Shown in the Outfits tab instead of the catalog while "Ocultar todos" is on
 // in /admin/outfits: says new outfits are on the way, takes an email (only with
 // the privacy checkbox ticked) to notify when they're back, and points to the
-// product list so nobody leaves empty-handed. Emails land in /admin/avisos.
+// product list (masterspread.com) so nobody leaves empty-handed. Emails land in
+// /admin/avisos.
 
 export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boolean }) {
   const { t, tn, lang } = useSettings();
@@ -93,12 +94,14 @@ export function OutfitsSoon({ prelanzamiento = false }: { prelanzamiento?: boole
         </div>
 
         {MOSTRAR_LISTA_PRODUCTOS && (
-        <a className="soon-list" href={LINKS.productos} target="_blank" rel="noopener" data-umami-event="lista_productos_preparacion">
+        <a className="soon-list" href={LINKS.productos} target="_blank" rel="noopener" data-umami-event="abrir_masterspread">
+          {/* Masterspread's logo: a blue shopping bag */}
           <span className="soon-list-ic" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-              <rect x="4.5" y="2.5" width="15" height="19" rx="2.5" fill="#159A57" />
-              <rect x="7.3" y="7" width="9.4" height="9.6" rx="1" fill="#fff" />
-              <path d="M7.3 10.2h9.4M7.3 13.4h9.4M12 7v9.6" stroke="#159A57" strokeWidth="1.1" />
+            <svg viewBox="0 0 64 64" width="22" height="22">
+              <rect width="64" height="64" rx="16" fill="#2f66f0" />
+              <path d="M18 24h28l-3 22a4 4 0 0 1-4 3.5H25a4 4 0 0 1-4-3.5z" fill="#fff" />
+              <path d="M25 26v-4a7 7 0 0 1 14 0v4" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
+              <path d="M24 34h16M24 40h16M32 30v14" stroke="#2f66f0" strokeWidth="2.5" />
             </svg>
           </span>
           <span className="soon-list-tx">
