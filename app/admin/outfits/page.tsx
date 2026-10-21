@@ -20,6 +20,9 @@ export default async function OutfitsPage() {
       <div className="ad-top">
         <h1>Outfits</h1>
         <div className="ad-row">
+          <Link className="ad-btn ad-btn-ghost" href="/admin/outfits/crear">
+            Crear con IA
+          </Link>
           <Link className="ad-btn ad-btn-ghost" href="/admin/outfits/lote">
             Varios con IA
           </Link>

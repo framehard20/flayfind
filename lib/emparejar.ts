@@ -61,7 +61,7 @@ const Paso2 = z.object({
   ),
 });
 
-const PASO1_SYSTEM = `You help the owner of Flayfind, a Spanish outfit site, add purchase links to outfit photos. Every garment must come from the product list below (one product per line: number|tab|name|price in USD).
+const PASO1_SYSTEM = `You help the owner of Flayfind, a Spanish outfit site, add purchase links to outfit photos. Every garment must come from the product list above.
 
 For the photo you receive:
 - List each garment or accessory a visitor would want to buy, from top to bottom: tops and outerwear, bottoms, shoes, then visible accessories (cap, bag, belt, watch...). One entry per distinct item; two shoes of a pair are one item.
@@ -77,8 +77,16 @@ const PASO2_PROMPT = `For each garment below you get the outfit photo's garment 
 const catalogText = (list: Producto[]) =>
   list.map((p) => `${p.n}|${p.tab}|${p.nombre}|${p.usd != null ? "$" + p.usd.toFixed(2) : "?"}`).join("\n");
 
+/** The whole list as the first system block, cached for an hour. It goes first
+ *  so the batch matcher and the outfit creator share the same cached prefix. */
+export const catalogBlock = (list: Producto[]): Anthropic.Beta.BetaTextBlockParam => ({
+  type: "text",
+  text: `PRODUCT LIST (one product per line: number|tab|name|price in USD)\n${catalogText(list)}`,
+  cache_control: { type: "ephemeral", ttl: "1h" },
+});
+
 /** A product picture as base64, or null when it can't be fetched quickly. */
-async function picture(url: string): Promise<{ data: string; media_type: "image/jpeg" | "image/png" | "image/webp" | "image/gif" } | null> {
+export async function picture(url: string): Promise<{ data: string; media_type: "image/jpeg" | "image/png" | "image/webp" | "image/gif" } | null> {
   if (!url) return null;
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(12000) });
@@ -94,7 +102,7 @@ async function picture(url: string): Promise<{ data: string; media_type: "image/
 
 export class MatchError extends Error {}
 
-function readParsed<T>(response: { stop_reason: string | null; parsed_output: T | null }): T {
+export function readParsed<T>(response: { stop_reason: string | null; parsed_output: T | null }): T {
   if (response.stop_reason === "refusal") throw new MatchError("Claude no ha querido analizar esta foto.");
   if (!response.parsed_output) throw new MatchError("La respuesta de Claude no se pudo leer; vuelve a intentarlo.");
   return response.parsed_output;
@@ -118,11 +126,8 @@ export async function emparejar(photo: string, estilos: string[]): Promise<Empar
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       output_config: { effort: "medium", format: betaZodOutputFormat(Paso1) },
-      system: [
-        { type: "text", text: PASO1_SYSTEM },
-        // the list is the same for every photo, so it is cached between calls
-        { type: "text", text: `PRODUCT LIST\n${catalogText(catalogo)}`, cache_control: { type: "ephemeral", ttl: "1h" } },
-      ],
+      // the list is the same for every photo, so it is cached between calls
+      system: [catalogBlock(catalogo), { type: "text", text: PASO1_SYSTEM }],
       messages: [
         {
           role: "user",

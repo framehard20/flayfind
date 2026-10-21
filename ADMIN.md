@@ -102,6 +102,22 @@ poder editarlos desde el panel.
   > Environment Variables como `ANTHROPIC_API_KEY` (Production). Luego
   > Deployments → los tres puntos del último → **Redeploy**. En *Billing* pon
   > saldo y, si quieres, un límite de gasto.
+- **Outfits** → **Crear con IA**: montas un outfit con prendas de la lista de
+  Masterspread (las buscas tú, o pulsas «Que Claude elija el outfit» con la
+  sección, estilo, época y, si quieres, una idea y un presupuesto). Después
+  «Crear la foto»: Google (Gemini) hace la foto desde arriba sobre la alfombra
+  azul, copiando el estilo de tus fotos y usando las fotos de las prendas.
+  «Crear otra versión» hace otra; elige la que más te guste y guarda. Se guarda
+  igual que «Varios con IA» (oculto hasta el 1 de noviembre).
+  - La ropa de la foto sale muy parecida a la del producto, pero la crea una
+    IA: revísala antes de guardar para que nadie compre algo distinto.
+  - Cada foto cuesta unos 5 céntimos (lo cobra Google, aparte).
+
+  > **Una vez:** necesita una clave de Google. En aistudio.google.com →
+  > **Get API key** → *Create API key*, cópiala y añádela en Vercel como
+  > `GEMINI_API_KEY` (Production) y haz **Redeploy**. Las fotos no tienen plan
+  > gratis: en aistudio.google.com activa la facturación (*Set up billing*) y, si
+  > quieres, pon un límite de gasto en Google Cloud → Billing → Budgets.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
 - **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
   tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si
