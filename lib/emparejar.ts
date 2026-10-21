@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { z } from "zod";
 import { eurPorUsd, getCatalogo, type Producto } from "./catalogo";
+import { generico } from "./marcas";
 
 // Batch matcher for /admin/outfits/lote: given an outfit photo, find each
 // garment on Masterspread's product list. Two calls to Claude:
@@ -65,10 +66,10 @@ const PASO1_SYSTEM = `You help the owner of Flayfind, a Spanish outfit site, add
 
 For the photo you receive:
 - List each garment or accessory a visitor would want to buy, from top to bottom: tops and outerwear, bottoms, shoes, then visible accessories (cap, bag, belt, watch...). One entry per distinct item; two shoes of a pair are one item.
-- "tipo" is a short Spanish label for the item as a shopper would say it, e.g. "Sudadera con capucha", "Jogger cargo", "Sneakers negras".
+- "tipo" is a short generic Spanish label for the item as a shopper would say it, e.g. "Sudadera con capucha", "Camiseta básica", "Camiseta con diseño", "Jogger cargo", "Sneakers negras". NEVER put a brand or model name in it (no Nike, Essentials, Dior, Air Force, B22...): describe the item instead (colour, cut, "con logo", "con diseño", "básica").
 - "descripcion" is one short English line with what identifies the exact model: brand, model name if you recognise it, logos, prints, cut, distinctive details.
 - "candidatos" are the numbers of up to ${MAX_CANDIDATOS} products from the list that could be that same model, best first. Judge by brand, model and type of garment; ignore colour, because each link shows every colour. Leave it empty when nothing on the list could plausibly be the same item - an empty list is better than a guess.
-- Also suggest a short catchy Spanish outfit "nombre" (2-4 words, like "Total black hoodie"), the section "genero" (hombre, mujer, or ambos for unisex accessories), the "temporada" (invierno or verano) and the "estilo" slug, chosen from the slugs you are given.`;
+- Also suggest a short catchy Spanish outfit "nombre" (2-4 words, like "Total black hoodie", never with a brand or model name), the section "genero" (hombre, mujer, or ambos for unisex accessories), the "temporada" (invierno or verano) and the "estilo" slug, chosen from the slugs you are given.`;
 
 const PASO2_PROMPT = `For each garment below you get the outfit photo's garment description and the pictures of the shortlisted products. Pick the product that is the same garment model as in the outfit photo: same brand and design (logo, print, cut, sole, details). The colour does not need to match, because the product link offers every colour. If no candidate is the same model, answer null - a wrong link is worse than no link.
 
@@ -180,7 +181,8 @@ export async function emparejar(photo: string, estilos: string[]): Promise<Empar
   }
 
   return {
-    nombre: paso1.nombre,
+    // brand names never reach the site, even if Claude slips one in
+    nombre: generico(paso1.nombre, "Outfit"),
     genero: paso1.genero,
     temporada: paso1.temporada,
     estilo: estilos.includes(paso1.estilo) ? paso1.estilo : estilos.includes("streetwear") ? "streetwear" : estilos[0],
@@ -189,7 +191,7 @@ export async function emparejar(photo: string, estilos: string[]): Promise<Empar
       // only a candidate that was actually offered for this garment counts
       const chosen = e?.candidato != null && p.candidatos.includes(e.candidato) ? byN.get(e.candidato)! : null;
       return {
-        tipo: p.tipo,
+        tipo: generico(p.tipo, "Prenda"),
         descripcion: p.descripcion,
         elegido: chosen ? opcion(chosen) : null,
         confianza: chosen ? e!.confianza : null,

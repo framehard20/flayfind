@@ -117,3 +117,10 @@
 .ad-create-fotos button{padding:0;border:3px solid transparent;border-radius:14px;background:none;cursor:pointer;overflow:hidden}
 .ad-create-fotos button[aria-pressed="true"]{border-color:var(--accent)}
 .ad-create-fotos img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;background:#eeece7}
+.ad-brand-warn{color:var(--urgente-ink);font-weight:600}
+.ad-create-wait{display:grid;place-items:center;text-align:center;font-size:12px;font-weight:700;color:var(--grey-2);padding:8px}
+.ad-create-versions{display:flex;gap:6px;flex-wrap:wrap;max-width:110px}
+.ad-create-versions button{padding:0;border:2px solid transparent;border-radius:8px;background:none;cursor:pointer;overflow:hidden}
+.ad-create-versions button[aria-pressed="true"]{border-color:var(--accent)}
+.ad-create-versions img{display:block;width:30px;height:53px;object-fit:cover;background:#eeece7}
+.ad-create-finder{margin:4px 0 14px;padding:12px;border:1px dashed var(--line);border-radius:12px}

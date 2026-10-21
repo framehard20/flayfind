@@ -109,6 +109,9 @@ poder editarlos desde el panel.
   azul, copiando el estilo de tus fotos y usando las fotos de las prendas.
   «Crear otra versión» hace otra; elige la que más te guste y guarda. Se guarda
   igual que «Varios con IA» (oculto hasta el 1 de noviembre).
+  - En «Cuántos outfits» eliges cuántos monta Claude de una vez (hasta 8), todos
+    distintos; las fotos se crean una detrás de otra y luego «Guardar» los guarda
+    todos. «+ Outfit a mano» añade uno vacío para buscar tú las prendas.
   - La ropa de la foto sale muy parecida a la del producto, pero la crea una
     IA: revísala antes de guardar para que nadie compre algo distinto.
   - Cada foto cuesta unos 5 céntimos (lo cobra Google, aparte).
@@ -118,6 +121,12 @@ poder editarlos desde el panel.
   > `GEMINI_API_KEY` (Production) y haz **Redeploy**. Las fotos no tienen plan
   > gratis: en aistudio.google.com activa la facturación (*Set up billing*) y, si
   > quieres, pon un límite de gasto en Google Cloud → Billing → Budgets.
+- **Sin marcas en los nombres**: ni el nombre del outfit ni el de las prendas
+  pueden llevar una marca o un modelo (Nike, Essentials, Dior, Air Force, B22…);
+  se usan nombres genéricos como «Camiseta básica» o «Sudadera con diseño». Claude
+  ya los escribe así, el panel marca en rojo los que lleven marca y no deja
+  guardar un outfit nuevo hasta quitarla. La lista de marcas está en
+  `lib/marcas.ts`.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
 - **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
   tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si

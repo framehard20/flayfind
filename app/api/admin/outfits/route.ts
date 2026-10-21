@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
 import { db, explain, hasDb, type Seccion } from "@/lib/db";
+import { marcasEn } from "@/lib/marcas";
 import { REFERIDO } from "@/lib/site";
 import { BUILTIN_STYLES } from "@/lib/styles";
 
@@ -24,6 +25,16 @@ const num = (v: unknown) => {
   const n = typeof v === "number" ? v : parseFloat(String(v ?? "").replace(",", "."));
   return Number.isFinite(n) ? n : 0;
 };
+
+/** A message when the outfit's name or a garment's label names a brand. */
+function conMarcas(row: Record<string, unknown>): string | null {
+  const textos = [String(row.nombre ?? ""), ...((row.prendas as { tipo: string }[]) ?? []).map((p) => p.tipo)];
+  for (const t of textos) {
+    const marcas = marcasEn(t);
+    if (marcas.length) return `«${t}» lleva una marca (${marcas.join(", ")}). Pon un nombre genérico, como «Camiseta básica» o «Sudadera con diseño».`;
+  }
+  return null;
+}
 
 async function knownStyles(): Promise<string[]> {
   const builtin = BUILTIN_STYLES.map((s) => s.slug);
@@ -90,6 +101,9 @@ export async function POST(req: Request) {
 
   const { row, error } = parse((await req.json().catch(() => ({}))) as Body, await knownStyles());
   if (error || !row) return Response.json({ error }, { status: 400 });
+  // new outfits only: names on the site are generic, never a brand (older ones stay editable)
+  const conMarca = conMarcas(row);
+  if (conMarca) return Response.json({ error: conMarca }, { status: 400 });
 
   const { data, error: dbError } = await db().from("outfits").insert(row).select("id").single();
   if (dbError) return Response.json({ error: explain(dbError.message) }, { status: 500 });

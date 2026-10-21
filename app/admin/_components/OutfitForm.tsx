@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { OutfitRow, Seccion } from "@/lib/db";
 import type { Genero } from "@/lib/outfits";
 import { subsections, type ExtraStyle } from "@/lib/styles";
+import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
 
 type Piece = { tipo: string; precio: string; link: string };
@@ -154,6 +155,7 @@ export function OutfitForm({
         <label className="ad-field">
           <span>Nombre del outfit</span>
           <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Total black hoodie" required />
+          <BrandWarning text={nombre} />
         </label>
 
         <div className="ad-grid">
@@ -254,6 +256,7 @@ export function OutfitForm({
               <label className="ad-field">
                 <span>Prenda</span>
                 <input type="text" value={p.tipo} onChange={(e) => setPiece(i, { tipo: e.target.value })} placeholder="Sudadera con capucha" />
+                <BrandWarning text={p.tipo} />
               </label>
               <label className="ad-field">
                 <span>Precio €</span>

@@ -4,6 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 import { eurPorUsd, getCatalogo, type Producto } from "./catalogo";
 import { catalogBlock, readParsed, type Opcion } from "./emparejar";
+import { generico } from "./marcas";
 
 // Outfit creator for /admin/outfits/crear: pick products from Masterspread's
 // list (search, or let Claude suggest a look), then Google's image model lays
@@ -52,7 +53,13 @@ export function tipoDe(nombre: string, tab = ""): string {
     [/ (boots?) /, "Botas"],
     [/ (shoes?|sneakers?|trainers?|runners?|jordan|dunk|air force|yeezy|footwear) /, "Zapatillas"],
   ];
-  return rules.find(([re]) => re.test(t))?.[1] ?? "Prenda";
+  const base = rules.find(([re]) => re.test(t))?.[1] ?? "Prenda";
+  // tops: say whether they carry a design, never whose design it is
+  if (/^(Camiseta|Sudadera|Sudadera con capucha|Jersey)$/.test(base)) {
+    if (/ (plain|basic|blank) /.test(t)) return base === "Camiseta" ? "Camiseta básica" : `${base} básica`;
+    if (/ (graphic|print|printed|logo|letter|letters|design|pattern|star|flame|skull|text) /.test(t)) return `${base} con diseño`;
+  }
+  return base;
 }
 
 const opcion = (p: Producto, eur: number): Opcion => ({
@@ -75,19 +82,33 @@ export async function buscar(q: string, limit = 40): Promise<Pieza[]> {
 }
 
 const Sugerencia = z.object({
-  nombre: z.string(),
-  prendas: z.array(z.object({ tipo: z.string(), producto: z.number().int() })),
+  outfits: z.array(
+    z.object({
+      nombre: z.string(),
+      prendas: z.array(z.object({ tipo: z.string(), producto: z.number().int() })),
+    }),
+  ),
 });
+
+export const MAX_OUTFITS = 8;
 
 const SUGERIR_SYSTEM = `You put together outfits for Flayfind, a Spanish outfit site. Every piece must be a product from the list above, given by its number.
 
-Build one complete, wearable look that people of the given section would actually want: a top (and outerwear if the season calls for it), a bottom and a pair of shoes; one accessory only if it clearly lifts the look. Pieces must go together in style and colour family, and match the idea and season. Prefer well-known, popular items over obscure ones, and respect the budget when one is given (the list's prices are in USD). Pick products whose names say clearly what they are.
+Build the number of looks you are asked for. Each is a complete, wearable look that people of the given section would actually want: a top (and outerwear if the season calls for it), a bottom and a pair of shoes; one accessory only if it clearly lifts the look. Pieces must go together in style and colour family, and match the idea and season. Prefer well-known, popular items over obscure ones, and respect the budget when one is given (the list's prices are in USD). Pick products whose names say clearly what they are. When you build several looks, make them clearly different from each other (different pieces and colours); never repeat the same top or the same shoes across looks.
 
-"tipo" is a short Spanish label as a shopper would say it ("Sudadera con capucha", "Jogger cargo", "Sneakers negras"). "nombre" is a short catchy Spanish outfit name (2-4 words, like "Total black hoodie").`;
+"tipo" is a short generic Spanish label as a shopper would say it ("Sudadera con capucha", "Camiseta básica", "Camiseta con diseño", "Jogger cargo", "Sneakers negras"). "nombre" is a short catchy Spanish outfit name (2-4 words, like "Total black hoodie"). NEVER put a brand or model name in "tipo" or "nombre" (no Nike, Essentials, Dior, Air Force, B22...): describe the item instead (colour, cut, "con logo", "con diseño", "básica").`;
 
 export type Sugerido = { nombre: string; piezas: Pieza[] };
 
-export async function sugerir(o: { genero: string; estilo: string; temporada: string; idea: string; presupuesto: string }): Promise<Sugerido> {
+export async function sugerir(o: {
+  genero: string;
+  estilo: string;
+  temporada: string;
+  idea: string;
+  presupuesto: string;
+  cantidad: number;
+}): Promise<Sugerido[]> {
+  const cantidad = Math.min(MAX_OUTFITS, Math.max(1, Math.round(o.cantidad) || 1));
   const client = new Anthropic();
   const [catalogo, eur] = await Promise.all([getCatalogo(), eurPorUsd()]);
   const byN = new Map(catalogo.map((p) => [p.n, p]));
@@ -96,7 +117,8 @@ export async function sugerir(o: { genero: string; estilo: string; temporada: st
     `Style: ${o.estilo}`,
     `Season: ${o.temporada}`,
     o.idea.trim() ? `Idea from the owner: ${o.idea.trim()}` : "No specific idea: surprise with a strong, popular look.",
-    o.presupuesto.trim() ? `Budget for the whole outfit: about ${o.presupuesto.trim()} EUR.` : "",
+    o.presupuesto.trim() ? `Budget for each outfit: about ${o.presupuesto.trim()} EUR.` : "",
+    `Number of looks: ${cantidad}`,
   ].filter(Boolean).join("\n");
 
   const s = readParsed(
@@ -110,13 +132,19 @@ export async function sugerir(o: { genero: string; estilo: string; temporada: st
       messages: [{ role: "user", content: pedido }],
     }),
   );
-  const piezas = s.prendas
-    .filter((x) => byN.get(x.producto)?.foto)
-    .map((x) => {
-      const p = byN.get(x.producto)!;
-      return { ...opcion(p, eur), tipo: x.tipo || tipoDe(p.nombre, p.tab) };
-    });
-  return { nombre: s.nombre, piezas };
+  // brand names never reach the site, even if Claude slips one in
+  return s.outfits
+    .slice(0, cantidad)
+    .map((look) => ({
+      nombre: generico(look.nombre, "Outfit"),
+      piezas: look.prendas
+        .filter((x) => byN.get(x.producto)?.foto)
+        .map((x) => {
+          const p = byN.get(x.producto)!;
+          return { ...opcion(p, eur), tipo: generico(x.tipo, tipoDe(p.nombre, p.tab)) };
+        }),
+    }))
+    .filter((look) => look.piezas.length);
 }
 
 const FOTO_PROMPT = `Create a photorealistic overhead flat-lay product photo in vertical 9:16 format.

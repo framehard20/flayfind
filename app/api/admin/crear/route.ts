@@ -10,7 +10,8 @@ export const runtime = "nodejs";
 export const maxDuration = 300;
 
 // POST { accion: "buscar", q }                    -> { piezas }   search Masterspread's list
-// POST { accion: "sugerir", genero, estilo, ... } -> { nombre, piezas }   Claude puts a look together
+// POST { accion: "sugerir", genero, estilo, ..., cantidad } -> { outfits: [{ nombre, piezas }] }
+//                                                 Claude puts that many different looks together
 // POST { accion: "foto", piezas, notas }          -> { url }      Gemini makes the flat-lay photo,
 //                                                                 saved in the photos bucket
 
@@ -44,14 +45,15 @@ export async function POST(req: Request) {
 
     if (body.accion === "sugerir") {
       if (!apiKeyConfigured()) return fail(CLAUDE_HELP, 503);
-      const s = await sugerir({
+      const outfits = await sugerir({
         genero: str(body.genero, 20),
         estilo: str(body.estilo, 40),
         temporada: str(body.temporada, 20),
         idea: str(body.idea),
         presupuesto: str(body.presupuesto, 10),
+        cantidad: Number(body.cantidad) || 1,
       });
-      return Response.json(s);
+      return Response.json({ outfits });
     }
 
     if (body.accion === "foto") {

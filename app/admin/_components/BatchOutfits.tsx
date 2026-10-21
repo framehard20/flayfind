@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Emparejado, Opcion } from "@/lib/emparejar";
 import { subsections, type ExtraStyle } from "@/lib/styles";
+import { marcasEn } from "@/lib/marcas";
+import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
 
 // /admin/outfits/lote: drop several outfit photos at once. Each one is cropped
@@ -211,6 +213,7 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
 
   const listos = items.filter((i) => i.estado === "listo");
   const sinLink = listos.filter((i) => i.prendas.some((f) => !/^https?:\/\//i.test(f.link.trim())));
+  const conMarca = listos.filter((i) => marcasEn(i.nombre).length || i.prendas.some((f) => marcasEn(f.tipo).length));
   const trabajando = items.some((i) => i.estado === "subiendo" || i.estado === "analizando");
 
   function texto(): string {
@@ -221,6 +224,10 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
 
   async function guardarTodos() {
     setMsg(null);
+    if (conMarca.length) {
+      setMsg({ ok: false, text: `Quita las marcas de los nombres (se ven en rojo) en: ${conMarca.map((i) => i.nombre || i.archivo).join(", ")}.` });
+      return;
+    }
     if (sinLink.length) {
       setMsg({ ok: false, text: `Antes de guardar, pon el link que falta (o quita esa prenda) en: ${sinLink.map((i) => i.nombre || i.archivo).join(", ")}.` });
       return;
@@ -326,6 +333,7 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
                     <label className="ad-field">
                       <span>Nombre del outfit</span>
                       <input type="text" value={item.nombre} onChange={(e) => patch(item.id, { nombre: e.target.value })} />
+                      <BrandWarning text={item.nombre} />
                     </label>
                     <label className="ad-field">
                       <span>Sección</span>
@@ -361,6 +369,7 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
                           <label className="ad-field">
                             <span>Prenda</span>
                             <input type="text" value={f.tipo} onChange={(e) => patchFila(item.id, k, { tipo: e.target.value })} />
+                            <BrandWarning text={f.tipo} />
                           </label>
                           <label className="ad-field">
                             <span>Precio €</span>
