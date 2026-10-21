@@ -86,3 +86,20 @@
 .ad-avisos-tools{flex-wrap:wrap;gap:8px;margin:6px 0 14px}
 .ad-avisos-tools .ad-count{margin-right:auto}
 .ad-launch{margin:0 0 10px;padding:10px 12px;background:#eef3ff;border:1px solid #cfdcff;border-radius:10px;font-size:13px;line-height:1.5;color:#1f3a8a}
+
+/* Batch of outfits matched by Claude (/admin/outfits/lote) */
+.ad-lote{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:start}
+.ad-lote-photo{display:grid;gap:8px;justify-items:start}
+.ad-lote-main{min-width:0}
+.ad-lote-file{font-weight:700;overflow-wrap:anywhere}
+.ad-lote-piece.is-missing{border-color:#f6c9bf;background:#fdf3f0}
+.ad-lote-match{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start}
+.ad-lote-match img{width:56px;height:56px;border-radius:8px;object-fit:cover;background:#eeece7;border:1px solid var(--line);flex-shrink:0}
+.ad-lote-match>div{flex:1;min-width:0}
+.ad-lote-match .ad-hint{margin-top:4px}
+.ad-lote-alt{display:block;margin-top:6px;width:100%;font:inherit;font-size:13px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.ad-flag{display:inline-block;font-family:"Archivo",sans-serif;font-weight:800;font-size:11px;letter-spacing:.03em;text-transform:uppercase;border-radius:100px;padding:4px 9px;border:1px solid}
+.ad-flag-miss{color:var(--urgente-ink);background:#fdece8;border-color:#f6c9bf}
+.ad-flag-check{color:#7a5300;background:#fff4d6;border-color:#f1dc9e}
+.ad-flag-ok{color:#146c3a;background:#e3f5ea;border-color:#bfe6cf}
+@media(max-width:560px){.ad-lote{grid-template-columns:1fr}}

@@ -80,6 +80,28 @@ poder editarlos desde el panel.
   dos secciones, que es lo normal para los accesorios. Cada prenda lleva
   nombre, precio y link; si el link es de Uidbuy y se te olvida tu código de
   referido (`ref=UWSV3X`), se añade solo.
+- **Outfits** → **Varios con IA**: eliges varias fotos a la vez y Claude busca
+  cada prenda en la lista de Masterspread (masterspread.com, la misma hoja de
+  productos). Por cada foto te deja un outfit editable: nombre, sección, estilo,
+  época y las prendas con link de Uidbuy (con tu código) y precio en euros
+  (pasado desde dólares al cambio del día).
+  - **Coincide**: mismo modelo, seguro. **Revísalo**: probable, mira la foto
+    del producto. **Link no encontrado**: no está en la lista; búscalo tú y
+    pégalo, o quita esa prenda. El color no importa: el link enseña todos.
+  - «Otras opciones de la lista» cambia la prenda por otra de las candidatas.
+  - «Guardar todos» no deja guardar mientras quede algún «Link no
+    encontrado». Antes del 1 de noviembre los guarda ocultos (enciende
+    «Ocultar todos») y salen solos con el lanzamiento; después, los guarda sin
+    publicar.
+  - El lote se queda en ese navegador hasta que lo guardas, aunque recargues.
+  - Tarda alrededor de un minuto por foto y cuesta unos céntimos por outfit
+    (lo cobra Anthropic, aparte).
+
+  > **Una vez:** necesita una clave de Claude. En console.anthropic.com →
+  > **API Keys** → *Create Key*, cópiala y añádela en Vercel → Settings →
+  > Environment Variables como `ANTHROPIC_API_KEY` (Production). Luego
+  > Deployments → los tres puntos del último → **Redeploy**. En *Billing* pon
+  > saldo y, si quieres, un límite de gasto.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
 - **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
   tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si

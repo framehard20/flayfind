@@ -19,9 +19,14 @@ export default async function OutfitsPage() {
       <Nav />
       <div className="ad-top">
         <h1>Outfits</h1>
-        <Link className="ad-btn" href="/admin/outfits/nuevo">
-          + Añadir outfit
-        </Link>
+        <div className="ad-row">
+          <Link className="ad-btn ad-btn-ghost" href="/admin/outfits/lote">
+            Varios con IA
+          </Link>
+          <Link className="ad-btn" href="/admin/outfits/nuevo">
+            + Añadir outfit
+          </Link>
+        </div>
       </div>
       <p className="ad-lead">Los que se ven en la pestaña «Outfits» de la web, con sus filtros de sección, estilo y época.</p>
       {hasDb && <HideAllSwitch ocultos={ajuste.ocultos} leido={ajuste.leido} prelanzamiento={antesDelLanzamiento()} />}

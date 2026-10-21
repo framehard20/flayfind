@@ -20,7 +20,8 @@ const csp = [
   `script-src 'self' 'unsafe-inline' https://cloud.umami.is 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   // photos uploaded from /admin are served from Supabase storage
-  "img-src 'self' data: blob: https://*.supabase.co",
+  // masterspread.com: product pictures in the batch matcher (/admin/outfits/lote)
+  "img-src 'self' data: blob: https://*.supabase.co https://www.masterspread.com",
   "font-src 'self'",
   `connect-src 'self' blob: https://cloud.umami.is https://gateway.umami.is https://*.supabase.co${isDev ? " ws:" : ""}`,
   "object-src 'none'",
