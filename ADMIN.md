@@ -75,6 +75,13 @@ poder editarlos desde el panel.
 
 ## Uso diario
 
+- **👁 Vista previa 1 nov** (arriba en el panel, hasta el lanzamiento): abre
+  `/vista-previa`, la portada tal como se verá el 1 de noviembre a las 00:00
+  con lo que tengas guardado ahora (outfits visibles, De seguidores, sin cuenta
+  atrás). Solo funciona con tu sesión del panel: a cualquier otro le pide el
+  login. No cambia la web pública ni cuenta en Umami. Si la barra negra avisa de
+  que «Ocultar todos» seguirá activo, es que lo encendiste después del
+  lanzamiento.
 - **Outfits** → `+ Añadir outfit`: nombre, sección (Hombre / Mujer / Hombre y
   Mujer), estilo, época, foto y prendas. «Hombre y Mujer» lo hace salir en las
   dos secciones, que es lo normal para los accesorios. Cada prenda lleva

@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/site";
 // The panel and the API have nothing for search engines.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api/"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api/", "/vista-previa"] },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
