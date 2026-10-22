@@ -177,5 +177,7 @@ export const en: Dict = {
   "err.consent": "To notify you, you need to accept the privacy policy.",
   "err.mail": "That email doesn't look valid.",
   "footer.privacy": "Privacy",
+  "footer.legal": "Legal notice",
+  "footer.terms": "Terms of use",
   "form.privacy": "By sending you accept the {privacy}.",
 };

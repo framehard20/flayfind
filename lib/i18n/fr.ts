@@ -177,5 +177,7 @@ export const fr: Dict = {
   "err.consent": "Pour te prévenir, tu dois accepter la politique de confidentialité.",
   "err.mail": "Cet email ne semble pas valide.",
   "footer.privacy": "Confidentialité",
+  "footer.legal": "Mentions légales",
+  "footer.terms": "Conditions d'utilisation",
   "form.privacy": "En envoyant, tu acceptes la {privacy}.",
 };

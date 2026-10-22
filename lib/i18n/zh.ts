@@ -177,5 +177,7 @@ export const zh: Dict = {
   "err.consent": "要接收通知，你需要接受隐私政策。",
   "err.mail": "这个邮箱地址似乎无效。",
   "footer.privacy": "隐私",
+  "footer.legal": "法律声明",
+  "footer.terms": "使用条款",
   "form.privacy": "提交即表示你接受{privacy}。",
 };

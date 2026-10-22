@@ -177,5 +177,7 @@ export const de: Dict = {
   "err.consent": "Damit wir dich benachrichtigen können, musst du die Datenschutzerklärung akzeptieren.",
   "err.mail": "Diese E-Mail scheint nicht gültig zu sein.",
   "footer.privacy": "Datenschutz",
+  "footer.legal": "Impressum",
+  "footer.terms": "Nutzungsbedingungen",
   "form.privacy": "Mit dem Absenden akzeptierst du die {privacy}.",
 };

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AGENTE, antesDelLanzamiento, CONTACT_EMAIL } from "@/lib/site";
+import { hayTitular, LEGAL_ACTUALIZADO, TITULAR } from "@/lib/titular";
 
 // Privacy notice for the two places the site asks for personal data: the
 // "notify me" box shown while the outfits are hidden, and the followers' form.
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacidad" },
 };
 
-const UPDATED = "18 de octubre de 2026";
+const UPDATED = LEGAL_ACTUALIZADO;
 
 // The handle stays out of the page until the launch (lib/site.ts); regenerating
 // hourly is what brings it back on its own afterwards.
@@ -31,9 +32,14 @@ export default function PrivacidadPage() {
 
       <h2>Quién trata tus datos</h2>
       <p>
-        {antesDelLanzamiento() ? "Flayfind (flayfind.com)." : "Flayfind (flayfind.com), el proyecto de outfits de @mariosanczz."} Para
-        cualquier cosa sobre tus datos, escribe a{" "}
-        {mail}.
+        {antesDelLanzamiento() ? "Flayfind (flayfind.com)." : "Flayfind (flayfind.com), el proyecto de outfits de @mariosanczz."}{" "}
+        {hayTitular() && (
+          <>
+            Responsable: <b>{TITULAR.nombre}</b>, NIF {TITULAR.nif}, {TITULAR.domicilio}.{" "}
+          </>
+        )}
+        Para cualquier cosa sobre tus datos, escribe a {mail}. Los datos del titular están en el{" "}
+        <Link href="/aviso-legal">Aviso legal</Link>.
       </p>
 
       <h2>Qué datos recogemos y para qué</h2>
@@ -48,24 +54,40 @@ export default function PrivacidadPage() {
           que te registraste en {AGENTE} y lo que nos cuentes del outfit, para valorarlo y, si sale elegido, publicarlo con
           tu @. Si marcas la casilla de novedades, también para escribirte con nuevos outfits.
         </li>
+        <li>
+          <b>Visitas.</b> Contamos las visitas con Umami: qué páginas se ven, el país aproximado y el tipo de dispositivo y
+          navegador, siempre en conjunto, sin cookies y sin guardar tu IP ni nada que te identifique. Sirve para saber cuánta
+          gente usa la web y qué funciona.
+        </li>
+        <li>
+          <b>Si nos escribes.</b> Usamos tu email y tu mensaje solo para responderte.
+        </li>
       </ul>
       <p>
         La base legal es tu <b>consentimiento</b> (art. 6.1.a del RGPD), que das al marcar la casilla y que puedes retirar
-        cuando quieras escribiendo a {mail}, sin que eso afecte a lo hecho antes.
+        cuando quieras escribiendo a {mail}, sin que eso afecte a lo hecho antes. El recuento de visitas se basa en nuestro
+        interés legítimo en saber cómo se usa la web (art. 6.1.f), sin identificarte; puedes oponerte escribiendo al mismo
+        email. No tomamos decisiones automatizadas sobre ti ni hacemos perfiles.
       </p>
 
       <h2>Cuánto tiempo los guardamos</h2>
       <p>
         Los emails del aviso se borran en cuanto enviamos el aviso y, en cualquier caso, a los 12 meses como máximo. Lo
-        enviado por el formulario de seguidores se guarda mientras dure el concurso y, como máximo, 12 meses. Si pides que
-        borremos tus datos, lo hacemos antes.
+        enviado por el formulario de seguidores se guarda mientras dure el concurso y, como máximo, 12 meses. Los emails que
+        nos mandes se borran cuando ya no hacen falta para responderte y, como máximo, a los 12 meses. Si pides que borremos tus
+        datos, lo hacemos antes.
       </p>
 
       <h2>Con quién se comparten</h2>
       <p>
         No vendemos ni cedemos tus datos a nadie. Se guardan con los proveedores técnicos que hacen funcionar la web
-        —Supabase (base de datos) y Vercel (alojamiento)—, que solo los tratan por cuenta nuestra y con las garantías que
-        exige el RGPD.
+        —Supabase (base de datos), Vercel (alojamiento), Umami (estadísticas de visitas) y Google (el correo de contacto)—,
+        que solo los tratan por cuenta nuestra y con las garantías que exige el RGPD.
+      </p>
+      <p>
+        Algunos de estos proveedores son de Estados Unidos y pueden guardar datos fuera de la Unión Europea. En ese caso la
+        transferencia se ampara en el Marco de Privacidad de Datos UE-EE. UU. o en las cláusulas contractuales tipo aprobadas
+        por la Comisión Europea.
       </p>
 
       <h2>Tus derechos</h2>
