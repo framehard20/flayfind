@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Pieza, Sugerido } from "@/lib/crear";
 import { marcasEn } from "@/lib/marcas";
-import { subsections, type ExtraStyle } from "@/lib/styles";
+import { ACCESSORIES, subsections, type ExtraStyle } from "@/lib/styles";
 import { BrandWarning } from "./BrandWarning";
 
 // /admin/outfits/crear: build one or several outfits from Masterspread's list
@@ -147,7 +147,8 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
   const patch = (id: string, p: Partial<Borrador> | ((b: Borrador) => Partial<Borrador>)) =>
     setLista((l) => l.map((b) => (b.id === id ? { ...b, ...(typeof p === "function" ? p(b) : p) } : b)));
   const setPieza = (id: string, i: number, p: Partial<Fila>) => patch(id, (b) => ({ piezas: b.piezas.map((f, j) => (j === i ? { ...f, ...p } : f)) }));
-  const disponibles = subsections(a.genero, estilos);
+  // accessories have no looks (that section links to Masterspread)
+  const disponibles = subsections(a.genero, estilos).filter((x) => x.slug !== ACCESSORIES);
 
   /** Photos are made one at a time, in order. */
   function pedirFoto(b: Borrador) {

@@ -109,6 +109,14 @@ poder editarlos desde el panel.
   > Environment Variables como `ANTHROPIC_API_KEY` (Production). Luego
   > Deployments → los tres puntos del último → **Redeploy**. En *Billing* pon
   > saldo y, si quieres, un límite de gasto.
+- **Outfits** → **Actualizar todos**: vuelve a mirar la foto de cada outfit guardado,
+  busca cada prenda en la lista de Masterspread y propone el **link más barato del
+  mismo modelo**, al lado de lo que tiene ahora (los links antiguos que no son de
+  Uidbuy salen marcados). Revisa y pulsa «Aplicar». Un outfit con alguna prenda en
+  «Link no encontrado» no se aplica hasta que pongas su link o la quites. Cuesta
+  unos céntimos por outfit (Claude). Los accesorios no entran.
+- **Accesorios**: la sección ya no enseña productos; lleva a masterspread.com, donde
+  están todos. No hace falta crear outfits de accesorios.
 - **Outfits** → **Crear con IA**: montas un outfit con prendas de la lista de
   Masterspread (las buscas tú, o pulsas «Que Claude elija el outfit» con la
   sección, estilo, época y, si quieres, una idea y un presupuesto). Después

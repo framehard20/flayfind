@@ -7,6 +7,7 @@ import { SegIntro } from "./SegIntro";
 import { ViewNav, type View } from "./ViewNav";
 import { FilterZone, type Filtro } from "./FilterZone";
 import { OutfitGrid } from "./OutfitGrid";
+import { AccessoriesLink } from "./AccessoriesLink";
 import { RepeatCta } from "./RepeatCta";
 import { DiscordPerks } from "./DiscordPerks";
 import { Faq } from "./Faq";
@@ -87,7 +88,12 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
           <>
             <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
             <DiscordPerks />
-            <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
+            {/* accessories live on Masterspread: the subsection links there */}
+            {filtro.tipo === "accesorios" ? (
+              <AccessoriesLink />
+            ) : (
+              <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
+            )}
           </>
         )}
         <RepeatCta />

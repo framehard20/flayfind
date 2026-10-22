@@ -106,6 +106,7 @@ export function FilterZone({ filtro, onChange }: Props) {
         </div>
       )}
 
+      {!esTech && (
       <div className="fgroup" aria-label={t("filter.price")}>
         <span className="glabel">{t("filter.price")}</span>
         <button type="button" className="chip" aria-pressed={filtro.precio === "barato"} onClick={() => onChange({ precio: "barato" })}>
@@ -115,6 +116,7 @@ export function FilterZone({ filtro, onChange }: Props) {
           {t("f.expensive")}
         </button>
       </div>
+      )}
     </div>
   );
 }

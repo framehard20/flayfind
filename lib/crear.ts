@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
-import { eurPorUsd, getCatalogo, type Producto } from "./catalogo";
+import { getCatalogo, type Producto } from "./catalogo";
 import { catalogBlock, readParsed, type Opcion } from "./emparejar";
 import { generico } from "./marcas";
 
@@ -62,23 +62,23 @@ export function tipoDe(nombre: string, tab = ""): string {
   return base;
 }
 
-const opcion = (p: Producto, eur: number): Opcion => ({
+const opcion = (p: Producto): Opcion => ({
   n: p.n,
   nombre: p.nombre,
   link: p.link,
   foto: p.foto,
-  eur: p.usd != null ? Math.round(p.usd * eur * 100) / 100 : null,
+  eur: p.eur,
 });
 
 /** Products whose name has every word of the search, cheapest first within the best tab. */
 export async function buscar(q: string, limit = 40): Promise<Pieza[]> {
   const words = norm(q).split(" ").filter(Boolean);
   if (!words.length) return [];
-  const [catalogo, eur] = await Promise.all([getCatalogo(), eurPorUsd()]);
+  const catalogo = await getCatalogo();
   return catalogo
     .filter((p) => p.foto && words.every((w) => norm(p.nombre).includes(w)))
     .slice(0, limit)
-    .map((p) => ({ ...opcion(p, eur), tipo: tipoDe(p.nombre, p.tab) }));
+    .map((p) => ({ ...opcion(p), tipo: tipoDe(p.nombre, p.tab) }));
 }
 
 const Sugerencia = z.object({
@@ -94,7 +94,13 @@ export const MAX_OUTFITS = 8;
 
 const SUGERIR_SYSTEM = `You put together outfits for Flayfind, a Spanish outfit site. Every piece must be a product from the list above, given by its number.
 
-Build the number of looks you are asked for. Each is a complete, wearable look that people of the given section would actually want: a top (and outerwear if the season calls for it), a bottom and a pair of shoes; one accessory only if it clearly lifts the look. Pieces must go together in style and colour family, and match the idea and season. Prefer well-known, popular items over obscure ones, and respect the budget when one is given (the list's prices are in USD). Pick products whose names say clearly what they are. When you build several looks, make them clearly different from each other (different pieces and colours); never repeat the same top or the same shoes across looks.
+Work like a stylist building the best looks of the season for young people who follow streetwear and fashion on TikTok and Instagram. Build the number of looks you are asked for. Each is a complete, wearable look that people of the given section would actually want to copy:
+- A top (and outerwear when the season calls for it), a bottom and a pair of shoes. For women, a dress, a matching set or a jumpsuit can replace top and bottom. One accessory (a bag, a cap, a belt) only if it clearly lifts the look.
+- The section decides the clothes. For "mujer", use women's pieces: products from the women's tabs of the list, or items that are clearly for women (dresses, skirts, tops, crop tops, leggings, heels, women's bags, women's sneakers). For "hombre", use men's pieces and never anything made for women.
+- Make each look cohesive: two or three colours that go together, a balanced silhouette (oversized with fitted, wide with slim), and pieces that share one style. Match the idea and the season.
+- Prefer popular, recognisable items that people search for, and respect the budget when one is given (the list's prices are in EUR). When several products on the list are the same item, take the cheapest one.
+- Pick products whose names say clearly what they are; skip vague names.
+- When you build several looks, make them clearly different from each other (different pieces, colours and vibes); never repeat the same top or the same shoes across looks.
 
 "tipo" is a short generic Spanish label as a shopper would say it ("Sudadera con capucha", "Camiseta básica", "Camiseta con diseño", "Jogger cargo", "Sneakers negras"). "nombre" is a short catchy Spanish outfit name (2-4 words, like "Total black hoodie"). NEVER put a brand or model name in "tipo" or "nombre" (no Nike, Essentials, Dior, Air Force, B22...): describe the item instead (colour, cut, "con logo", "con diseño", "básica").`;
 
@@ -110,7 +116,7 @@ export async function sugerir(o: {
 }): Promise<Sugerido[]> {
   const cantidad = Math.min(MAX_OUTFITS, Math.max(1, Math.round(o.cantidad) || 1));
   const client = new Anthropic();
-  const [catalogo, eur] = await Promise.all([getCatalogo(), eurPorUsd()]);
+  const catalogo = await getCatalogo();
   const byN = new Map(catalogo.map((p) => [p.n, p]));
   const pedido = [
     `Section: ${o.genero}`,
@@ -141,7 +147,7 @@ export async function sugerir(o: {
         .filter((x) => byN.get(x.producto)?.foto)
         .map((x) => {
           const p = byN.get(x.producto)!;
-          return { ...opcion(p, eur), tipo: generico(x.tipo, tipoDe(p.nombre, p.tab)) };
+          return { ...opcion(p), tipo: generico(x.tipo, tipoDe(p.nombre, p.tab)) };
         }),
     }))
     .filter((look) => look.piezas.length);

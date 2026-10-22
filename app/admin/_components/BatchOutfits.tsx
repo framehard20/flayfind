@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Emparejado, Opcion } from "@/lib/emparejar";
-import { subsections, type ExtraStyle } from "@/lib/styles";
+import { ACCESSORIES, subsections, type ExtraStyle } from "@/lib/styles";
 import { marcasEn } from "@/lib/marcas";
 import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
@@ -297,7 +297,8 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
       )}
 
       {items.map((item) => {
-        const disponibles = subsections(item.genero, estilos);
+        // accessories have no looks (that section links to Masterspread)
+  const disponibles = subsections(item.genero, estilos).filter((x) => x.slug !== ACCESSORIES);
         return (
           <div className="ad-card ad-lote" key={item.id}>
             <div className="ad-lote-photo">

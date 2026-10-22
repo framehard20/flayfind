@@ -3,7 +3,7 @@ import { REFERIDO } from "./site";
 
 // The product list the batch matcher searches: Masterspread
 // (masterspread.com), which reads Mario's product spreadsheet, hidden links and
-// pictures included. Its public API gives every row as name, price (USD),
+// pictures included. Its public API gives every row as name, price (in the sheet's own currency),
 // platform + item id and a lasting picture address, so this file only fetches,
 // de-duplicates and turns each item into a Uidbuy link with the referral code.
 
@@ -23,7 +23,8 @@ export type Producto = {
   n: number;
   nombre: string;
   tab: string;
-  usd: number | null;
+  /** Price in euros (the sheets use dollars, euros or yuan; converted at today's rate). */
+  eur: number | null;
   link: string;
   foto: string;
 };
@@ -83,6 +84,7 @@ export async function getCatalogo(): Promise<Producto[]> {
     )
   ).flat();
 
+  const rates = await tasasEur();
   const seen = new Set<string>();
   const list: Producto[] = [];
   for (const { it, tab, foto } of rows) {
@@ -93,7 +95,7 @@ export async function getCatalogo(): Promise<Producto[]> {
       n: list.length + 1,
       nombre: it.name.replace(/\s+/g, " ").trim(),
       tab,
-      usd: it.p?.c === "USD" ? it.p.a : null,
+      eur: it.p ? aEuros(it.p.a, it.p.c, rates) : null,
       link,
       foto,
     });
@@ -102,12 +104,18 @@ export async function getCatalogo(): Promise<Producto[]> {
   return list;
 }
 
-/** Euros per US dollar today (the panel stores prices in euros). */
-export async function eurPorUsd(): Promise<number> {
+/** Units of each currency per euro, today (the panel stores prices in euros). */
+async function tasasEur(): Promise<Record<string, number>> {
   try {
     const res = await fetch("https://open.er-api.com/v6/latest/EUR", { next: { revalidate: REVALIDATE } });
     const data = (await res.json()) as { rates?: Record<string, number> };
-    if (data.rates?.USD) return 1 / data.rates.USD;
+    if (data.rates?.USD) return data.rates;
   } catch {}
-  return 1 / FALLBACK_RATES.rates.USD;
+  return FALLBACK_RATES.rates;
 }
+
+const aEuros = (amount: number, currency: string, rates: Record<string, number>): number | null => {
+  if (currency === "EUR") return Math.round(amount * 100) / 100;
+  const rate = rates[currency];
+  return rate ? Math.round((amount / rate) * 100) / 100 : null;
+};

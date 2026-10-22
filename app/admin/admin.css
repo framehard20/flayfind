@@ -124,3 +124,8 @@
 .ad-create-versions button[aria-pressed="true"]{border-color:var(--accent)}
 .ad-create-versions img{display:block;width:30px;height:53px;object-fit:cover;background:#eeece7}
 .ad-create-finder{margin:4px 0 14px;padding:12px;border:1px dashed var(--line);border-radius:12px}
+
+/* Refresh of saved outfits (/admin/outfits/actualizar) */
+.ad-refresh-cols{margin:6px 0 12px}
+.ad-refresh-old{list-style:none;display:grid;gap:4px;margin-top:6px;font-size:13px;color:var(--grey-2)}
+.ad-refresh-old a{color:var(--accent-ink);text-decoration:underline}
