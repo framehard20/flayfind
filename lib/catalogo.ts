@@ -10,6 +10,8 @@ import { REFERIDO } from "./site";
 const MASTERSPREAD = "https://www.masterspread.com";
 /** Masterspread's tabs change about once a month; an hour of cache is plenty. */
 const REVALIDATE = 3600;
+/** Bump when Masterspread changes how it reads the sheets, so no cached answer from before is reused. */
+const READER = "r2";
 /** Tabs with nothing to wear. */
 const SKIP_TABS = /electronic|room dec|cologne|perfume|lego/i;
 
@@ -49,10 +51,10 @@ async function readTab(sheetId: string, sig: string, gid: string, tab: string) {
   // one tab that can't be read is left out; it never stops the whole list
   let pages: TabPage[];
   try {
-    const first = await getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=0`);
+    const first = await getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=0&r=${READER}`);
     const rest = await Promise.all(
       Array.from({ length: Math.max(0, (first.pages || 1) - 1) }, (_, i) =>
-        getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=${i + 1}`),
+        getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=${i + 1}&r=${READER}`),
       ),
     );
     pages = [first, ...rest];
@@ -74,7 +76,7 @@ let memo: { at: number; list: Producto[] } | null = null;
 /** Every product on Masterspread once (the same item appears in several tabs). */
 export async function getCatalogo(): Promise<Producto[]> {
   if (memo && Date.now() - memo.at < REVALIDATE * 1000) return memo.list;
-  const { sheets } = await getJson<Sheet>(`${MASTERSPREAD}/api/sheet`);
+  const { sheets } = await getJson<Sheet>(`${MASTERSPREAD}/api/sheet?r=${READER}`);
   const rows = (
     await Promise.all(
       sheets.flatMap((s) => s.tabs.filter((t) => !SKIP_TABS.test(t.name)).map((t) => readTab(s.id, s.h, t.gid, t.name))),
