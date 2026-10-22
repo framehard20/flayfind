@@ -46,13 +46,21 @@ export const uidbuyLink = (platform: string, id: string) =>
   UIDBUY_NUM[platform] != null ? `https://www.uidbuy.com/product/${UIDBUY_NUM[platform]}/${id}?ref=${REFERIDO}` : "";
 
 async function readTab(sheetId: string, sig: string, gid: string, tab: string) {
-  const first = await getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=0`);
-  const rest = await Promise.all(
-    Array.from({ length: Math.max(0, (first.pages || 1) - 1) }, (_, i) =>
-      getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=${i + 1}`),
-    ),
-  );
-  return [first, ...rest].flatMap((page) =>
+  // one tab that can't be read is left out; it never stops the whole list
+  let pages: TabPage[];
+  try {
+    const first = await getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=0`);
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(0, (first.pages || 1) - 1) }, (_, i) =>
+        getJson<TabPage>(`${MASTERSPREAD}/api/tab?id=${sheetId}&gid=${gid}&page=${i + 1}`),
+      ),
+    );
+    pages = [first, ...rest];
+  } catch (error) {
+    console.warn(`Masterspread: se salta la pestaña «${tab}»`, error);
+    return [];
+  }
+  return pages.flatMap((page) =>
     (page.items ?? []).map((it) => ({
       it,
       tab,
