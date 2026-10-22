@@ -127,6 +127,11 @@ poder editarlos desde el panel.
   - En «Cuántos outfits» eliges cuántos monta Claude de una vez (hasta 8), todos
     distintos; las fotos se crean una detrás de otra y luego «Guardar» los guarda
     todos. «+ Outfit a mano» añade uno vacío para buscar tú las prendas.
+  - «+ Añadir otra tanda» añade otro bloque de creación con sus propios ajustes
+    (por ejemplo, 4 de Hombre elegante de verano y 4 de Mujer streetwear de
+    invierno), hasta 10 tandas. «Crear todas» las monta todas de una vez, una
+    detrás de otra; «Crear solo estos» monta solo esa tanda. Cada outfit guarda
+    la sección, estilo y época de su tanda.
   - La ropa de la foto sale muy parecida a la del producto, pero la crea una
     IA: revísala antes de guardar para que nadie compre algo distinto.
   - Cada foto cuesta unos 5 céntimos (lo cobra Google, aparte).
@@ -143,6 +148,9 @@ poder editarlos desde el panel.
   guardar un outfit nuevo hasta quitarla. La lista de marcas está en
   `lib/marcas.ts`.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
+  Ahora la pestaña «De seguidores» está oculta en la web (también después del
+  1 de noviembre). Para volver a enseñarla, cambia `MOSTRAR_SEGUIDORES` a `true`
+  en `lib/site.ts`.
 - **Estilos** → son las subsecciones de dentro de Hombre y Mujer. Crea las
   tuyas («Y2K», «Vestidos»…), marca en qué sección salen (una o las dos) y, si
   quieres, escribe su nombre en cada idioma; lo que dejes en blanco se ve con

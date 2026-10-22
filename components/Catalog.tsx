@@ -18,7 +18,7 @@ import { SeguidoresForm } from "./SeguidoresForm";
 import { OutfitsSoon } from "./OutfitsSoon";
 import { LaunchCountdown } from "./LaunchCountdown";
 import type { Outfit } from "@/lib/outfits";
-import { LINKS } from "@/lib/site";
+import { LINKS, MOSTRAR_SEGUIDORES } from "@/lib/site";
 import { useSettings } from "./Settings";
 
 const REG_KEY = "flayfind_reg";
@@ -72,11 +72,14 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         <Hero sinCatalogo={enPreparacion} />
         <TrustBar />
       </div>
-      <div hidden={view !== "seg"}>
-        <SegIntro />
-      </div>
-
-      <ViewNav view={view} onChange={setView} />
+      {MOSTRAR_SEGUIDORES && (
+        <>
+          <div hidden={view !== "seg"}>
+            <SegIntro />
+          </div>
+          <ViewNav view={view} onChange={setView} />
+        </>
+      )}
 
       <div hidden={view !== "outfits"}>
         {enPreparacion ? (
@@ -99,6 +102,8 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         <RepeatCta />
       </div>
 
+      {/* the followers' tab, while MOSTRAR_SEGUIDORES (lib/site.ts) is on */}
+      {MOSTRAR_SEGUIDORES && (
       <div hidden={view !== "seg"}>
         {/* before the launch the countdown leads this tab too, as in Outfits */}
         {prelanzamiento && (
@@ -122,6 +127,7 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
           </>
         )}
       </div>
+      )}
 
       <div hidden={view !== "outfits"}>
         <Faq />

@@ -129,3 +129,6 @@
 .ad-refresh-cols{margin:6px 0 12px}
 .ad-refresh-old{list-style:none;display:grid;gap:4px;margin-top:6px;font-size:13px;color:var(--grey-2)}
 .ad-refresh-old a{color:var(--accent-ink);text-decoration:underline}
+.ad-tanda-top{margin-bottom:6px}
+.ad-tanda-top h2{margin:0}
+.ad-tanda-tag{margin:0 0 8px;font-weight:700;color:var(--grey-2)}

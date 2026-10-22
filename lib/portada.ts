@@ -1,7 +1,7 @@
 import { countAll, hasDb, listPublic, outfitsOcultos, toOutfit } from "./db";
 import { OUTFITS, type Outfit } from "./outfits";
 import { SEGUIDORES } from "./seguidores";
-import { antesDelLanzamiento } from "./site";
+import { antesDelLanzamiento, MOSTRAR_SEGUIDORES } from "./site";
 
 // What the home page shows at a given moment. Outfits come from the database
 // (managed in /admin). While it isn't configured — or if it can't be reached —
@@ -35,6 +35,12 @@ const fromStatic = (): Outfit[] =>
 export type Portada = { outfits: Outfit[]; seguidores: Outfit[]; enPreparacion: boolean; prelanzamiento: boolean };
 
 export async function cargarPortada(ahora = Date.now()): Promise<Portada> {
+  const portada = await cargar(ahora);
+  // a hidden tab sends nothing: its outfits would still be readable in the page source
+  return MOSTRAR_SEGUIDORES ? portada : { ...portada, seguidores: [] };
+}
+
+async function cargar(ahora: number): Promise<Portada> {
   // before the launch nothing is sent to the browser at all: hidden outfits
   // would still be readable in the page source
   if (antesDelLanzamiento(ahora)) return { outfits: [], seguidores: [], enPreparacion: true, prelanzamiento: true };

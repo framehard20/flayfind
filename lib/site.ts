@@ -30,6 +30,12 @@ export const LINKS = {
 // Para ocultarlo, pon false.
 export const MOSTRAR_LISTA_PRODUCTOS = true;
 
+// 👥 La pestaña «De seguidores» (outfits que manda la gente y su formulario).
+// Oculta desde el 23 de octubre de 2026 a petición de Mario, también después del
+// lanzamiento: la web solo enseña «Outfits». Sus outfits siguen en el panel.
+// Para volver a enseñarla, pon true.
+export const MOSTRAR_SEGUIDORES = false;
+
 // «Ocultar todos» se cambia desde /admin/outfits. Este valor solo se usa cuando
 // la web no puede leer ese interruptor: antes de ejecutar supabase/schema.sql
 // (que crea la tabla «ajustes») o si la base de datos no responde.

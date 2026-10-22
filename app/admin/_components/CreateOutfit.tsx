@@ -25,8 +25,13 @@ type Borrador = {
   elegida: string;
   estado: "listo" | "cola" | "foto";
   error: string;
+  /** where it will be saved (from the block that created it) */
+  genero?: Genero;
+  categoria?: string;
+  temporada?: "invierno" | "verano";
 };
 type Ajustes = {
+  id: string;
   genero: Genero;
   categoria: string;
   temporada: "invierno" | "verano";
@@ -37,7 +42,11 @@ type Ajustes = {
 
 const STORE = "ff_crear_v2";
 const MAX = 8;
-const AJUSTES: Ajustes = { genero: "hombre", categoria: "streetwear", temporada: "invierno", idea: "", presupuesto: "", cantidad: 3 };
+const MAX_TANDAS = 10;
+const nuevoIdT = () => `t${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+const nuevaTanda = (base?: Partial<Ajustes>): Ajustes => ({
+  genero: "hombre", categoria: "streetwear", temporada: "invierno", idea: "", presupuesto: "", cantidad: 3, ...base, id: nuevoIdT(),
+});
 const GENEROS: { v: Genero; l: string }[] = [
   { v: "hombre", l: "Hombre" },
   { v: "mujer", l: "Mujer" },
@@ -49,7 +58,11 @@ const eur = (s: string) => parseFloat(s.replace(",", ".")) || 0;
 const ver = (url: string, w = 640) => `/_next/image?url=${encodeURIComponent(url)}&w=${w}&q=75`;
 const fila = (p: Pieza): Fila => ({ ...p, precio: precioTxt(p.eur) });
 const nuevoId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-const borrador = (nombre = "", piezas: Fila[] = []): Borrador => ({ id: nuevoId(), nombre, piezas, notas: "", fotos: [], elegida: "", estado: "listo", error: "" });
+const borrador = (t: Ajustes, nombre = "", piezas: Fila[] = []): Borrador => ({
+  id: nuevoId(), nombre, piezas, notas: "", fotos: [], elegida: "", estado: "listo", error: "",
+  genero: t.genero, categoria: t.categoria, temporada: t.temporada,
+});
+const GENERO_TXT: Record<string, string> = { hombre: "Hombre", mujer: "Mujer", ambos: "Hombre y Mujer" };
 const tieneMarca = (b: Borrador) => !!marcasEn(b.nombre).length || b.piezas.some((p) => marcasEn(p.tipo).length);
 
 async function call<T>(body: object): Promise<T> {
@@ -113,11 +126,13 @@ function Buscador({ onAdd, ya, lleno }: { onAdd: (p: Pieza) => void; ya: (p: Pie
 }
 
 export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[]; prelanzamiento: boolean }) {
-  const [a, setA] = useState<Ajustes>(AJUSTES);
+  const [tandas, setTandas] = useState<Ajustes[]>(() => [nuevaTanda()]);
   const [lista, setLista] = useState<Borrador[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [buscando, setBuscando] = useState<string | null>(null);
   const [busy, setBusy] = useState<"" | "sugerir" | "guardar">("");
+  /** the block Claude is working on right now */
+  const [sugiriendo, setSugiriendo] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ ok: boolean; text: string; saved?: boolean } | null>(null);
   const cola = useRef(Promise.resolve());
   const listaRef = useRef(lista);
@@ -128,9 +143,11 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
   // the work survives a reload; a photo that was being made is simply not there
   useEffect(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORE) ?? "null") as { a: Ajustes; lista: Borrador[] } | null;
+      const saved = JSON.parse(localStorage.getItem(STORE) ?? "null") as { a?: Ajustes; tandas?: Ajustes[]; lista: Borrador[] } | null;
       if (saved) {
-        setA({ ...AJUSTES, ...saved.a });
+        // older saves had a single block
+        const ts = saved.tandas?.length ? saved.tandas : saved.a ? [saved.a] : [];
+        if (ts.length) setTandas(ts.map((t) => nuevaTanda(t)));
         setLista((saved.lista ?? []).map((b) => (b.estado === "listo" ? b : { ...b, estado: "listo", error: b.fotos.length ? "" : "La foto se cortó al recargar: pulsa «Crear la foto»." })));
       }
     } catch {}
@@ -139,16 +156,17 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
   useEffect(() => {
     if (!loaded) return;
     try {
-      localStorage.setItem(STORE, JSON.stringify({ a, lista }));
+      localStorage.setItem(STORE, JSON.stringify({ tandas, lista }));
     } catch {}
-  }, [a, lista, loaded]);
+  }, [tandas, lista, loaded]);
 
-  const setAj = (p: Partial<Ajustes>) => setA((x) => ({ ...x, ...p }));
+  const setAj = (id: string, p: Partial<Ajustes>) => setTandas((l) => l.map((t) => (t.id === id ? { ...t, ...p } : t)));
   const patch = (id: string, p: Partial<Borrador> | ((b: Borrador) => Partial<Borrador>)) =>
     setLista((l) => l.map((b) => (b.id === id ? { ...b, ...(typeof p === "function" ? p(b) : p) } : b)));
   const setPieza = (id: string, i: number, p: Partial<Fila>) => patch(id, (b) => ({ piezas: b.piezas.map((f, j) => (j === i ? { ...f, ...p } : f)) }));
   // accessories have no looks (that section links to Masterspread)
-  const disponibles = subsections(a.genero, estilos).filter((x) => x.slug !== ACCESSORIES);
+  const disponiblesDe = (g: Genero) => subsections(g, estilos).filter((x) => x.slug !== ACCESSORIES);
+  const styleName = (slug?: string) => estilos.find((e) => e.slug === slug)?.nombre ?? subsections("hombre", estilos).concat(subsections("mujer", estilos)).find((e) => e.slug === slug)?.nombre ?? slug ?? "";
 
   /** Photos are made one at a time, in order. */
   function pedirFoto(b: Borrador) {
@@ -172,22 +190,37 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
     });
   }
 
-  async function sugerir() {
-    setBusy("sugerir");
-    setMsg(null);
+  /** Claude puts one block's looks together; their photos join the queue. */
+  async function sugerirUna(t: Ajustes, n: number): Promise<string | null> {
+    setSugiriendo(t.id);
     try {
       const r = await call<{ outfits: Sugerido[] }>({
-        accion: "sugerir", genero: a.genero, estilo: a.categoria, temporada: a.temporada, idea: a.idea, presupuesto: a.presupuesto, cantidad: a.cantidad,
+        accion: "sugerir", genero: t.genero, estilo: t.categoria, temporada: t.temporada, idea: t.idea, presupuesto: t.presupuesto, cantidad: t.cantidad,
       });
       if (!r.outfits.length) throw new Error("Claude no encontró prendas para esa idea; cámbiala o monta el outfit a mano.");
-      const nuevos = r.outfits.map((o) => borrador(o.nombre, o.piezas.map(fila)));
+      const nuevos = r.outfits.map((o) => borrador(t, o.nombre, o.piezas.map(fila)));
       setLista((l) => [...l, ...nuevos]);
       nuevos.forEach(pedirFoto);
+      return null;
     } catch (err) {
-      setMsg({ ok: false, text: err instanceof Error ? err.message : "Algo falló." });
+      return `Tanda ${n}: ${err instanceof Error ? err.message : "algo falló."}`;
+    } finally {
+      setSugiriendo(null);
     }
+  }
+
+  async function sugerir(ts: Ajustes[]) {
+    setBusy("sugerir");
+    setMsg(null);
+    const errores: string[] = [];
+    for (const t of ts) {
+      const e = await sugerirUna(t, tandas.findIndex((x) => x.id === t.id) + 1);
+      if (e) errores.push(e);
+    }
+    if (errores.length) setMsg({ ok: false, text: errores.join(" · ") });
     setBusy("");
   }
+  const totalPedidos = tandas.reduce((n, t) => n + t.cantidad, 0);
 
   const listos = lista.filter((b) => b.elegida && b.piezas.length && b.estado === "listo");
   const trabajando = lista.some((b) => b.estado !== "listo");
@@ -207,9 +240,9 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
         body: JSON.stringify({
           seccion: "outfits",
           nombre: b.nombre,
-          genero: a.genero,
-          temporada: a.temporada,
-          categoria: a.categoria,
+          genero: b.genero ?? tandas[0].genero,
+          temporada: b.temporada ?? tandas[0].temporada,
+          categoria: b.categoria ?? tandas[0].categoria,
           foto: b.elegida,
           precioMarca: "",
           // before the launch the countdown hides everything and they appear on 1 November
@@ -241,62 +274,90 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
 
   return (
     <>
+      {tandas.map((t, ti) => {
+        const disponibles = disponiblesDe(t.genero);
+        return (
+          <div className="ad-card" key={t.id}>
+            <div className="ad-top ad-tanda-top">
+              <h2>{tandas.length > 1 ? `${ti + 1} · Qué outfits quieres` : "1 · Qué outfits quieres"}</h2>
+              {tandas.length > 1 && (
+                <button type="button" className="ad-btn ad-btn-ghost ad-btn-sm" disabled={!!busy} onClick={() => setTandas((l) => l.filter((x) => x.id !== t.id))}>
+                  Quitar
+                </button>
+              )}
+            </div>
+            <div className="ad-grid">
+              <label className="ad-field">
+                <span>Sección</span>
+                <select value={t.genero} onChange={(e) => setAj(t.id, { genero: e.target.value as Genero })}>
+                  {GENEROS.map((o) => (
+                    <option key={o.v} value={o.v}>{o.l}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="ad-field">
+                <span>Estilo</span>
+                <select value={t.categoria} onChange={(e) => setAj(t.id, { categoria: e.target.value })}>
+                  {!disponibles.some((x) => x.slug === t.categoria) && <option value={t.categoria}>{t.categoria}</option>}
+                  {disponibles.map((o) => (
+                    <option key={o.slug} value={o.slug}>{o.nombre}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="ad-field">
+                <span>Época</span>
+                <select value={t.temporada} onChange={(e) => setAj(t.id, { temporada: e.target.value as Ajustes["temporada"] })}>
+                  <option value="invierno">Invierno</option>
+                  <option value="verano">Verano</option>
+                </select>
+              </label>
+              <label className="ad-field">
+                <span>Cuántos outfits</span>
+                <select value={t.cantidad} onChange={(e) => setAj(t.id, { cantidad: Number(e.target.value) })}>
+                  {Array.from({ length: MAX }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="ad-field">
+                <span>Presupuesto por outfit € (opcional)</span>
+                <input type="text" inputMode="decimal" value={t.presupuesto} onChange={(e) => setAj(t.id, { presupuesto: e.target.value })} placeholder="80" />
+              </label>
+            </div>
+            <label className="ad-field">
+              <span>Idea (opcional)</span>
+              <input type="text" value={t.idea} onChange={(e) => setAj(t.id, { idea: e.target.value })} placeholder="Looks total black con sudadera y zapatillas gruesas" />
+            </label>
+            <div className="ad-row">
+              <button type="button" className="ad-btn ad-btn-ghost" disabled={!!busy} onClick={() => sugerir([t])}>
+                {sugiriendo === t.id ? "Claude está montando los outfits…" : `Crear solo estos ${t.cantidad}`}
+              </button>
+              <button type="button" className="ad-btn ad-btn-ghost" disabled={!!busy || lista.length >= 60} onClick={() => setLista((l) => [...l, borrador(t)])}>
+                + Outfit a mano
+              </button>
+            </div>
+          </div>
+        );
+      })}
+
       <div className="ad-card">
-        <h2>1 · Qué outfits quieres</h2>
-        <div className="ad-grid">
-          <label className="ad-field">
-            <span>Sección</span>
-            <select value={a.genero} onChange={(e) => setAj({ genero: e.target.value as Genero })}>
-              {GENEROS.map((o) => (
-                <option key={o.v} value={o.v}>{o.l}</option>
-              ))}
-            </select>
-          </label>
-          <label className="ad-field">
-            <span>Estilo</span>
-            <select value={a.categoria} onChange={(e) => setAj({ categoria: e.target.value })}>
-              {!disponibles.some((x) => x.slug === a.categoria) && <option value={a.categoria}>{a.categoria}</option>}
-              {disponibles.map((o) => (
-                <option key={o.slug} value={o.slug}>{o.nombre}</option>
-              ))}
-            </select>
-          </label>
-          <label className="ad-field">
-            <span>Época</span>
-            <select value={a.temporada} onChange={(e) => setAj({ temporada: e.target.value as Ajustes["temporada"] })}>
-              <option value="invierno">Invierno</option>
-              <option value="verano">Verano</option>
-            </select>
-          </label>
-          <label className="ad-field">
-            <span>Cuántos outfits</span>
-            <select value={a.cantidad} onChange={(e) => setAj({ cantidad: Number(e.target.value) })}>
-              {Array.from({ length: MAX }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
-          </label>
-          <label className="ad-field">
-            <span>Presupuesto por outfit € (opcional)</span>
-            <input type="text" inputMode="decimal" value={a.presupuesto} onChange={(e) => setAj({ presupuesto: e.target.value })} placeholder="80" />
-          </label>
-        </div>
-        <label className="ad-field">
-          <span>Idea (opcional)</span>
-          <input type="text" value={a.idea} onChange={(e) => setAj({ idea: e.target.value })} placeholder="Looks total black con sudadera y zapatillas gruesas" />
-        </label>
         <div className="ad-row">
-          <button type="button" className="ad-btn" disabled={!!busy} onClick={sugerir}>
-            {busy === "sugerir" ? "Claude está montando los outfits…" : `Crear ${a.cantidad} ${a.cantidad === 1 ? "outfit" : "outfits"}`}
+          <button
+            type="button"
+            className="ad-btn ad-btn-ghost"
+            disabled={!!busy || tandas.length >= MAX_TANDAS}
+            onClick={() => setTandas((l) => [...l, nuevaTanda({ ...l[l.length - 1], idea: "" })])}
+          >
+            + Añadir otra tanda
           </button>
-          <button type="button" className="ad-btn ad-btn-ghost" disabled={!!busy || lista.length >= 20} onClick={() => setLista((l) => [...l, borrador()])}>
-            + Outfit a mano
+          <button type="button" className="ad-btn" disabled={!!busy} onClick={() => sugerir(tandas)}>
+            {busy === "sugerir" ? "Claude está montando los outfits…" : `Crear todas · ${totalPedidos} ${totalPedidos === 1 ? "outfit" : "outfits"}`}
           </button>
         </div>
         <span className="ad-hint">
-          Claude elige las prendas de la lista y Google crea cada foto sobre la alfombra azul, una tras otra (1–2 min por foto, unos 5 céntimos
-          cada una). Los nombres salen sin marcas. La ropa de la foto sale muy parecida a la del producto, pero no idéntica: revísala antes de
-          guardar.
+          Cada tanda tiene su sección, estilo y época, y sus outfits se guardan con ellos. «Crear todas» las hace una tras otra. Claude elige las
+          prendas de la lista y Google crea cada foto sobre la alfombra azul (1–2 min por foto, unos 5 céntimos cada una). Los nombres salen sin
+          marcas. La ropa de la foto sale muy parecida a la del producto, pero no idéntica: revísala antes de guardar.
         </span>
       </div>
 
@@ -329,6 +390,9 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
           </div>
 
           <div className="ad-lote-main">
+            <p className="ad-hint ad-tanda-tag">
+              {GENERO_TXT[b.genero ?? tandas[0].genero]} · {styleName(b.categoria ?? tandas[0].categoria)} · {(b.temporada ?? tandas[0].temporada) === "verano" ? "Verano" : "Invierno"}
+            </p>
             <label className="ad-field">
               <span>Nombre del outfit</span>
               <input type="text" value={b.nombre} onChange={(e) => patch(b.id, { nombre: e.target.value })} placeholder="Total black hoodie" />
