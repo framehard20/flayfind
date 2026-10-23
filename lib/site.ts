@@ -45,9 +45,10 @@ export const OUTFITS_OCULTOS_POR_DEFECTO = true;
 // web oculta todo (Outfits y De seguidores) y enseña una cuenta atrás. Desde
 // ese momento vuelven solos: el «Ocultar todos» que estuviera encendido de
 // antes deja de contar, y solo cuenta si lo vuelves a encender después.
-// "+01:00" porque el 1 de noviembre España ya está en horario de invierno.
+// Iba a ser el 1 de noviembre; Mario lo adelantó al 24 de octubre de 2026 a las
+// 00:30 ("+02:00": en octubre España aún está en horario de verano).
 // Vacío ("") = sin lanzamiento: el interruptor del panel manda, como antes.
-export const LANZAMIENTO = "2026-11-01T00:00:00+01:00";
+export const LANZAMIENTO = "2026-10-24T00:30:00+02:00";
 
 const lanzamientoMs = LANZAMIENTO ? Date.parse(LANZAMIENTO) : NaN;
 
