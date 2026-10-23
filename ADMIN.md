@@ -147,6 +147,9 @@ poder editarlos desde el panel.
   ya los escribe así, el panel marca en rojo los que lleven marca y no deja
   guardar un outfit nuevo hasta quitarla. La lista de marcas está en
   `lib/marcas.ts`.
+- **Descargar fotos (.zip)** (en Outfits): baja todas las fotos de los outfits en
+  un zip, en carpetas por sección y estilo (Hombre/Streetwear/…), con el nombre
+  de cada outfit. Se prepara en tu navegador; con muchas fotos tarda un poco.
 - **De seguidores** → igual, más autor, Instagram y puesto de la semana.
   Ahora la pestaña «De seguidores» está oculta en la web (también después del
   1 de noviembre). Para volver a enseñarla, cambia `MOSTRAR_SEGUIDORES` a `true`

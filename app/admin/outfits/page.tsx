@@ -6,6 +6,10 @@ import { Nav } from "../_components/Nav";
 import { HideAllSwitch } from "../_components/HideAllSwitch";
 import { antesDelLanzamiento } from "@/lib/site";
 import { OutfitList } from "../_components/OutfitList";
+import { DownloadPhotos } from "../_components/DownloadPhotos";
+import { allStyles } from "@/lib/styles";
+
+const SECCION: Record<string, string> = { hombre: "Hombre", mujer: "Mujer", ambos: "Hombre y Mujer" };
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +18,19 @@ export default async function OutfitsPage() {
 
   const [rows, estilos, ajuste] = await Promise.all([hasDb ? listAll("outfits") : [], listStyles(), outfitsOcultos()]);
 
+  // the zip has one folder per section and style: Hombre/Streetwear/…
+  const estilo = new Map(allStyles(estilos).map((s) => [s.slug, s.nombre]));
+  const fotos = rows
+    .filter((r) => r.foto)
+    .map((r) => ({ foto: r.foto, nombre: r.nombre, carpeta: `${SECCION[r.genero] ?? r.genero}/${estilo.get(r.categoria) ?? r.categoria}` }));
+
   return (
     <>
       <Nav />
       <div className="ad-top">
         <h1>Outfits</h1>
         <div className="ad-row">
+          <DownloadPhotos fotos={fotos} />
           <Link className="ad-btn ad-btn-ghost" href="/admin/outfits/actualizar">
             Actualizar todos
           </Link>
