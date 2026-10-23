@@ -343,7 +343,11 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 /* sits right under the two big tab buttons, so it needs room */
 .discord-standalone-join{margin-top:20px}
 /* the slim row between the filters and the looks: Masterspread stands out */
-.quick-links{max-width:920px;margin:2px auto 16px;padding:0 20px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px}
+.quick-links{max-width:920px;margin:2px auto 0;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* Masterspread across the top, Discord and Telegram side by side below */
+.ql-ms{grid-column:1/-1}
+/* the looks start right under the buttons */
+.quick-links + .grid{padding-top:12px}
 .ql{display:flex;align-items:center;gap:10px;min-width:0;padding:8px 12px 8px 8px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);color:var(--ink);text-decoration:none;transition:transform .12s,border-color .12s}
 .ql:active{transform:scale(.98)}
 .ql-ic{flex:0 0 auto;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff}
@@ -361,7 +365,6 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .ql-dc:hover{border-color:#5865F2}
 .ql-tg .ql-ic{background:#229ED9}
 .ql-tg:hover{border-color:#229ED9}
-@media (max-width:640px){.quick-links{grid-template-columns:1fr 1fr}.ql-ms{grid-column:1/-1}}
 
 /* Masterspread on top, then the Discord community: two light cards */
 .more-links{display:grid;gap:10px}
