@@ -15,7 +15,7 @@ export function DiscordPerks({ join = false, shop = false }: { join?: boolean; s
   return (
     <div className={`discord-standalone more-links${join ? " discord-standalone-join" : ""}`}>
       {shop && (
-        <a className="link-card link-card-shop" href={LINKS.productos} target="_blank" rel="noopener" data-umami-event="abrir_masterspread_filtros">
+        <a className="link-card link-card-shop" href={LINKS.productos} target="_blank" rel="noopener" data-umami-event="abrir_masterspread_final">
           <span className="lc-ic" aria-hidden="true">
             <MasterspreadLogo size={26} />
           </span>

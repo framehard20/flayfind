@@ -10,6 +10,7 @@ import { OutfitGrid } from "./OutfitGrid";
 import { AccessoriesLink } from "./AccessoriesLink";
 import { RepeatCta } from "./RepeatCta";
 import { DiscordPerks } from "./DiscordPerks";
+import { QuickLinks } from "./QuickLinks";
 import { Faq } from "./Faq";
 import { Footer } from "./Footer";
 import { PopupModal } from "./PopupModal";
@@ -90,6 +91,8 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         ) : (
           <>
             <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
+            {/* a slim row of links; Accessories already opens Masterspread right below */}
+            {filtro.tipo !== "accesorios" && <QuickLinks />}
             {/* accessories live on Masterspread: the subsection links there */}
             {filtro.tipo === "accesorios" ? (
               <AccessoriesLink />
