@@ -90,7 +90,8 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         ) : (
           <>
             <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
-            <DiscordPerks />
+            {/* Masterspread on top, except in Accessories, which already links there */}
+            <DiscordPerks shop={filtro.tipo !== "accesorios"} />
             {/* accessories live on Masterspread: the subsection links there */}
             {filtro.tipo === "accesorios" ? (
               <AccessoriesLink />

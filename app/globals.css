@@ -342,14 +342,24 @@ header{background:rgba(245,246,248,.85);backdrop-filter:saturate(1.4) blur(10px)
 .discord-standalone{max-width:920px;margin:4px auto 20px;padding:0 20px}
 /* sits right under the two big tab buttons, so it needs room */
 .discord-standalone-join{margin-top:20px}
-.discord-standalone .discord-cta{margin-top:0}
-.discord-cta{display:flex;align-items:center;gap:12px;margin-top:16px;background:#5865F2;border-radius:14px;padding:14px 16px;text-decoration:none}
-.discord-cta .dc-ic{flex:0 0 auto;display:flex;color:#fff}
-.discord-cta .dc-tx{flex:1;display:flex;flex-direction:column;gap:1px}
-.discord-cta .dc-tx b{font-size:15px;color:#fff}
-.discord-cta .dc-tx span{font-size:12px;color:#dfe2fb;line-height:1.35}
-.discord-cta .dc-ar{font-size:18px;color:#fff}
-.discord-cta:active{opacity:.9}
+/* Masterspread on top, then the Discord community: two light cards */
+.more-links{display:grid;gap:10px}
+.link-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;color:var(--ink);text-decoration:none;transition:transform .12s,border-color .12s}
+.link-card:active{transform:scale(.99)}
+.link-card-shop{border-color:var(--accent)}
+.link-card-discord{background:#f5f6ff;border-color:#dfe2fd}
+.link-card-discord:hover{border-color:#5865F2}
+.lc-ic{flex:0 0 auto;width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center}
+.link-card-shop .lc-ic{background:#eaf0fe}
+.link-card-discord .lc-ic{background:#5865F2;color:#fff}
+.lc-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.lc-tx b{font-family:"Archivo",sans-serif;font-weight:800;font-size:15px;line-height:1.25}
+.lc-tx span{font-size:13px;color:var(--grey-2);line-height:1.4}
+.lc-btn{flex:0 0 auto;font-family:"Archivo",sans-serif;font-weight:800;font-size:13px;line-height:1;border-radius:100px;padding:10px 15px;color:#fff;white-space:nowrap}
+.link-card-shop .lc-btn{background:var(--accent)}
+.link-card-discord .lc-btn{background:#5865F2}
+/* on a phone the button goes under the words, full width, so they have room */
+@media (max-width:520px){.link-card{flex-wrap:wrap;gap:10px 12px;padding:14px}.lc-ic{width:40px;height:40px}.lc-tx{flex-basis:calc(100% - 52px)}.lc-btn{flex:1 1 100%;text-align:center;padding:11px 14px}}
 
 /* panel "muy pronto" del concurso de seguidores */
 .soon-badge{display:inline-block;font-family:"Archivo",sans-serif;font-weight:800;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;background:#fff4e5;color:#a15c00;border:1px solid #ffe0ad;border-radius:100px;padding:6px 12px}
