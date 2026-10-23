@@ -4,10 +4,12 @@ import { LINKS } from "@/lib/site";
 import { useSettings } from "./Settings";
 import { DiscordIcon } from "./DiscordIcon";
 import { MasterspreadLogo } from "./MasterspreadLogo";
+import { TelegramIcon } from "./TelegramIcon";
 
-/** The Discord community card. With `shop`, Masterspread (every product, for
- *  anything that isn't in a look) goes first, above it. `join` swaps the
- *  Discord words for the plain invitation used in the followers' tab. */
+/** The community cards: Discord and Telegram side by side. With `shop`,
+ *  Masterspread (every product, for anything that isn't in a look) goes first,
+ *  above them. `join` swaps the Discord words for the plain invitation used in
+ *  the followers' tab. */
 export function DiscordPerks({ join = false, shop = false }: { join?: boolean; shop?: boolean } = {}) {
   const { t } = useSettings();
   return (
@@ -24,16 +26,28 @@ export function DiscordPerks({ join = false, shop = false }: { join?: boolean; s
           <span className="lc-btn">{t("shop.cta")} ↗</span>
         </a>
       )}
-      <a className="link-card link-card-discord" href={LINKS.discord} target="_blank" rel="noopener">
-        <span className="lc-ic" aria-hidden="true">
-          <DiscordIcon />
-        </span>
-        <span className="lc-tx">
-          <b>{t(join ? "discord.join" : "discord.t")}</b>
-          <span>{t(join ? "discord.joinSub" : "discord.s")}</span>
-        </span>
-        <span className="lc-btn">{t("discord.cta")}</span>
-      </a>
+      <div className="community">
+        <a className="link-card link-card-discord" href={LINKS.discord} target="_blank" rel="noopener">
+          <span className="lc-ic" aria-hidden="true">
+            <DiscordIcon />
+          </span>
+          <span className="lc-tx">
+            <b>{t(join ? "discord.join" : "discord.t")}</b>
+            <span>{t(join ? "discord.joinSub" : "discord.s")}</span>
+          </span>
+          <span className="lc-btn">{t("discord.cta")}</span>
+        </a>
+        <a className="link-card link-card-tg" href={LINKS.telegram} target="_blank" rel="noopener">
+          <span className="lc-ic" aria-hidden="true">
+            <TelegramIcon />
+          </span>
+          <span className="lc-tx">
+            <b>{t("tg.t")}</b>
+            <span>{t("tg.s")}</span>
+          </span>
+          <span className="lc-btn">{t("tg.cta")}</span>
+        </a>
+      </div>
     </div>
   );
 }

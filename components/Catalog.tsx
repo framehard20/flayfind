@@ -90,14 +90,15 @@ export function Catalog({ outfits, seguidores, enPreparacion, prelanzamiento }: 
         ) : (
           <>
             <FilterZone filtro={filtro} onChange={(patch) => setFiltro((f) => ({ ...f, ...patch }))} />
-            {/* Masterspread on top, except in Accessories, which already links there */}
-            <DiscordPerks shop={filtro.tipo !== "accesorios"} />
             {/* accessories live on Masterspread: the subsection links there */}
             {filtro.tipo === "accesorios" ? (
               <AccessoriesLink />
             ) : (
               <OutfitGrid outfits={outfits} filtro={filtro} onBuyClick={handleBuyClick} />
             )}
+            {/* after the looks, so the filters sit right on top of them; Masterspread
+                first, except in Accessories, which already links there */}
+            <DiscordPerks shop={filtro.tipo !== "accesorios"} />
           </>
         )}
         <RepeatCta />

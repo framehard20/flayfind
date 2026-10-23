@@ -213,6 +213,9 @@ Solo se cuentan dos cosas, para que el panel de Umami no se llene de ruido:
 («Ahora no, solo estoy mirando») y `cierre_aviso_comprar` (cerrar el aviso de
 comprar).
 
+**Masterspread debajo de los outfits**: `abrir_masterspread_filtros` (la tarjeta
+«¿Buscas otra prenda?» que va encima de Discord y Telegram).
+
 **Mientras los outfits están ocultos**: `aviso_outfits` (pulsar «Avisarme») y
 `abrir_masterspread` (abrir la lista de productos, que lleva a masterspread.com).
 

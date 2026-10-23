@@ -20,6 +20,8 @@ export const SITE_URL = "https://www.flayfind.com";
 export const LINKS = {
   registro: `https://www.uidbuy.com/register?ref=${REFERIDO}`,
   discord: "https://discord.gg/BUrt9M2dyS",
+  // the same Telegram as on mariosanczz.com
+  telegram: "https://t.me/addlist/gdNCnbOv_Q85NTNk",
   // la lista de productos: la web Masterspread (hecha con la hoja de productos);
   // solo se enseña si MOSTRAR_LISTA_PRODUCTOS es true
   productos: "https://www.masterspread.com",
