@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Emparejado, Opcion } from "@/lib/emparejar";
-import { ACCESSORIES, subsections, type ExtraStyle } from "@/lib/styles";
+import { ACCESSORIES, inSeason, subsections, type ExtraStyle } from "@/lib/styles";
 import { marcasEn } from "@/lib/marcas";
 import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
@@ -298,7 +298,7 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
 
       {items.map((item) => {
         // accessories have no looks (that section links to Masterspread)
-  const disponibles = subsections(item.genero, estilos).filter((x) => x.slug !== ACCESSORIES);
+  const disponibles = subsections(item.genero, estilos).filter((x) => x.slug !== ACCESSORIES && inSeason(x.slug, item.temporada));
         return (
           <div className="ad-card ad-lote" key={item.id}>
             <div className="ad-lote-photo">
@@ -355,7 +355,13 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
                     </label>
                     <label className="ad-field">
                       <span>Época</span>
-                      <select value={item.temporada} onChange={(e) => patch(item.id, { temporada: e.target.value as Item["temporada"] })}>
+                      <select
+                        value={item.temporada}
+                        onChange={(e) => {
+                          const temporada = e.target.value as Item["temporada"];
+                          patch(item.id, inSeason(item.categoria, temporada) ? { temporada } : { temporada, categoria: "streetwear" });
+                        }}
+                      >
                         <option value="invierno">Invierno</option>
                         <option value="verano">Verano</option>
                       </select>

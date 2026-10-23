@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { OutfitRow, Seccion } from "@/lib/db";
 import type { Genero } from "@/lib/outfits";
-import { subsections, type ExtraStyle } from "@/lib/styles";
+import { inSeason, subsections, type ExtraStyle } from "@/lib/styles";
 import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
 
@@ -64,7 +64,8 @@ export function OutfitForm({
   const total = prendas.reduce((s, p) => s + (parseFloat(p.precio.replace(",", ".")) || 0), 0);
 
   // a subsection created for only one section shouldn't be offered in the other
-  const disponibles = subsections(genero, estilos);
+  // and Plumíferos isn't offered for summer
+  const disponibles = subsections(genero, estilos).filter((s) => inSeason(s.slug, temporada));
   const estiloPerdido = !disponibles.some((s) => s.slug === categoria);
 
   function setPiece(i: number, patch: Partial<Piece>) {
@@ -182,7 +183,14 @@ export function OutfitForm({
           </label>
           <label className="ad-field">
             <span>Época</span>
-            <select value={temporada} onChange={(e) => setTemporada(e.target.value as typeof temporada)}>
+            <select
+              value={temporada}
+              onChange={(e) => {
+                const t = e.target.value as typeof temporada;
+                setTemporada(t);
+                if (!inSeason(categoria, t)) setCategoria("streetwear");
+              }}
+            >
               {TEMPORADAS.map((o) => (
                 <option key={o.v} value={o.v}>
                   {o.l}

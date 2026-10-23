@@ -2,7 +2,7 @@
 
 import type { Genero } from "@/lib/outfits";
 import { useSettings } from "./Settings";
-import { ACCESSORIES, subsections } from "@/lib/styles";
+import { ACCESSORIES, inSeason, subsections } from "@/lib/styles";
 import { EVENTS, track } from "@/lib/track";
 
 /** The two sections. Accessories is a subsection inside each of them. */
@@ -38,7 +38,7 @@ const TEMPORADAS = [
 export function FilterZone({ filtro, onChange }: Props) {
   const { t, estilos, styleLabel } = useSettings();
   // accessories are their own choice above, so they aren't a style chip too
-  const chips = ["todos", ...subsections(filtro.genero, estilos).map((s) => s.slug).filter((s) => s !== ACCESSORIES)];
+  const chips = ["todos", ...subsections(filtro.genero, estilos).map((s) => s.slug).filter((s) => s !== ACCESSORIES && inSeason(s, filtro.temporada))];
   const esTech = filtro.tipo === "accesorios";
 
   function pickSeccion(genero: Seccion) {
@@ -98,7 +98,8 @@ export function FilterZone({ filtro, onChange }: Props) {
               type="button"
               className="chip"
               aria-pressed={filtro.temporada === o.v}
-              onClick={() => onChange({ temporada: o.v })}
+              // a winter-only style (Plumíferos) goes away with Verano
+              onClick={() => onChange(inSeason(filtro.estilo, o.v) ? { temporada: o.v } : { temporada: o.v, estilo: "todos" })}
             >
               {t(o.k)}
             </button>

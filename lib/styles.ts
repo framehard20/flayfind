@@ -20,6 +20,12 @@ export const BUILTIN_STYLES = [
  *  plain price instead of a look total. */
 export const ACCESSORIES = "tech";
 
+/** Styles nobody wears in summer: with Verano chosen they aren't offered. */
+const WINTER_ONLY = new Set(["plumiferos"]);
+
+/** Does this style make sense in that season? */
+export const inSeason = (slug: string, temporada: string) => temporada !== "verano" || !WINTER_ONLY.has(slug);
+
 /** A subsection created in the panel. `generos` says which sections offer it;
  *  `traducciones` holds its name per language (missing ones use `nombre`). */
 export type ExtraStyle = {

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Pieza, Sugerido } from "@/lib/crear";
 import { marcasEn } from "@/lib/marcas";
-import { ACCESSORIES, subsections, type ExtraStyle } from "@/lib/styles";
+import { ACCESSORIES, inSeason, subsections, type ExtraStyle } from "@/lib/styles";
 import { BrandWarning } from "./BrandWarning";
 
 // /admin/outfits/crear: build one or several outfits from Masterspread's list
@@ -275,7 +275,7 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
   return (
     <>
       {tandas.map((t, ti) => {
-        const disponibles = disponiblesDe(t.genero);
+        const disponibles = disponiblesDe(t.genero).filter((x) => inSeason(x.slug, t.temporada));
         return (
           <div className="ad-card" key={t.id}>
             <div className="ad-top ad-tanda-top">
@@ -306,7 +306,13 @@ export function CreateOutfit({ estilos, prelanzamiento }: { estilos: ExtraStyle[
               </label>
               <label className="ad-field">
                 <span>Época</span>
-                <select value={t.temporada} onChange={(e) => setAj(t.id, { temporada: e.target.value as Ajustes["temporada"] })}>
+                <select
+                  value={t.temporada}
+                  onChange={(e) => {
+                    const temporada = e.target.value as Ajustes["temporada"];
+                    setAj(t.id, inSeason(t.categoria, temporada) ? { temporada } : { temporada, categoria: "streetwear" });
+                  }}
+                >
                   <option value="invierno">Invierno</option>
                   <option value="verano">Verano</option>
                 </select>
