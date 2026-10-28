@@ -1,6 +1,6 @@
 import { isLoggedIn } from "@/lib/auth";
 import { BUCKET, db, explain, hasDb, publicUrl } from "@/lib/db";
-import { comprimir } from "@/lib/comprimir";
+import { comprimirSiSePuede } from "@/lib/comprimir";
 
 export const runtime = "nodejs";
 
@@ -35,9 +35,8 @@ export async function POST(req: Request) {
 
   const name = slug(String(form?.get("nombre") ?? "") || file.name.replace(/\.[^.]+$/, ""));
   // stored web-sized: the full photo would cost megabytes on every download
-  const foto = await comprimir(await file.arrayBuffer()).catch(() => null);
-  if (!foto) return Response.json({ error: "No se pudo leer la foto. Prueba con otra." }, { status: 400 });
-  const path = `${new Date().getFullYear()}/c-${Date.now()}-${name}.jpg`;
+  const foto = await comprimirSiSePuede(await file.arrayBuffer(), file.type);
+  const path = `${new Date().getFullYear()}/${foto.ext === "jpg" && foto.mime === "image/jpeg" && foto.bytes.length < 1_000_000 ? "c-" : ""}${Date.now()}-${name}.${foto.ext}`;
 
   const { error } = await db()
     .storage.from(BUCKET)

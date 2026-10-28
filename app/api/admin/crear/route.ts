@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { isLoggedIn } from "@/lib/auth";
 import { buscar, FotoError, geminiConfigured, generarFoto, isProductPicture, sugerir, type Pieza } from "@/lib/crear";
 import { BUCKET, db, explain, hasDb, publicUrl } from "@/lib/db";
-import { comprimir } from "@/lib/comprimir";
+import { comprimirSiSePuede } from "@/lib/comprimir";
 import { apiKeyConfigured, MatchError } from "@/lib/emparejar";
 
 export const runtime = "nodejs";
@@ -70,8 +70,9 @@ export async function POST(req: Request) {
         : await generarFoto(piezas, str(body.notas), new URL(req.url).origin);
 
       // stored web-sized (~300 KB instead of ~3 MB): every download counts in Supabase
-      const web = await comprimir(foto.bytes);
-      const path = `${new Date().getFullYear()}/c-ia-${Date.now()}.jpg`;
+      const web = await comprimirSiSePuede(foto.bytes, foto.mime);
+      // "c-" marks a web-sized copy (the Outfits page counts the rest as heavy)
+      const path = `${new Date().getFullYear()}/${web.ext === "jpg" && web.bytes.length < 1_000_000 ? "c-" : ""}ia-${Date.now()}.${web.ext}`;
       const { error } = await db()
         .storage.from(BUCKET)
         .upload(path, web.bytes, { contentType: web.mime, cacheControl: "31536000", upsert: false });
