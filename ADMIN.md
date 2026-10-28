@@ -152,7 +152,7 @@ poder editarlos desde el panel.
   pero los outfits guardados conservan el link viejo. Mientras quede alguno, en
   *Outfits* sale un aviso naranja con «Cambiar los N links»: cambia solo el link
   (a Uidbuy con tu código), no el precio ni el nombre. La lista de números viejos →
-  nuevos está en ; para otro cambio de tienda,
+  nuevos está en `lib/tienda-shark-little-penguin.json`; para otro cambio de tienda,
   pídelo y se añade otra lista igual.
 - **Descargar fotos (.zip)** (en Outfits): baja todas las fotos de los outfits en
   un zip, en carpetas por sección y estilo (Hombre/Streetwear/…), con el nombre
