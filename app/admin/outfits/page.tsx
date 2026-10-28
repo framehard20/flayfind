@@ -8,6 +8,7 @@ import { antesDelLanzamiento } from "@/lib/site";
 import { OutfitList } from "../_components/OutfitList";
 import { DownloadPhotos } from "../_components/DownloadPhotos";
 import { ShopLinksBanner } from "../_components/ShopLinksBanner";
+import { CompressPhotos } from "../_components/CompressPhotos";
 import { allStyles } from "@/lib/styles";
 
 const SECCION: Record<string, string> = { hombre: "Hombre", mujer: "Mujer", ambos: "Hombre y Mujer" };
@@ -49,6 +50,8 @@ export default async function OutfitsPage() {
       <p className="ad-lead">Los que se ven en la pestaña «Outfits» de la web, con sus filtros de sección, estilo y época.</p>
       {/* only while some links still point to a Weidian shop that moved */}
       {hasDb && <ShopLinksBanner />}
+      {/* only while some photos are still full-size */}
+      {hasDb && <CompressPhotos />}
       {hasDb && <HideAllSwitch ocultos={ajuste.ocultos} leido={ajuste.leido} prelanzamiento={antesDelLanzamiento()} />}
       <OutfitList rows={rows} seccion="outfits" estilos={estilos} />
     </>

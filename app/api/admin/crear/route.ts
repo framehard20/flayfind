@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { isLoggedIn } from "@/lib/auth";
 import { buscar, FotoError, geminiConfigured, generarFoto, isProductPicture, sugerir, type Pieza } from "@/lib/crear";
 import { BUCKET, db, explain, hasDb, publicUrl } from "@/lib/db";
+import { comprimir } from "@/lib/comprimir";
 import { apiKeyConfigured, MatchError } from "@/lib/emparejar";
 
 export const runtime = "nodejs";
@@ -68,11 +69,12 @@ export async function POST(req: Request) {
         ? { bytes: await readFile(fake), mime: "image/jpeg" }
         : await generarFoto(piezas, str(body.notas), new URL(req.url).origin);
 
-      const ext = foto.mime === "image/jpeg" ? "jpg" : foto.mime === "image/webp" ? "webp" : "png";
-      const path = `${new Date().getFullYear()}/ia-${Date.now()}.${ext}`;
+      // stored web-sized (~300 KB instead of ~3 MB): every download counts in Supabase
+      const web = await comprimir(foto.bytes);
+      const path = `${new Date().getFullYear()}/c-ia-${Date.now()}.jpg`;
       const { error } = await db()
         .storage.from(BUCKET)
-        .upload(path, foto.bytes, { contentType: foto.mime, cacheControl: "31536000", upsert: false });
+        .upload(path, web.bytes, { contentType: web.mime, cacheControl: "31536000", upsert: false });
       if (error) return fail(explain(error.message), 500);
       return Response.json({ url: publicUrl(path) });
     }

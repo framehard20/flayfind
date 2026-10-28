@@ -7,6 +7,7 @@ import type { OutfitRow, Seccion } from "@/lib/db";
 import type { Genero } from "@/lib/outfits";
 import { ACCESSORIES, subsections, type ExtraStyle } from "@/lib/styles";
 import { eur, totalDe } from "@/lib/utils";
+import { miniatura } from "@/lib/miniatura";
 
 const LABEL: Record<string, string> = {
   hombre: "Hombre",
@@ -163,7 +164,7 @@ export function OutfitList({
           {lista.map((r) => (
             <li className="ad-item" key={r.id}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="ad-thumb" src={r.foto} alt="" loading="lazy" />
+              <img className="ad-thumb" src={miniatura(r.foto)} alt="" loading="lazy" />
               <div className="ad-item-main">
                 <b>{r.nombre}</b>
                 <small>

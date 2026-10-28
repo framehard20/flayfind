@@ -154,6 +154,12 @@ poder editarlos desde el panel.
   (a Uidbuy con tu código), no el precio ni el nombre. La lista de números viejos →
   nuevos está en `lib/tienda-shark-little-penguin.json`; para otro cambio de tienda,
   pídelo y se añade otra lista igual.
+- **Fotos ligeras (límite de Supabase)**: el plan gratis de Supabase deja 5 GB al
+  mes de descargas de fotos. Desde el 28 de octubre las fotos nuevas se guardan
+  comprimidas (unos 300 KB en vez de 3 MB) y el panel enseña miniaturas pequeñas.
+  Si aún quedan fotos antiguas sin comprimir, en *Outfits* sale «Comprimir N fotos»:
+  hace una copia ligera de cada una y la pone en su outfit (las originales no se
+  borran). El consumo se mira en Supabase → Usage → Cached Egress.
 - **Descargar fotos (.zip)** (en Outfits): baja todas las fotos de los outfits en
   un zip, en carpetas por sección y estilo (Hombre/Streetwear/…), con el nombre
   de cada outfit. Se prepara en tu navegador; con muchas fotos tarda un poco.

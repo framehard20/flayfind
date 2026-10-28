@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { OutfitRow, Seccion } from "@/lib/db";
 import type { Genero } from "@/lib/outfits";
 import { inSeason, subsections, type ExtraStyle } from "@/lib/styles";
+import { miniatura } from "@/lib/miniatura";
 import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
 
@@ -219,7 +220,7 @@ export function OutfitForm({
         ) : (
           <div className="ad-drop">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="ad-preview" src={foto || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
+            <img className="ad-preview" src={miniatura(foto, 640) || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
             <div>
               <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={onPickPhoto} />
               <span className="ad-hint">

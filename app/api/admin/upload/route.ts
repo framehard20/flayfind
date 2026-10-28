@@ -1,5 +1,6 @@
 import { isLoggedIn } from "@/lib/auth";
 import { BUCKET, db, explain, hasDb, publicUrl } from "@/lib/db";
+import { comprimir } from "@/lib/comprimir";
 
 export const runtime = "nodejs";
 
@@ -33,11 +34,14 @@ export async function POST(req: Request) {
   if (!ext) return Response.json({ error: "Formato no admitido: usa JPG, PNG, WEBP o AVIF." }, { status: 400 });
 
   const name = slug(String(form?.get("nombre") ?? "") || file.name.replace(/\.[^.]+$/, ""));
-  const path = `${new Date().getFullYear()}/${Date.now()}-${name}.${ext}`;
+  // stored web-sized: the full photo would cost megabytes on every download
+  const foto = await comprimir(await file.arrayBuffer()).catch(() => null);
+  if (!foto) return Response.json({ error: "No se pudo leer la foto. Prueba con otra." }, { status: 400 });
+  const path = `${new Date().getFullYear()}/c-${Date.now()}-${name}.jpg`;
 
   const { error } = await db()
     .storage.from(BUCKET)
-    .upload(path, await file.arrayBuffer(), { contentType: file.type, cacheControl: "31536000", upsert: false });
+    .upload(path, foto.bytes, { contentType: foto.mime, cacheControl: "31536000", upsert: false });
   if (error) return Response.json({ error: explain(error.message) }, { status: 500 });
 
   return Response.json({ ok: true, url: publicUrl(path), path });

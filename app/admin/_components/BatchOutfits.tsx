@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Genero } from "@/lib/outfits";
 import type { Emparejado, Opcion } from "@/lib/emparejar";
 import { ACCESSORIES, inSeason, subsections, type ExtraStyle } from "@/lib/styles";
+import { miniatura } from "@/lib/miniatura";
 import { marcasEn } from "@/lib/marcas";
 import { BrandWarning } from "./BrandWarning";
 import { PhotoFramer } from "./PhotoFramer";
@@ -303,7 +304,7 @@ export function BatchOutfits({ estilos, prelanzamiento }: { estilos: ExtraStyle[
           <div className="ad-card ad-lote" key={item.id}>
             <div className="ad-lote-photo">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="ad-preview" src={item.foto || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
+              <img className="ad-preview" src={miniatura(item.foto, 640) || "data:image/gif;base64,R0lGODlhAQABAAAAACw="} alt="" />
               {item.foto && (
                 <button type="button" className="ad-btn ad-btn-ghost ad-btn-sm" onClick={() => setFraming({ id: item.id, src: reframeSrc(item.foto) })}>
                   Reencuadrar
