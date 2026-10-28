@@ -147,6 +147,13 @@ poder editarlos desde el panel.
   ya los escribe así, el panel marca en rojo los que lleven marca y no deja
   guardar un outfit nuevo hasta quitarla. La lista de marcas está en
   `lib/marcas.ts`.
+- **Cambio de tienda en Weidian**: si una tienda de las hojas pasa sus productos a
+  otra (el 28 de octubre: SHARK → Little Penguin), Masterspread se actualiza solo,
+  pero los outfits guardados conservan el link viejo. Mientras quede alguno, en
+  *Outfits* sale un aviso naranja con «Cambiar los N links»: cambia solo el link
+  (a Uidbuy con tu código), no el precio ni el nombre. La lista de números viejos →
+  nuevos está en ; para otro cambio de tienda,
+  pídelo y se añade otra lista igual.
 - **Descargar fotos (.zip)** (en Outfits): baja todas las fotos de los outfits en
   un zip, en carpetas por sección y estilo (Hombre/Streetwear/…), con el nombre
   de cada outfit. Se prepara en tu navegador; con muchas fotos tarda un poco.

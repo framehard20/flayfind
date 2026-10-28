@@ -132,3 +132,8 @@
 .ad-tanda-top{margin-bottom:6px}
 .ad-tanda-top h2{margin:0}
 .ad-tanda-tag{margin:0 0 8px;font-weight:700;color:var(--grey-2)}
+
+/* links of a Weidian shop that moved (Outfits page) */
+.ad-shoplinks{border-color:#f5b84d;background:#fff8ec}
+.ad-shoplinks p{margin:0 0 12px}
+.ad-shoplinks-list{margin:12px 0 0;padding-left:18px;max-height:320px;overflow:auto;font-size:13px;line-height:1.6}
