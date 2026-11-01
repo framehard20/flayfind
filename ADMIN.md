@@ -250,9 +250,9 @@ los selectores de idioma y moneda.
 
 ## Agente de compras: Uidbuy
 
-Desde el 18 de octubre de 2026 la web manda a **Uidbuy** (antes Hipobuy). Todo
-está en `lib/site.ts`: `LINKS.registro` (el link con tu `ref`), `CODIGO` (800,
-para quien se registra sin el link) y `REFERIDO`. Los textos dicen que los
+La web manda a **Uidbuy**. Todo está en `lib/site.ts`: `LINKS.registro` (el
+link con tu `ref`), `CODIGO` (800, para quien se registra sin el link) y
+`REFERIDO`. Los textos dicen que los
 **800 $ de descuento** solo se consiguen así, con el link o el código, y que el
 **40% en el envío** es el cupón de bienvenida de Uidbuy. Si cambia la oferta,
 cambia esas frases en `lib/i18n/*.ts` (7 idiomas).

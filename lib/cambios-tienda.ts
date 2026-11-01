@@ -14,7 +14,7 @@ export type CambioTienda = { desde: string; a: string; ids: Record<string, strin
 
 export const CAMBIOS: CambioTienda[] = [shark];
 
-/** The Weidian product number inside a link (Uidbuy, Hipobuy or Weidian itself). */
+/** The Weidian product number inside a link (a shopping agent's or Weidian's own). */
 export function weidianId(link: string): string | null {
   const m =
     link.match(/uidbuy\.com\/product\/3\/(\d{6,})/i) ??
