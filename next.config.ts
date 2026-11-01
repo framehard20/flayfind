@@ -17,13 +17,13 @@ const isHttpsDeploy = !!process.env.VERCEL;
 // below or the browser will silently block the submit request.
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://cloud.umami.is 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://radar-datos.vercel.app 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   // photos uploaded from /admin are served from Supabase storage
   // masterspread.com: product pictures in the batch matcher (/admin/outfits/lote)
   "img-src 'self' data: blob: https://*.supabase.co https://www.masterspread.com",
   "font-src 'self'",
-  `connect-src 'self' blob: https://cloud.umami.is https://gateway.umami.is https://*.supabase.co${isDev ? " ws:" : ""}`,
+  `connect-src 'self' blob: https://radar-datos.vercel.app https://*.supabase.co${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

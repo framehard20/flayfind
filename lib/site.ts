@@ -68,8 +68,8 @@ export const CONTACT_EMAIL = "flayfind@gmail.com";
 // Umami (analítica gratis y sin cookies). Deja websiteId vacío para desactivarla.
 // Si cambias de proveedor, actualiza también la CSP en next.config.ts.
 export const UMAMI = {
-  websiteId: "d55e4e01-2e22-4458-8f90-a3f0a14b4ec5",
-  src: "https://cloud.umami.is/script.js",
+  websiteId: "096cf933-433b-442d-85ee-66e0888d3f4b",
+  src: "https://radar-datos.vercel.app/script.js",
 };
 
 // El formulario del concurso de seguidores necesita un endpoint que reciba el
