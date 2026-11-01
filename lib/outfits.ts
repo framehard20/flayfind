@@ -34,9 +34,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/essentials-black.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Sudadera con capucha", precio:20.00, link:"https://hipobuy.com/product/weidian/7756761221?inviteCode=YILTEC" },
-      { tipo:"Jogger cargo", precio:3.00, link:"https://hipobuy.com/product/weidian/7847678240?inviteCode=YILTEC" },
-      { tipo:"Sneakers negras", precio:35.00, link:"https://hipobuy.com/product/weidian/7847664430?inviteCode=YILTEC" },
+      { tipo:"Sudadera con capucha", precio:20.00, link:"https://www.uidbuy.com/product/3/7756761221?ref=UWSV3X" },
+      { tipo:"Jogger cargo", precio:3.00, link:"https://www.uidbuy.com/product/3/7847678240?ref=UWSV3X" },
+      { tipo:"Sneakers negras", precio:35.00, link:"https://www.uidbuy.com/product/3/7847664430?ref=UWSV3X" },
     ]
   },
   {
@@ -47,9 +47,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/rosa-preppy.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Jersey trenzado rosa", precio:18.00, link:"https://hipobuy.com/product/weidian/7758828681?inviteCode=YILTEC" },
-      { tipo:"Cargo negro", precio:10.00, link:"https://hipobuy.com/product/weidian/7844697549?inviteCode=YILTEC" },
-      { tipo:"Sneakers rosas", precio:28.00, link:"https://hipobuy.com/product/weidian/7759787484?inviteCode=YILTEC" },
+      { tipo:"Jersey trenzado rosa", precio:18.00, link:"https://www.uidbuy.com/product/3/7758828681?ref=UWSV3X" },
+      { tipo:"Cargo negro", precio:10.00, link:"https://www.uidbuy.com/product/3/7844697549?ref=UWSV3X" },
+      { tipo:"Sneakers rosas", precio:28.00, link:"https://www.uidbuy.com/product/3/7759787484?ref=UWSV3X" },
     ]
   },
   {
@@ -60,9 +60,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/total-black-baggy.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Sudadera con cremallera", precio:20.00, link:"https://hipobuy.com/product/weidian/7755073801?inviteCode=YILTEC" },
-      { tipo:"Jeans anchos negros", precio:10.00, link:"https://hipobuy.com/product/weidian/7844697549?inviteCode=YILTEC" },
-      { tipo:"Sneakers negras", precio:30.00, link:"https://hipobuy.com/product/weidian/7761797152?inviteCode=YILTEC" },
+      { tipo:"Sudadera con cremallera", precio:20.00, link:"https://www.uidbuy.com/product/3/7755073801?ref=UWSV3X" },
+      { tipo:"Jeans anchos negros", precio:10.00, link:"https://www.uidbuy.com/product/3/7844697549?ref=UWSV3X" },
+      { tipo:"Sneakers negras", precio:30.00, link:"https://www.uidbuy.com/product/3/7761797152?ref=UWSV3X" },
     ]
   },
   {
@@ -73,9 +73,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/ua-rosa.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta técnica", precio:15.00, link:"https://hipobuy.com/product/weidian/7758879675?inviteCode=YILTEC" },
-      { tipo:"Short deportivo", precio:15.00, link:"https://hipobuy.com/product/weidian/7758879675?inviteCode=YILTEC" },
-      { tipo:"Zapatillas blancas", precio:28.00, link:"https://hipobuy.com/product/weidian/7759787484?inviteCode=YILTEC" },
+      { tipo:"Camiseta técnica", precio:15.00, link:"https://www.uidbuy.com/product/3/7758879675?ref=UWSV3X" },
+      { tipo:"Short deportivo", precio:15.00, link:"https://www.uidbuy.com/product/3/7758879675?ref=UWSV3X" },
+      { tipo:"Zapatillas blancas", precio:28.00, link:"https://www.uidbuy.com/product/3/7759787484?ref=UWSV3X" },
     ]
   },
   {
@@ -86,9 +86,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/celeste-clean.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Jersey liso celeste", precio:15.00, link:"https://hipobuy.com/product/weidian/7847727266?inviteCode=YILTEC" },
-      { tipo:"Jeans negros", precio:10.00, link:"https://hipobuy.com/product/weidian/7844697549?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/goods/details?id=7809302092&channel=WEIDIAN&inviteCode=YILTEC" },
+      { tipo:"Jersey liso celeste", precio:15.00, link:"https://www.uidbuy.com/product/3/7847727266?ref=UWSV3X" },
+      { tipo:"Jeans negros", precio:10.00, link:"https://www.uidbuy.com/product/3/7844697549?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7809302092?ref=UWSV3X" },
     ]
   },
   {
@@ -99,9 +99,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/supreme-verano.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta box logo", precio:15.00, link:"https://hipobuy.com/product/weidian/7755042357?inviteCode=YILTEC" },
-      { tipo:"Short cargo camo", precio:15.00, link:"https://hipobuy.com/product/weidian/7828556935?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/product/weidian/7765822954?inviteCode=YILTEC" },
+      { tipo:"Camiseta box logo", precio:15.00, link:"https://www.uidbuy.com/product/3/7755042357?ref=UWSV3X" },
+      { tipo:"Short cargo camo", precio:15.00, link:"https://www.uidbuy.com/product/3/7828556935?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7765822954?ref=UWSV3X" },
     ]
   },
   {
@@ -112,9 +112,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/rosa-street.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta manga larga rosa", precio:20.00, link:"https://hipobuy.com/product/weidian/7844809847?inviteCode=YILTEC" },
-      { tipo:"Jeans anchos", precio:10.00, link:"https://hipobuy.com/product/weidian/7844684305?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/product/weidian/7765822954?inviteCode=YILTEC" },
+      { tipo:"Camiseta manga larga rosa", precio:20.00, link:"https://www.uidbuy.com/product/3/7844809847?ref=UWSV3X" },
+      { tipo:"Jeans anchos", precio:10.00, link:"https://www.uidbuy.com/product/3/7844684305?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7765822954?ref=UWSV3X" },
     ]
   },
   {
@@ -125,9 +125,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/nike-verde.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Cortavientos verde", precio:14.00, link:"https://hipobuy.com/product/weidian/7844788151?inviteCode=YILTEC" },
-      { tipo:"Short técnico", precio:14.00, link:"https://hipobuy.com/product/weidian/7844788151?inviteCode=YILTEC" },
-      { tipo:"Zapatillas running", precio:38.00, link:"https://hipobuy.com/goods/details?id=7809302092&channel=WEIDIAN&inviteCode=YILTEC" },
+      { tipo:"Cortavientos verde", precio:14.00, link:"https://www.uidbuy.com/product/3/7844788151?ref=UWSV3X" },
+      { tipo:"Short técnico", precio:14.00, link:"https://www.uidbuy.com/product/3/7844788151?ref=UWSV3X" },
+      { tipo:"Zapatillas running", precio:38.00, link:"https://www.uidbuy.com/product/3/7809302092?ref=UWSV3X" },
     ]
   },
   {
@@ -138,9 +138,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/supreme-black.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta manga larga", precio:28.00, link:"https://hipobuy.com/product/weidian/7847756966?inviteCode=YILTEC" },
-      { tipo:"Jogger negro", precio:29.00, link:"https://hipobuy.com/product/weidian/7844666677?inviteCode=YILTEC" },
-      { tipo:"Sneakers negras", precio:28.00, link:"https://hipobuy.com/product/weidian/7759787484?inviteCode=YILTEC" },
+      { tipo:"Camiseta manga larga", precio:28.00, link:"https://www.uidbuy.com/product/3/7847756966?ref=UWSV3X" },
+      { tipo:"Jogger negro", precio:29.00, link:"https://www.uidbuy.com/product/3/7844666677?ref=UWSV3X" },
+      { tipo:"Sneakers negras", precio:28.00, link:"https://www.uidbuy.com/product/3/7759787484?ref=UWSV3X" },
     ]
   },
   {
@@ -151,9 +151,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/gris-esencial.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Sudadera crew negra", precio:28.00, link:"https://hipobuy.com/product/weidian/7847756966?inviteCode=YILTEC" },
-      { tipo:"Jogger gris", precio:18.00, link:"https://hipobuy.com/product/weidian/7756650815?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/goods/details?id=7809302092&channel=WEIDIAN&inviteCode=YILTEC" },
+      { tipo:"Sudadera crew negra", precio:28.00, link:"https://www.uidbuy.com/product/3/7847756966?ref=UWSV3X" },
+      { tipo:"Jogger gris", precio:18.00, link:"https://www.uidbuy.com/product/3/7756650815?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7809302092?ref=UWSV3X" },
     ]
   },
   {
@@ -164,9 +164,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/navy-compass.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta manga larga blanca", precio:20.00, link:"https://hipobuy.com/product/weidian/7844646833?inviteCode=YILTEC" },
-      { tipo:"Jogger navy", precio:30.00, link:"https://hipobuy.com/product/weidian/7844666677?inviteCode=YILTEC" },
-      { tipo:"Sneakers navy", precio:40.00, link:"https://hipobuy.com/product/weidian/7847771722?inviteCode=YILTEC" },
+      { tipo:"Camiseta manga larga blanca", precio:20.00, link:"https://www.uidbuy.com/product/3/7844646833?ref=UWSV3X" },
+      { tipo:"Jogger navy", precio:30.00, link:"https://www.uidbuy.com/product/3/7844666677?ref=UWSV3X" },
+      { tipo:"Sneakers navy", precio:40.00, link:"https://www.uidbuy.com/product/3/7847771722?ref=UWSV3X" },
     ]
   },
   {
@@ -177,9 +177,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/corazon-oliva.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta manga larga", precio:20.00, link:"https://hipobuy.com/product/weidian/7844786285?inviteCode=YILTEC" },
-      { tipo:"Jogger oliva", precio:38.00, link:"https://hipobuy.com/product/weidian/7847814128?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/product/weidian/7765822954?inviteCode=YILTEC" },
+      { tipo:"Camiseta manga larga", precio:20.00, link:"https://www.uidbuy.com/product/3/7844786285?ref=UWSV3X" },
+      { tipo:"Jogger oliva", precio:38.00, link:"https://www.uidbuy.com/product/3/7847814128?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7765822954?ref=UWSV3X" },
     ]
   },
   {
@@ -190,9 +190,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/supreme-baggy.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Sudadera con cremallera", precio:40.00, link:"https://hipobuy.com/product/weidian/7847780224?inviteCode=YILTEC" },
-      { tipo:"Jeans anchos", precio:10.00, link:"https://hipobuy.com/product/weidian/7844697549?inviteCode=YILTEC" },
-      { tipo:"Sneakers azules", precio:50.00, link:"https://hipobuy.com/product/weidian/7844774575?inviteCode=YILTEC" },
+      { tipo:"Sudadera con cremallera", precio:40.00, link:"https://www.uidbuy.com/product/3/7847780224?ref=UWSV3X" },
+      { tipo:"Jeans anchos", precio:10.00, link:"https://www.uidbuy.com/product/3/7844697549?ref=UWSV3X" },
+      { tipo:"Sneakers azules", precio:50.00, link:"https://www.uidbuy.com/product/3/7844774575?ref=UWSV3X" },
     ]
   },
   {
@@ -203,9 +203,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/beige-monograma.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Jersey de punto beige", precio:35.00, link:"https://hipobuy.com/product/weidian/7761806646?inviteCode=YILTEC" },
-      { tipo:"Jeans blancos", precio:10.00, link:"https://hipobuy.com/product/weidian/7844697549?inviteCode=YILTEC" },
-      { tipo:"Sneakers beige", precio:70.00, link:"https://hipobuy.com/product/weidian/7755056127?inviteCode=YILTEC" },
+      { tipo:"Jersey de punto beige", precio:35.00, link:"https://www.uidbuy.com/product/3/7761806646?ref=UWSV3X" },
+      { tipo:"Jeans blancos", precio:10.00, link:"https://www.uidbuy.com/product/3/7844697549?ref=UWSV3X" },
+      { tipo:"Sneakers beige", precio:70.00, link:"https://www.uidbuy.com/product/3/7755056127?ref=UWSV3X" },
     ]
   },
   {
@@ -216,9 +216,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/total-black-lv.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Jersey de punto negro", precio:35.00, link:"https://hipobuy.com/product/weidian/7761806646?inviteCode=YILTEC" },
-      { tipo:"Jeans negros", precio:18.00, link:"https://hipobuy.com/product/weidian/7844776481?inviteCode=YILTEC" },
-      { tipo:"Sneakers negras", precio:70.00, link:"https://hipobuy.com/product/weidian/7755056127?inviteCode=YILTEC" },
+      { tipo:"Jersey de punto negro", precio:35.00, link:"https://www.uidbuy.com/product/3/7761806646?ref=UWSV3X" },
+      { tipo:"Jeans negros", precio:18.00, link:"https://www.uidbuy.com/product/3/7844776481?ref=UWSV3X" },
+      { tipo:"Sneakers negras", precio:70.00, link:"https://www.uidbuy.com/product/3/7755056127?ref=UWSV3X" },
     ]
   },
   {
@@ -229,9 +229,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/corteiz-azul.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Chaqueta técnica azul", precio:65.00, link:"https://hipobuy.com/product/weidian/7758807204?inviteCode=YILTEC" },
-      { tipo:"Jeans negros", precio:15.00, link:"https://hipobuy.com/product/weidian/7759866112?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:50.00, link:"https://hipobuy.com/product/weidian/7757976998?inviteCode=YILTEC" },
+      { tipo:"Chaqueta técnica azul", precio:65.00, link:"https://www.uidbuy.com/product/3/7758807204?ref=UWSV3X" },
+      { tipo:"Jeans negros", precio:15.00, link:"https://www.uidbuy.com/product/3/7759866112?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:50.00, link:"https://www.uidbuy.com/product/3/7757976998?ref=UWSV3X" },
     ]
   },
   {
@@ -242,9 +242,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/cargo-blanco-negro.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta blanca", precio:18.00, link:"https://hipobuy.com/product/weidian/7838665032?inviteCode=YILTEC" },
-      { tipo:"Cargo corto negro", precio:15.00, link:"https://hipobuy.com/product/weidian/7838671088?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:30.00, link:"https://hipobuy.com/product/weidian/7845062037?inviteCode=YILTEC" },
+      { tipo:"Camiseta blanca", precio:18.00, link:"https://www.uidbuy.com/product/3/7838665032?ref=UWSV3X" },
+      { tipo:"Cargo corto negro", precio:15.00, link:"https://www.uidbuy.com/product/3/7838671088?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:30.00, link:"https://www.uidbuy.com/product/3/7845062037?ref=UWSV3X" },
     ]
   },
   {
@@ -255,9 +255,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/eight-ball.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta blanca", precio:9.00, link:"https://hipobuy.com/product/weidian/7835641437?inviteCode=YILTEC" },
-      { tipo:"Short negro", precio:5.00, link:"https://hipobuy.com/product/weidian/7835676767?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:20.00, link:"https://hipobuy.com/product/weidian/7838743862?inviteCode=YILTEC" },
+      { tipo:"Camiseta blanca", precio:9.00, link:"https://www.uidbuy.com/product/3/7835641437?ref=UWSV3X" },
+      { tipo:"Short negro", precio:5.00, link:"https://www.uidbuy.com/product/3/7835676767?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:20.00, link:"https://www.uidbuy.com/product/3/7838743862?ref=UWSV3X" },
     ]
   },
   {
@@ -268,9 +268,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/camo-azul.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta estampada", precio:18.00, link:"https://hipobuy.com/product/weidian/7838752384?inviteCode=YILTEC" },
-      { tipo:"Bermuda denim", precio:14.00, link:"https://hipobuy.com/product/weidian/7766066226?inviteCode=YILTEC" },
-      { tipo:"Sneakers", precio:38.00, link:"https://hipobuy.com/goods/details?id=7809302092&channel=WEIDIAN&inviteCode=YILTEC" },
+      { tipo:"Camiseta estampada", precio:18.00, link:"https://www.uidbuy.com/product/3/7838752384?ref=UWSV3X" },
+      { tipo:"Bermuda denim", precio:14.00, link:"https://www.uidbuy.com/product/3/7766066226?ref=UWSV3X" },
+      { tipo:"Sneakers", precio:38.00, link:"https://www.uidbuy.com/product/3/7809302092?ref=UWSV3X" },
     ]
   },
   {
@@ -281,9 +281,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/jersey-futbol.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta de fútbol", precio:3.00, link:"https://hipobuy.com/product/weidian/7848026822?inviteCode=YILTEC" },
-      { tipo:"Short estampado", precio:13.00, link:"https://hipobuy.com/product/weidian/7829075425?inviteCode=YILTEC" },
-      { tipo:"Sneakers blancas", precio:40.00, link:"https://hipobuy.com/product/weidian/7845091709?inviteCode=YILTEC" },
+      { tipo:"Camiseta de fútbol", precio:3.00, link:"https://www.uidbuy.com/product/3/7848026822?ref=UWSV3X" },
+      { tipo:"Short estampado", precio:13.00, link:"https://www.uidbuy.com/product/3/7829075425?ref=UWSV3X" },
+      { tipo:"Sneakers blancas", precio:40.00, link:"https://www.uidbuy.com/product/3/7845091709?ref=UWSV3X" },
     ]
   },
   {
@@ -294,8 +294,8 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/deportivo-negro.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta técnica", precio:12.50, link:"https://hipobuy.com/product/weidian/7834086542?inviteCode=YILTEC" },
-      { tipo:"Short técnico", precio:12.50, link:"https://hipobuy.com/product/weidian/7834086542?inviteCode=YILTEC" },
+      { tipo:"Camiseta técnica", precio:12.50, link:"https://www.uidbuy.com/product/3/7834086542?ref=UWSV3X" },
+      { tipo:"Short técnico", precio:12.50, link:"https://www.uidbuy.com/product/3/7834086542?ref=UWSV3X" },
     ]
   },
   {
@@ -306,9 +306,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/black-roses.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta negra", precio:20.00, link:"https://hipobuy.com/product/weidian/7838631452?inviteCode=YILTEC" },
-      { tipo:"Short negro", precio:5.00, link:"https://hipobuy.com/product/weidian/7835676767?inviteCode=YILTEC" },
-      { tipo:"Sneakers negras", precio:30.00, link:"https://hipobuy.com/product/weidian/7845062037?inviteCode=YILTEC" },
+      { tipo:"Camiseta negra", precio:20.00, link:"https://www.uidbuy.com/product/3/7838631452?ref=UWSV3X" },
+      { tipo:"Short negro", precio:5.00, link:"https://www.uidbuy.com/product/3/7835676767?ref=UWSV3X" },
+      { tipo:"Sneakers negras", precio:30.00, link:"https://www.uidbuy.com/product/3/7845062037?ref=UWSV3X" },
     ]
   },
   {
@@ -319,9 +319,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/set-gris.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta gris", precio:5.00, link:"https://hipobuy.com/product/weidian/7835676767?inviteCode=YILTEC" },
-      { tipo:"Short gris", precio:5.00, link:"https://hipobuy.com/product/weidian/7835676767?inviteCode=YILTEC" },
-      { tipo:"Sneakers blancas", precio:28.00, link:"https://hipobuy.com/product/weidian/7759787484?inviteCode=YILTEC" },
+      { tipo:"Camiseta gris", precio:5.00, link:"https://www.uidbuy.com/product/3/7835676767?ref=UWSV3X" },
+      { tipo:"Short gris", precio:5.00, link:"https://www.uidbuy.com/product/3/7835676767?ref=UWSV3X" },
+      { tipo:"Sneakers blancas", precio:28.00, link:"https://www.uidbuy.com/product/3/7759787484?ref=UWSV3X" },
     ]
   },
   {
@@ -332,9 +332,9 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/essentials-negro-verano.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Camiseta negra", precio:18.00, link:"https://hipobuy.com/product/weidian/7755050285?inviteCode=YILTEC" },
-      { tipo:"Short negro", precio:15.00, link:"https://hipobuy.com/product/weidian/7838635390?inviteCode=YILTEC" },
-      { tipo:"Sneakers blancas", precio:28.00, link:"https://hipobuy.com/product/weidian/7759787484?inviteCode=YILTEC" },
+      { tipo:"Camiseta negra", precio:18.00, link:"https://www.uidbuy.com/product/3/7755050285?ref=UWSV3X" },
+      { tipo:"Short negro", precio:15.00, link:"https://www.uidbuy.com/product/3/7838635390?ref=UWSV3X" },
+      { tipo:"Sneakers blancas", precio:28.00, link:"https://www.uidbuy.com/product/3/7759787484?ref=UWSV3X" },
     ]
   },
 
@@ -347,7 +347,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-gafas-transparentes.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Gafas", precio:10.00, link:"https://hipobuy.com/product/weidian/7756811281?inviteCode=YILTEC" },
+      { tipo:"Gafas", precio:10.00, link:"https://www.uidbuy.com/product/3/7756811281?ref=UWSV3X" },
     ]
   },
   {
@@ -358,7 +358,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-gafas-negras.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Gafas de sol", precio:14.00, link:"https://hipobuy.com/product/weidian/7755016611?inviteCode=YILTEC" },
+      { tipo:"Gafas de sol", precio:14.00, link:"https://www.uidbuy.com/product/3/7755016611?ref=UWSV3X" },
     ]
   },
   {
@@ -369,7 +369,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-mascara.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Máscara para correr", precio:10.00, link:"https://hipobuy.com/product/weidian/7758046112?inviteCode=YILTEC" },
+      { tipo:"Máscara para correr", precio:10.00, link:"https://www.uidbuy.com/product/3/7758046112?ref=UWSV3X" },
     ]
   },
   {
@@ -380,7 +380,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-bolso-azul.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Bolso", precio:20.00, link:"https://hipobuy.com/product/weidian/7755054157?inviteCode=YILTEC" },
+      { tipo:"Bolso", precio:20.00, link:"https://www.uidbuy.com/product/3/7755054157?ref=UWSV3X" },
     ]
   },
   {
@@ -391,7 +391,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-gorra-ny.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Gorra", precio:13.00, link:"https://hipobuy.com/product/weidian/7756842899?inviteCode=YILTEC" },
+      { tipo:"Gorra", precio:13.00, link:"https://www.uidbuy.com/product/3/7756842899?ref=UWSV3X" },
     ]
   },
   {
@@ -402,7 +402,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-brazalete.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Brazalete", precio:11.00, link:"https://hipobuy.com/product/weidian/7756793531?inviteCode=YILTEC" },
+      { tipo:"Brazalete", precio:11.00, link:"https://www.uidbuy.com/product/3/7756793531?ref=UWSV3X" },
     ]
   },
   {
@@ -413,7 +413,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-boxer.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Bóxer", precio:3.00, link:"https://hipobuy.com/product/weidian/7758826701?inviteCode=YILTEC" },
+      { tipo:"Bóxer", precio:3.00, link:"https://www.uidbuy.com/product/3/7758826701?ref=UWSV3X" },
     ]
   },
   {
@@ -424,7 +424,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-cartera.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Cartera", precio:10.00, link:"https://hipobuy.com/product/weidian/7754969369?inviteCode=YILTEC" },
+      { tipo:"Cartera", precio:10.00, link:"https://www.uidbuy.com/product/3/7754969369?ref=UWSV3X" },
     ]
   },
   {
@@ -435,7 +435,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-reloj.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Reloj", precio:60.00, link:"https://hipobuy.com/product/weidian/7761847996?inviteCode=YILTEC" },
+      { tipo:"Reloj", precio:60.00, link:"https://www.uidbuy.com/product/3/7761847996?ref=UWSV3X" },
     ]
   },
   {
@@ -446,7 +446,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-gorra-la.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Gorra LA", precio:10.00, link:"https://hipobuy.com/product/weidian/7754998913?inviteCode=YILTEC" },
+      { tipo:"Gorra LA", precio:10.00, link:"https://www.uidbuy.com/product/3/7754998913?ref=UWSV3X" },
     ]
   },
   {
@@ -457,7 +457,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-mochila.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Mochila", precio:15.00, link:"https://hipobuy.com/product/weidian/7758026344?inviteCode=YILTEC" },
+      { tipo:"Mochila", precio:15.00, link:"https://www.uidbuy.com/product/3/7758026344?ref=UWSV3X" },
     ]
   },
   {
@@ -468,7 +468,7 @@ export const OUTFITS: Outfit[] = [
     foto:"/img/acc-calcetines.jpg",
     precioMarca:0,
     prendas:[
-      { tipo:"Pack de calcetines", precio:5.00, link:"https://hipobuy.com/product/weidian/7759834864?inviteCode=YILTEC" },
+      { tipo:"Pack de calcetines", precio:5.00, link:"https://www.uidbuy.com/product/3/7759834864?ref=UWSV3X" },
     ]
   },
 ];

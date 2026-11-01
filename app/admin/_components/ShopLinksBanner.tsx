@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 
 type Pendiente = { id: string; nombre: string; seccion: string; cambios: { tipo: string; tienda: string }[] };
 
-/** Shows up only while some outfit still has links of a Weidian shop that
- *  moved (lib/cambios-tienda.ts), with one button to swap them all. */
+/** Shows up only while some outfit still has old links: a Weidian shop that
+ *  moved or the previous agent (lib/cambios-tienda.ts). One button swaps them
+ *  all; those with no product number to read are named, to fix by hand. */
 export function ShopLinksBanner() {
   const router = useRouter();
   const [pend, setPend] = useState<Pendiente[] | null>(null);
+  const [aMano, setAMano] = useState<{ nombre: string; tipo: string }[]>([]);
   const [ver, setVer] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -17,7 +19,10 @@ export function ShopLinksBanner() {
   useEffect(() => {
     fetch("/api/admin/links-tienda", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })
       .then((r) => r.json())
-      .then((d) => setPend(d.outfits ?? []))
+      .then((d) => {
+        setPend(d.outfits ?? []);
+        setAMano(d.aMano ?? []);
+      })
       .catch(() => setPend([]));
   }, []);
 
@@ -42,19 +47,31 @@ export function ShopLinksBanner() {
     router.refresh();
   }
 
-  if (msg) return <p className={`ad-msg ${msg.ok ? "ad-msg-ok" : "ad-msg-err"}`}>{msg.text}</p>;
-  if (!pend?.length) return null;
+  const sueltos = aMano.length > 0 && (
+    <p className="ad-msg ad-msg-err">
+      Estos links antiguos no se pueden cambiar solos, cámbialos a mano: {aMano.map((a) => `${a.nombre} (${a.tipo})`).join(", ")}.
+    </p>
+  );
+
+  if (msg)
+    return (
+      <>
+        <p className={`ad-msg ${msg.ok ? "ad-msg-ok" : "ad-msg-err"}`}>{msg.text}</p>
+        {sueltos}
+      </>
+    );
+  if (!pend?.length) return sueltos || null;
 
   const prendas = pend.reduce((n, p) => n + p.cambios.length, 0);
   const tiendas = [...new Set(pend.flatMap((p) => p.cambios.map((c) => c.tienda)))].join(", ");
   return (
     <div className="ad-card ad-shoplinks">
+      {sueltos}
       <p>
         <b>
           {prendas} prendas de {pend.length} outfits
         </b>{" "}
-        tienen links de una tienda que se ha cambiado ({tiendas}). Son los mismos productos: solo cambia el link, el precio y el nombre se
-        quedan igual.
+        tienen links antiguos ({tiendas}). Son los mismos productos: solo cambia el link, el precio y el nombre se quedan igual.
       </p>
       <div className="ad-row">
         <button type="button" className="ad-btn" disabled={busy} onClick={cambiar}>

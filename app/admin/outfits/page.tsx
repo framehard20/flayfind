@@ -48,7 +48,7 @@ export default async function OutfitsPage() {
         </div>
       </div>
       <p className="ad-lead">Los que se ven en la pestaña «Outfits» de la web, con sus filtros de sección, estilo y época.</p>
-      {/* only while some links still point to a Weidian shop that moved */}
+      {/* only while some links still point to a Weidian shop that moved or the previous agent */}
       {hasDb && <ShopLinksBanner />}
       {/* only while some photos are still full-size */}
       {hasDb && <CompressPhotos />}
