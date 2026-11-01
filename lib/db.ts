@@ -114,11 +114,16 @@ export type SubmissionRow = {
   email: string;
   idea: string;
   novedades: boolean;
-  hipobuy_usuario: string;
+  /** Only old rows have one; new submissions leave it empty. */
+  usuario: string;
   registrado: boolean;
   estado: "nuevo" | "leido" | "aprobado" | "descartado";
   created_at: string;
 };
+
+/** A row as stored. The panel's browser code ends up in the public JS, so the
+ *  column's name stays on the server: listSubmissions hands over `usuario`. */
+type SubmissionDbRow = Omit<SubmissionRow, "usuario"> & { hipobuy_usuario: string };
 
 /** next/image only accepts the hosts listed in next.config.ts; anything else
  *  would throw and take the whole page down, so unknown URLs become "no photo"
@@ -274,7 +279,7 @@ export async function listStyles(): Promise<ExtraStyle[]> {
 export async function listSubmissions(): Promise<SubmissionRow[]> {
   const { data, error } = await db().from("submissions").select("*").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []) as SubmissionRow[];
+  return ((data ?? []) as SubmissionDbRow[]).map(({ hipobuy_usuario, ...r }) => ({ ...r, usuario: hipobuy_usuario }));
 }
 
 /** Public URL of a file in the photos bucket. */

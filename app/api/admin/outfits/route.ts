@@ -16,7 +16,7 @@ type Body = Record<string, unknown>;
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
 /** Uidbuy links always carry the referral code, even if pasted without it.
- *  Links to anywhere else (old Hipobuy ones included) are kept as they are. */
+ *  Links to anywhere else are kept as they are. */
 function withInviteCode(link: string): string {
   if (!/^https?:\/\/(www\.)?uidbuy\.com/i.test(link) || /[?&]ref=/i.test(link)) return link;
   return link + (link.includes("?") ? "&" : "?") + `ref=${REFERIDO}`;

@@ -5,7 +5,7 @@
    ...?utm_source=instagram&utm_medium=bio para saber de dónde vino el clic.
    ===================================================================== */
 
-// 🛒 Agente de compras al que se manda a la gente: Uidbuy (antes Hipobuy).
+// 🛒 Agente de compras al que se manda a la gente: Uidbuy.
 // Hay dos formas de llevarse los 800 $ de descuento, y solo esas dos:
 // registrarse con el link (ya lleva el código de referido) o registrarse y
 // escribir CODIGO. El 40% en el envío es el cupón de bienvenida de Uidbuy.

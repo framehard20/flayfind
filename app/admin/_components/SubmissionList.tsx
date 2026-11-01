@@ -50,7 +50,7 @@ export function SubmissionList({ rows }: { rows: SubmissionRow[] }) {
               <p className="ad-sub-idea">{s.idea}</p>
               <div className="ad-tags">
                 <span className="ad-tag">{s.registrado ? "Dice estar registrado" : "Sin registrar"}</span>
-                {s.hipobuy_usuario && <span className="ad-tag">Usuario: {s.hipobuy_usuario}</span>}
+                {s.usuario && <span className="ad-tag">Usuario: {s.usuario}</span>}
                 <span className="ad-tag">{s.novedades ? "Quiere novedades" : "Sin novedades"}</span>
               </div>
             </div>
