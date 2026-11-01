@@ -1,5 +1,6 @@
 import { uidbuyLink } from "./catalogo";
 import type { Prenda } from "./outfits";
+import { AGENTE } from "./site";
 import shark from "./tienda-shark-little-penguin.json";
 
 // When a Weidian shop in Mario's sheets moves its products to a new shop, the
@@ -9,6 +10,9 @@ import shark from "./tienda-shark-little-penguin.json";
 // the sheet before and after.
 //
 // 28 Oct 2026: SHARK → Little Penguin, in the priority sheet (933 products).
+//
+// Links of the previous shopping agent get the same treatment: same product,
+// same number, only the link changes to Uidbuy with the referral code.
 
 export type CambioTienda = { desde: string; a: string; ids: Record<string, string> };
 
@@ -19,8 +23,19 @@ export function weidianId(link: string): string | null {
   const m =
     link.match(/uidbuy\.com\/product\/3\/(\d{6,})/i) ??
     link.match(/\/product\/weidian\/(\d{6,})/i) ??
-    (/weidian/i.test(link) ? link.match(/itemI[dD]=(\d{6,})/) : null);
+    (/weidian/i.test(link) ? link.match(/[?&](?:itemI[dD]|id)=(\d{6,})/) : null);
   return m ? m[1] : null;
+}
+
+const delAgenteAnterior = (link: string) => /hipobuy/i.test(link);
+
+/** The Uidbuy link for a link of the previous agent; "" when it has no product it can read. */
+function linkDeAgente(link: string): string {
+  const ruta = link.match(/\/product\/(\w+)\/(\d{6,})/i);
+  if (ruta) return uidbuyLink(ruta[1].toLowerCase(), ruta[2]);
+  const id = link.match(/[?&]id=(\d{6,})/)?.[1];
+  const canal = link.match(/[?&]channel=(\w+)/i)?.[1];
+  return id && canal ? uidbuyLink(canal.toLowerCase(), id) : "";
 }
 
 export type Cambio = { prenda: number; tipo: string; antes: string; despues: string; tienda: string };
@@ -29,17 +44,24 @@ export type Cambio = { prenda: number; tipo: string; antes: string; despues: str
 export function cambiosDe(prendas: Prenda[]): Cambio[] {
   const out: Cambio[] = [];
   prendas.forEach((p, i) => {
-    const id = weidianId(p.link ?? "");
-    if (!id) return;
+    const link = p.link ?? "";
+    const id = weidianId(link);
     for (const c of CAMBIOS) {
-      const nuevo = c.ids[id];
+      const nuevo = id && c.ids[id];
       if (nuevo) {
         out.push({ prenda: i, tipo: p.tipo, antes: p.link, despues: uidbuyLink("weidian", nuevo), tienda: `${c.desde} → ${c.a}` });
         return;
       }
     }
+    const despues = delAgenteAnterior(link) && linkDeAgente(link);
+    if (despues) out.push({ prenda: i, tipo: p.tipo, antes: p.link, despues, tienda: `agente anterior → ${AGENTE}` });
   });
   return out;
+}
+
+/** Garments still on the previous agent whose link can't be converted, to fix by hand. */
+export function sinConvertir(prendas: Prenda[]): string[] {
+  return prendas.filter((p) => delAgenteAnterior(p.link ?? "") && !linkDeAgente(p.link)).map((p) => p.tipo);
 }
 
 /** The same garments with the new links (price and name untouched). */

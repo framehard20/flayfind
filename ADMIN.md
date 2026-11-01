@@ -153,7 +153,9 @@ poder editarlos desde el panel.
   *Outfits* sale un aviso naranja con «Cambiar los N links»: cambia solo el link
   (a Uidbuy con tu código), no el precio ni el nombre. La lista de números viejos →
   nuevos está en `lib/tienda-shark-little-penguin.json`; para otro cambio de tienda,
-  pídelo y se añade otra lista igual.
+  pídelo y se añade otra lista igual. El mismo aviso cambia los links que aún
+  apunten al agente anterior: mismo número de producto, solo pasan a Uidbuy con tu
+  código. Si alguno no se puede convertir, el aviso lo nombra para cambiarlo a mano.
 - **Fotos ligeras (límite de Supabase)**: el plan gratis de Supabase deja 5 GB al
   mes de descargas de fotos. Desde el 28 de octubre las fotos nuevas se guardan
   comprimidas (unos 300 KB en vez de 3 MB) y el panel enseña miniaturas pequeñas.

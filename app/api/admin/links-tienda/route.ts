@@ -1,14 +1,15 @@
 import { revalidatePath } from "next/cache";
 import { isLoggedIn } from "@/lib/auth";
 import { db, explain, hasDb, type OutfitRow } from "@/lib/db";
-import { cambiosDe, conLinksNuevos } from "@/lib/cambios-tienda";
+import { cambiosDe, conLinksNuevos, sinConvertir } from "@/lib/cambios-tienda";
 
 export const runtime = "nodejs";
 
 // POST /api/admin/links-tienda  { aplicar?: boolean }
 // Without aplicar: lists the garments whose link points to a Weidian shop that
-// moved (lib/cambios-tienda.ts). With aplicar: swaps those links for the new
-// shop's, in every outfit (catalogue and followers'), and nothing else.
+// moved or to the previous agent (lib/cambios-tienda.ts), plus the ones that
+// can only be fixed by hand. With aplicar: swaps those links for the new ones,
+// in every outfit (catalogue and followers'), and nothing else.
 
 async function guard() {
   if (!(await isLoggedIn())) return Response.json({ error: "No autorizado" }, { status: 401 });
@@ -29,7 +30,9 @@ export async function POST(req: Request) {
     .map((r) => ({ id: r.id, nombre: r.nombre, seccion: r.seccion, cambios: cambiosDe(r.prendas ?? []) }))
     .filter((r) => r.cambios.length);
 
-  if (!aplicar) return Response.json({ outfits: pendientes });
+  const aMano = rows.flatMap((r) => sinConvertir(r.prendas ?? []).map((tipo) => ({ nombre: r.nombre, tipo })));
+
+  if (!aplicar) return Response.json({ outfits: pendientes, aMano });
 
   let hechos = 0, prendas = 0;
   const fallos: string[] = [];
